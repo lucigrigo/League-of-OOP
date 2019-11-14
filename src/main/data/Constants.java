@@ -4,7 +4,7 @@ public final class Constants {
     private static Constants instance = null;
 
     private Constants() {
-        ;
+        // TODO add anything here if needed
     }
 
     public static Constants getInstance() {

@@ -1,6 +1,10 @@
 package main.data;
 
-import main.characters.*;
+import main.characters.GameCharacter;
+import main.characters.Knight;
+import main.characters.Pyromancer;
+import main.characters.Rogue;
+import main.characters.Wizard;
 import main.gameplay.Statistics;
 
 import java.io.File;
@@ -26,7 +30,7 @@ public class IOAssistant {
         int nrRounds;
         List<GameCharacter> characters = new ArrayList<>();
         char[][] instructions;
-        char[][] map;
+        LocationType[][] map;
 
         File inputFile = new File(inputPath);
         try {
@@ -35,11 +39,27 @@ public class IOAssistant {
             mapHeight = scanner.nextInt();
             mapWidth = scanner.nextInt();
 
-            map = new char[mapHeight][mapWidth];
+            map = new LocationType[mapHeight][mapWidth];
             for (int i = 0; i < mapHeight; i++) {
                 String line = scanner.next();
                 for (int j = 0; j < mapWidth; j++) {
-                    map[i][j] = line.charAt(j);
+                    switch (line.charAt(j)) {
+                        case 'L':
+                            map[i][j] = LocationType.LAND;
+                            break;
+                        case 'V':
+                            map[i][j] = LocationType.VOLCANIC;
+                            break;
+                        case 'D':
+                            map[i][j] = LocationType.DESERT;
+                            break;
+                        case 'W':
+                            map[i][j] = LocationType.WOODS;
+                            break;
+                        default:
+                            System.out.println("Invalid input for the map!");
+                            System.exit(1);
+                    }
                 }
             }
 
@@ -63,8 +83,8 @@ public class IOAssistant {
                         characters.add(new Knight(initialColumn, initialLine));
                         break;
                     default:
-                        System.out.println("Invalid input!");
-                        System.exit(1);
+                        System.out.println("Invalid input for the characters!");
+                        System.exit(2);
                 }
             }
 

@@ -11,11 +11,11 @@ public class InputData {
     private List<GameCharacter> characters;
     private int nrRounds;
     private char[][] instructions;
-    private char[][] map;
+    private LocationType[][] map;
 
     InputData(final int mapHeight,
               final int mapWidth,
-              final char[][] map,
+              final LocationType[][] map,
               final int nrCharacters,
               final List<GameCharacter> characters,
               final int nrRounds,
@@ -27,5 +27,9 @@ public class InputData {
         this.nrRounds = nrRounds;
         this.instructions = instructions;
         this.map = map;
+    }
+
+    public final int getNrRounds() {
+        return nrRounds;
     }
 }

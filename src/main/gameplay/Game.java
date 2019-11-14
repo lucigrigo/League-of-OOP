@@ -19,6 +19,10 @@ public final class Game {
 
     public void startGame(final InputData inputData,
                           final Statistics statistics) {
-        // TODO implement the game logic
+        int maxRounds = inputData.getNrRounds();
+        for (int i = 0; i < maxRounds; i++) {
+            // TODO implement the game logic
+
+        }
     }
 }

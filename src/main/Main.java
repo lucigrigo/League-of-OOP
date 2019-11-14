@@ -8,7 +8,7 @@ import main.gameplay.Statistics;
 public final class Main {
 
     private Main() {
-        // just to trigger checkstyle
+        // just to trigger checkstyle :)
     }
 
     public static void main(final String[] args) {
@@ -18,5 +18,7 @@ public final class Main {
         Statistics statistics = new Statistics(inputData);
 
         Game.getInstance().startGame(inputData, statistics);
+
+        // TODO write final results
     }
 }
