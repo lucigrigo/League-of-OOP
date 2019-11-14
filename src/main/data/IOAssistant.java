@@ -1,6 +1,7 @@
 package main.data;
 
-import main.characters.GameCharacter;
+import main.characters.*;
+import main.gameplay.Statistics;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,13 +13,13 @@ public class IOAssistant {
     private String inputPath;
     private String outputPath;
 
-    public IOAssistant(String inputPath,
-                       String outputPath) {
+    public IOAssistant(final String inputPath,
+                       final String outputPath) {
         this.inputPath = inputPath;
         this.outputPath = outputPath;
     }
 
-    public InputData readInput() {
+    public final InputData readInput() {
         int mapWidth;
         int mapHeight;
         int nrCharacters;
@@ -50,20 +51,16 @@ public class IOAssistant {
                 int initialColumn = scanner.nextInt();
                 switch (line.charAt(0)) {
                     case 'W':
-                        // TODO implement Wizard class
-                        // position at given coordinates
+                        characters.add(new Wizard(initialColumn, initialLine));
                         break;
                     case 'R':
-                        // TODO implement Rogue class
-                        // position at given coordinates
+                        characters.add(new Rogue(initialColumn, initialLine));
                         break;
                     case 'P':
-                        // TODO implement Pyromancer class
-                        // position at given coordinates
+                        characters.add(new Pyromancer(initialColumn, initialLine));
                         break;
                     case 'K':
-                        // TODO implement Knight class
-                        // position at given coordinates
+                        characters.add(new Knight(initialColumn, initialLine));
                         break;
                     default:
                         System.out.println("Invalid input!");
@@ -90,5 +87,7 @@ public class IOAssistant {
                 nrRounds, instructions);
     }
 
-
+    public void writeFinalResults(final Statistics finalStatistics) {
+        // TODO write output
+    }
 }

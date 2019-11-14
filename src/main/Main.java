@@ -5,9 +5,13 @@ import main.data.InputData;
 import main.gameplay.Game;
 import main.gameplay.Statistics;
 
-public class Main {
+public final class Main {
 
-    public static void main(String[] args) {
+    private Main() {
+        // just to trigger checkstyle
+    }
+
+    public static void main(final String[] args) {
         IOAssistant ioAssistant = new IOAssistant(args[0], args[1]);
         InputData inputData = ioAssistant.readInput();
 

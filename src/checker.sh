@@ -21,7 +21,7 @@ function compileHomework
 		unzip FileIO.jar  
 	fi
 	
-	javac -g main/main.Main.java
+	javac -g main/Main.java
 	
 	mkdir "$RESOURCES_DIRECTORY/out"
 }

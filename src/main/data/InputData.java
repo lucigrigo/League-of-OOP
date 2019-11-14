@@ -13,13 +13,13 @@ public class InputData {
     private char[][] instructions;
     private char[][] map;
 
-    InputData(int mapHeight,
-              int mapWidth,
-              char[][] map,
-              int nrCharacters,
-              List<GameCharacter> characters,
-              int nrRounds,
-              char[][] instructions) {
+    InputData(final int mapHeight,
+              final int mapWidth,
+              final char[][] map,
+              final int nrCharacters,
+              final List<GameCharacter> characters,
+              final int nrRounds,
+              final char[][] instructions) {
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.nrCharacters = nrCharacters;

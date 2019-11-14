@@ -2,7 +2,7 @@ package main.gameplay;
 
 import main.data.InputData;
 
-public class Game {
+public final class Game {
 
     private static Game instance = null;
 
@@ -17,7 +17,8 @@ public class Game {
         return instance;
     }
 
-    public void startGame (InputData inputData, Statistics statistics) {
+    public void startGame(final InputData inputData,
+                          final Statistics statistics) {
         // TODO implement the game logic
     }
 }
