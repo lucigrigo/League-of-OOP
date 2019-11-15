@@ -1,0 +1,7 @@
+Starting audit...
+[ERROR] /Users/grigorelucian/Documents/League-of-OOP/src/main/gameplay/Game.java:23:45: Must have at least one statement. [EmptyBlock]
+[ERROR] /Users/grigorelucian/Documents/League-of-OOP/src/main/characters/GameCharacter.java:7:26: Parameter initCol should be final. [FinalParameters]
+[ERROR] /Users/grigorelucian/Documents/League-of-OOP/src/main/characters/GameCharacter.java:7:39: Parameter initLin should be final. [FinalParameters]
+[ERROR] /Users/grigorelucian/Documents/League-of-OOP/src/main/data/InputData.java:32:5: Class 'InputData' looks like designed for extension (can be subclassed), but the method 'getNrRounds' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'InputData' final or making the method 'getNrRounds' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+Audit done.
+Checkstyle ends with 4 errors.

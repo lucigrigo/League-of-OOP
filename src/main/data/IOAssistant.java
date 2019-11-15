@@ -109,5 +109,6 @@ public class IOAssistant {
 
     public void writeFinalResults(final Statistics finalStatistics) {
         // TODO write output
+        // rasa_pers level_pers xp_pers hp_pers row col
     }
 }
