@@ -6,7 +6,7 @@ public class Pyromancer extends GameCharacter {
 
     public Pyromancer(final int initCol,
                       final int initLin) {
-        super(initCol, initLin, Constants.getInstance().getPyromancerInitialHealth(), 0);
+        super(initCol, initLin, Constants.getInstance().getPyromancerInitialHealth(), 0, "P");
     }
 
     // TODO implement PYROMANCER

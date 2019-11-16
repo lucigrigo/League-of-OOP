@@ -19,6 +19,6 @@ public final class Main {
 
         Game.getInstance().startGame(inputData, statistics);
 
-        // TODO write final results
+        ioAssistant.writeFinalResults(inputData.getCharacters());
     }
 }

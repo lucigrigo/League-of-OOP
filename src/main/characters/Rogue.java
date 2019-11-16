@@ -16,7 +16,7 @@ public class Rogue extends GameCharacter {
 
     public Rogue(final int initCol,
                  final int initLin) {
-        super(initCol, initLin, Constants.getInstance().getRogueInitialHealth(), 0);
+        super(initCol, initLin, Constants.getInstance().getRogueInitialHealth(), 0,"R");
     }
 
 

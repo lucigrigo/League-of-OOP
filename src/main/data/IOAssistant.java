@@ -1,14 +1,8 @@
 package main.data;
 
-import main.characters.GameCharacter;
-import main.characters.Knight;
-import main.characters.Pyromancer;
-import main.characters.Rogue;
-import main.characters.Wizard;
-import main.gameplay.Statistics;
+import main.characters.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -107,8 +101,32 @@ public class IOAssistant {
                 nrRounds, instructions);
     }
 
-    public void writeFinalResults(final Statistics finalStatistics) {
-        // TODO write output
+    public void writeFinalResults(final List<GameCharacter> characters) {
         // rasa_pers level_pers xp_pers hp_pers row col
+        File outputFile = new File(this.outputPath);
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile);
+
+            for (GameCharacter character : characters) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(character.getType());
+                sb.append(" ");
+                sb.append(character.getLevel());
+                sb.append(" ");
+                sb.append(character.getExperience());
+                sb.append(" ");
+                sb.append(character.getHealth());
+                sb.append(" ");
+                sb.append(character.getRow());
+                sb.append(" ");
+                sb.append(character.getColon());
+                sb.append(" ");
+                fileWriter.write(sb.toString());
+            }
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

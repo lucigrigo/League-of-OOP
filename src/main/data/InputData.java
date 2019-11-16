@@ -32,4 +32,8 @@ public class InputData {
     public final int getNrRounds() {
         return nrRounds;
     }
+
+    public List<GameCharacter> getCharacters() {
+        return characters;
+    }
 }
