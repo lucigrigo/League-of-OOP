@@ -36,4 +36,12 @@ public class InputData {
     public List<GameCharacter> getCharacters() {
         return characters;
     }
+
+    public char[][] getInstructions() {
+        return instructions;
+    }
+
+    public int getNrCharacters() {
+        return this.characters.size();
+    }
 }

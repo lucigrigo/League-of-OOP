@@ -6,7 +6,8 @@ public abstract class GameCharacter {
     private int currentHealth;
     private int currentExperience;
     private int level;
-    private  String type;
+    private String type;
+    private boolean isIncapacitated;
 
 //    public GameCharacter(final int initCol,
 //                         final int initLin) {
@@ -25,9 +26,8 @@ public abstract class GameCharacter {
         this.currentExperience = currentExperience;
         this.level = 0;
         this.type = type;
+        this.isIncapacitated = false;
     }
-
-    //TODO create the interface for each character class and implement them
 
 
     public int getColon() {

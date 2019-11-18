@@ -20,9 +20,11 @@ public final class Game {
     public void startGame(final InputData inputData,
                           final Statistics statistics) {
         int maxRounds = inputData.getNrRounds();
+        int charactersNumber = inputData.getNrCharacters();
         for (int i = 0; i < maxRounds; i++) {
-            // TODO implement the game logic
+            for (int j = 0; j < charactersNumber; j++) {
 
+            }
         }
     }
 }
