@@ -120,7 +120,7 @@ public class IOAssistant {
                 sb.append(character.getRow());
                 sb.append(" ");
                 sb.append(character.getColon());
-                sb.append(" ");
+                sb.append("\n");
                 fileWriter.write(sb.toString());
             }
             fileWriter.flush();
