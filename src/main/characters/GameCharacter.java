@@ -1,5 +1,7 @@
 package main.characters;
 
+import main.data.MovementType;
+
 public abstract class GameCharacter {
     private int colon;
     private int line;
@@ -8,6 +10,7 @@ public abstract class GameCharacter {
     private int level;
     private String type;
     private boolean isIncapacitated;
+    private boolean isCurrentlyFighting;
 
 //    public GameCharacter(final int initCol,
 //                         final int initLin) {
@@ -27,8 +30,8 @@ public abstract class GameCharacter {
         this.level = 0;
         this.type = type;
         this.isIncapacitated = false;
+        this.isCurrentlyFighting = false;
     }
-
 
     public int getColon() {
         return colon;
@@ -52,5 +55,29 @@ public abstract class GameCharacter {
 
     public int getLevel() {
         return level;
+    }
+
+    public void applyMove(MovementType move) {
+        switch (move) {
+            case DOWN:
+                this.line = this.line + 1;
+                break;
+            case LEFT:
+                this.colon = this.colon - 1;
+                break;
+            case RIGHT:
+                this.colon = this.colon + 1;
+                break;
+            case UP:
+                this.line = this.line - 1;
+                break;
+            case NONE:
+                // do nothing
+                break;
+            default:
+                System.out.println("Error applying move!");
+                System.exit(4);
+                break;
+        }
     }
 }

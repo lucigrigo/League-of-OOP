@@ -23,7 +23,7 @@ public class IOAssistant {
         int nrCharacters;
         int nrRounds;
         List<GameCharacter> characters = new ArrayList<>();
-        char[][] instructions;
+        MovementType[][] instructions;
         LocationType[][] map;
 
         File inputFile = new File(inputPath);
@@ -84,11 +84,30 @@ public class IOAssistant {
 
             nrRounds = scanner.nextInt();
 
-            instructions = new char[nrRounds][nrCharacters];
+            instructions = new MovementType[nrRounds][nrCharacters];
             for (int i = 0; i < nrRounds; i++) {
                 String instructionLine = scanner.next();
                 for (int j = 0; j < nrCharacters; j++) {
-                    instructions[i][j] = instructionLine.charAt(j);
+                    switch (instructionLine.charAt(j)) {
+                        case 'R':
+                            instructions[i][j] = MovementType.RIGHT;
+                            break;
+                        case 'L':
+                            instructions[i][j] = MovementType.LEFT;
+                            break;
+                        case 'U':
+                            instructions[i][j] = MovementType.UP;
+                            break;
+                        case 'D':
+                            instructions[i][j] = MovementType.DOWN;
+                            break;
+                        case '_':
+                            instructions[i][j] = MovementType.NONE;
+                            break;
+                        default:
+                            System.out.println("Invalid movement input!");
+                            System.exit(3);
+                    }
                 }
             }
 

@@ -10,7 +10,7 @@ public class InputData {
     private int nrCharacters;
     private List<GameCharacter> characters;
     private int nrRounds;
-    private char[][] instructions;
+    private MovementType[][] instructions;
     private LocationType[][] map;
 
     InputData(final int mapHeight,
@@ -19,7 +19,7 @@ public class InputData {
               final int nrCharacters,
               final List<GameCharacter> characters,
               final int nrRounds,
-              final char[][] instructions) {
+              final MovementType[][] instructions) {
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.nrCharacters = nrCharacters;
@@ -37,11 +37,15 @@ public class InputData {
         return characters;
     }
 
-    public char[][] getInstructions() {
+    public MovementType[][] getInstructions() {
         return instructions;
     }
 
     public int getNrCharacters() {
         return this.characters.size();
+    }
+
+    public MovementType[] getCurrentRoundMoves(int roundNumber) {
+        return this.instructions[roundNumber];
     }
 }
