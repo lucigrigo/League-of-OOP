@@ -28,6 +28,6 @@ public class Pyromancer extends GameCharacter {
 
     @Override
     public OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location) {
-        return null;
+        return new OverTimeAbility(this, enemy);
     }
 }

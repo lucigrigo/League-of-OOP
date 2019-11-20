@@ -29,25 +29,28 @@ public final class Game {
     private void applyCurrentRoundMoves(final List<GameCharacter> characters,
                                         final MovementType[] roundMoves) {
         for (int i = 0; i < roundMoves.length; i++) {
-            if (!characters.get(i).isIncapacitated())
+            if (!characters.get(i).isIncapacitated()) {
                 characters.get(i).applyMove(roundMoves[i]);
+            }
         }
     }
 
     private void manageFight(final GameCharacter character1,
                              final GameCharacter character2,
                              final LocationType location) {
+        // todo "lupta nu va mai avea loc?"
         if (character1.getTotalOverTimeDamage(location, character2, maxRounds - currentRound)
                 >= character2.getHealth()) {
-            character1.fightWon();
-            character2.hasDied();
-            return;
+//            character1.fightWon();
+//            character2.hasDied();
+//            return;
         }
         if (character2.getAbilityOverTime(character1, location).getTotalDamage() >= character1.getHealth()) {
-            character2.hasDied();
-            character1.fightWon();
-            return;
+//            character2.hasDied();
+//            character1.fightWon();
+//            return;
         }
+        // todo add win event
         OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
         OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
         character1.setAbilityAffectedBy(overTimeAbility2);
@@ -57,7 +60,6 @@ public final class Game {
         int instantDamage2 = character2.computeDamageAgainst(character1, location);
         character1.takeDamage(instantDamage2);
         character2.takeDamage(instantDamage1);
-//        System.out.println("damage dat = " + instantDamage1);
     }
 
     private void searchForFights(final List<GameCharacter> characters,
@@ -81,8 +83,6 @@ public final class Game {
         for (GameCharacter character : characters) {
             if (character.getAbilityAffectedBy() != null) {
                 character.takeDamage(character.getAbilityAffectedBy().getDamage());
-//                System.out.println("damage de la abilitate over time = " + character.getAbilityAffectedBy().getDamage()
-//                        + " primit in runda " + currentRound);
                 character.getAbilityAffectedBy().roundPassed();
             }
         }

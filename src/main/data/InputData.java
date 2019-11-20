@@ -33,23 +33,23 @@ public class InputData {
         return nrRounds;
     }
 
-    public List<GameCharacter> getCharacters() {
+    public final List<GameCharacter> getCharacters() {
         return characters;
     }
 
-    public MovementType[][] getInstructions() {
+    public final MovementType[][] getInstructions() {
         return instructions;
     }
 
-    public int getNrCharacters() {
+    public final int getNrCharacters() {
         return this.characters.size();
     }
 
-    public MovementType[] getCurrentRoundMoves(int roundNumber) {
+    public final MovementType[] getCurrentRoundMoves(final int roundNumber) {
         return this.instructions[roundNumber];
     }
 
-    public LocationType[][] getMap() {
+    public final LocationType[][] getMap() {
         return map;
     }
 }

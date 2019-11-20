@@ -2,7 +2,7 @@ package main.gameplay;
 
 import main.characters.GameCharacter;
 
-public class OverTimeAbility {
+public final class OverTimeAbility {
 
     private int damage;
     private int duration;

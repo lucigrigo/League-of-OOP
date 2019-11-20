@@ -19,17 +19,45 @@ public class Rogue extends GameCharacter {
     public int getTotalOverTimeDamage(final LocationType location,
                                       final GameCharacter enemy,
                                       final int roundsRemaining) {
-        return (Constants.getInstance().getRogueParalysisBaseDamage()
+        int totalOverTimeDamage = Constants.getInstance().getRogueParalysisBaseDamage()
                 + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage()
-                * this.getLevel())
-                * Math.min(roundsRemaining, location == LocationType.WOODS ? 6 : 3);
+                * this.getLevel();
+        if (location == LocationType.WOODS) {
+            totalOverTimeDamage = Math.round(totalOverTimeDamage
+                    + totalOverTimeDamage
+                    * Constants.getInstance().getRogueWoodsBonus());
+            totalOverTimeDamage *= 6;
+        } else {
+            totalOverTimeDamage *= 3;
+        }
+        float raceBonus = 0.0f;
+        switch (enemy.getType()) {
+            case ROGUE:
+                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusRogue() / 100f;
+                break;
+            case KNIGHT:
+                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusKnight() / 100f;
+                break;
+            case WIZARD:
+                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusWizard() / 100f;
+                break;
+            case PYROMANCER:
+                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusPyromancer() / 100f;
+                break;
+            default:
+                break;
+        }
+        totalOverTimeDamage = Math.round(totalOverTimeDamage
+                + totalOverTimeDamage
+                * raceBonus);
+        return totalOverTimeDamage;
     }
 
     private float getBackstabDamage() {
-        return Constants.getInstance().getRogueBackstabBaseDamage() +
-                Constants.getInstance().getRogueBackstabBaseDamage() *
-                        Constants.getInstance().getRogueBackstabLevelScalingBaseDamage() / 100f *
-                        this.getLevel();
+        return Constants.getInstance().getRogueBackstabBaseDamage()
+                + Constants.getInstance().getRogueBackstabBaseDamage()
+                * Constants.getInstance().getRogueBackstabLevelScalingBaseDamage() / 100f
+                * this.getLevel();
     }
 
     @Override
@@ -37,39 +65,38 @@ public class Rogue extends GameCharacter {
                                               final LocationType location) {
         OverTimeAbility paralysis = new OverTimeAbility(this, enemy);
         paralysis.setAbilityToIncapacitate(true);
-        paralysis.setDamage(Constants.getInstance().getRogueParalysisBaseDamage() +
-                Constants.getInstance().getRogueParalysisLevelScalingBaseDamage() *
-                        this.getLevel());
+        paralysis.setDamage(Constants.getInstance().getRogueParalysisBaseDamage()
+                + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage()
+                * this.getLevel());
         if (location == LocationType.WOODS) {
             paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsWoodsNumber());
-            paralysis.setDamage(Math.round(paralysis.getDamage() +
-                    paralysis.getDamage() *
-                            Constants.getInstance().getRogueWoodsBonus() / 100f));
+            paralysis.setDamage(Math.round(paralysis.getDamage()
+                    + paralysis.getDamage()
+                    * Constants.getInstance().getRogueWoodsBonus()
+                    / 100f));
         } else {
             paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsNormalNumber());
         }
         switch (enemy.getType()) {
             case ROGUE:
-//                System.out.println(paralysis.getDamage());
-                paralysis.setDamage(Math.round(paralysis.getDamage() +
-                        paralysis.getDamage() *
-                                Constants.getInstance().getRogueParalysisBonusVersusRogue() / 100f));
-//                System.out.println(paralysis.getDamage());
+                paralysis.setDamage(Math.round(paralysis.getDamage()
+                        + paralysis.getDamage()
+                        * Constants.getInstance().getRogueParalysisBonusVersusRogue() / 100f));
                 break;
             case KNIGHT:
-                paralysis.setDamage(Math.round(paralysis.getDamage() +
-                        paralysis.getDamage() *
-                                Constants.getInstance().getRogueParalysisBonusVersusKnight() / 100f));
+                paralysis.setDamage(Math.round(paralysis.getDamage()
+                        + paralysis.getDamage()
+                        * Constants.getInstance().getRogueParalysisBonusVersusKnight() / 100f));
                 break;
             case WIZARD:
-                paralysis.setDamage(Math.round(paralysis.getDamage() +
-                        paralysis.getDamage() *
-                                Constants.getInstance().getRogueParalysisBonusVersusWizard() / 100f));
+                paralysis.setDamage(Math.round(paralysis.getDamage()
+                        + paralysis.getDamage()
+                        * Constants.getInstance().getRogueParalysisBonusVersusWizard() / 100f));
                 break;
             case PYROMANCER:
-                paralysis.setDamage(Math.round(paralysis.getDamage() +
-                        paralysis.getDamage() *
-                                Constants.getInstance().getRogueParalysisBonusVersusPyromancer() / 100f));
+                paralysis.setDamage(Math.round(paralysis.getDamage()
+                        + paralysis.getDamage()
+                        * Constants.getInstance().getRogueParalysisBonusVersusPyromancer() / 100f));
                 break;
             default:
                 break;
@@ -77,6 +104,7 @@ public class Rogue extends GameCharacter {
         return paralysis;
     }
 
+    @Override
     public int computeDamageAgainst(final GameCharacter enemy,
                                     final LocationType location) {
         float totalDamage = 0.0f;
@@ -92,22 +120,24 @@ public class Rogue extends GameCharacter {
         totalDamage = Math.round(totalDamage);
         switch (enemy.getType()) {
             case ROGUE:
-                totalDamage += totalDamage * (Constants.getInstance().getRogueBackstabBonusVersusRogue() / 100f);
+                totalDamage += totalDamage
+                        * (Constants.getInstance().getRogueBackstabBonusVersusRogue() / 100f);
                 break;
             case KNIGHT:
-                totalDamage += totalDamage * Constants.getInstance().getRogueBackstabBonusVersusKnight() / 100f;
+                totalDamage += totalDamage
+                        * Constants.getInstance().getRogueBackstabBonusVersusKnight() / 100f;
                 break;
             case WIZARD:
-                totalDamage += totalDamage * Constants.getInstance().getRogueBackstabBonusVersusWizard() / 100f;
+                totalDamage += totalDamage
+                        * Constants.getInstance().getRogueBackstabBonusVersusWizard() / 100f;
                 break;
             case PYROMANCER:
-                totalDamage += totalDamage * Constants.getInstance().getRogueBackstabBonusVersusPyromancer() / 100f;
+                totalDamage += totalDamage
+                        * Constants.getInstance().getRogueBackstabBonusVersusPyromancer() / 100f;
                 break;
             default:
                 break;
         }
-//        System.out.println(totalDamage);
-
         return Math.round(totalDamage);
     }
 }

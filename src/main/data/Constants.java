@@ -14,6 +14,9 @@ public final class Constants {
         return instance;
     }
 
+    private static final int WIN_MAGIC_200 = 200;
+    private static final int WIN_MAGIC_40 = 40;
+
     private static final int WIZARD_INITIAL_HEALTH = 400;
     private static final int WIZARD_HEALTH_RATIO = 30;
     private static final int ROGUE_INITIAL_HEALTH = 600;
@@ -388,5 +391,13 @@ public final class Constants {
 
     public int getRogueWoodsBonus() {
         return ROGUE_WOODS_BONUS;
+    }
+
+    public int getWinMagic200() {
+        return WIN_MAGIC_200;
+    }
+
+    public int getWinMagic40() {
+        return WIN_MAGIC_40;
     }
 }

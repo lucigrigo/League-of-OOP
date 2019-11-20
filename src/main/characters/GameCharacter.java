@@ -1,5 +1,6 @@
 package main.characters;
 
+import main.data.Constants;
 import main.data.LocationType;
 import main.data.MovementType;
 import main.gameplay.OverTimeAbility;
@@ -40,43 +41,43 @@ public abstract class GameCharacter {
         this.abilityAffectedBy = null;
     }
 
-    public int getColon() {
+    public final int getColon() {
         return colon;
     }
 
-    public int getRow() {
+    public final int getRow() {
         return line;
     }
 
-    public int getHealth() {
+    public final int getHealth() {
         return currentHealth;
     }
 
-    public int getExperience() {
+    public final int getExperience() {
         return currentExperience;
     }
 
-    public CharacterType getType() {
+    public final CharacterType getType() {
         return type;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public int getLevel() {
+    public final int getLevel() {
         return level;
     }
 
-    public boolean isCurrentlyFighting() {
+    public final boolean isCurrentlyFighting() {
         return isCurrentlyFighting;
     }
 
-    public boolean isIncapacitated() {
+    public final boolean isIncapacitated() {
         return isIncapacitated;
     }
 
-    public void applyMove(MovementType move) {
+    public final void applyMove(MovementType move) {
         if (!this.isDead() ||
                 !this.isIncapacitated) {
             switch (move) {
@@ -97,21 +98,23 @@ public abstract class GameCharacter {
                     break;
                 default:
                     System.out.println("Error applying move!");
-                    System.exit(4);
+                    System.exit(0);
                     break;
             }
         }
     }
 
-    public abstract int computeDamageAgainst(GameCharacter enemy, LocationType location);
+    public abstract int computeDamageAgainst(GameCharacter enemy,
+                                             LocationType location);
 
-    public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location);
+    public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy,
+                                                       LocationType location);
 
     public abstract int getTotalOverTimeDamage(LocationType location,
                                                GameCharacter enemy,
                                                int roundsRemaining);
 
-    public OverTimeAbility getAbilityAffectedBy() {
+    public final OverTimeAbility getAbilityAffectedBy() {
         return abilityAffectedBy;
     }
 
@@ -124,15 +127,18 @@ public abstract class GameCharacter {
         this.currentHealth -= damage;
     }
 
-    public void fightWon() {
-        // TODO add exp
+    public void fightWon(final int loserLevel) {
+        this.currentExperience = this.currentExperience
+                + Math.max(0, Constants.getInstance().getWinMagic200()
+                - (this.getLevel() - loserLevel)
+                * Constants.getInstance().getWinMagic40());
     }
 
     public void hasDied() {
         this.currentHealth = 0;
     }
 
-    public boolean isDead() {
+    public final boolean isDead() {
         return this.currentHealth <= 0;
     }
 }

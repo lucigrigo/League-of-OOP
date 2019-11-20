@@ -26,18 +26,21 @@ public class Wizard extends GameCharacter {
 
 
     @Override
-    public int getTotalOverTimeDamage(LocationType location, GameCharacter enemy,
-                                      int roundsRemaining) {
+    public int getTotalOverTimeDamage(final LocationType location,
+                                      final GameCharacter enemy,
+                                      final int roundsRemaining) {
         return 0;
     }
 
     @Override
-    public int computeDamageAgainst(GameCharacter enemy, LocationType location) {
+    public int computeDamageAgainst(final GameCharacter enemy,
+                                    final LocationType location) {
         return 0;
     }
 
     @Override
-    public OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location) {
-        return null;
+    public OverTimeAbility getAbilityOverTime(final GameCharacter enemy,
+                                              final LocationType location) {
+        return new OverTimeAbility(this, enemy);
     }
 }
