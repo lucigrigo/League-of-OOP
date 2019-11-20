@@ -1,26 +1,29 @@
-package main.characters;
+package main.gameplay;
 
-import main.data.Constants;
+import main.characters.GameCharacter;
 
 public class OverTimeAbility {
 
-    private float damage;
+    private int damage;
     private int duration;
     private boolean abilityToIncapacitate;
-    private int characterLevel;
+    private GameCharacter caster;
+    private GameCharacter victim;
+    private int totalDamage;
 
-    public OverTimeAbility(int characterLevel) {
-        this.damage = 0.0f;
+    public OverTimeAbility(GameCharacter caster, GameCharacter victim) {
+        this.damage = 0;
         this.duration = 0;
         this.abilityToIncapacitate = false;
-        this.characterLevel = characterLevel;
+        this.caster = caster;
+        this.victim = victim;
     }
 
-    public float getDamage() {
+    public int getDamage() {
         return damage;
     }
 
-    public void setDamage(float damage) {
+    public void setDamage(int damage) {
         this.damage = damage;
     }
 
@@ -40,8 +43,15 @@ public class OverTimeAbility {
         this.abilityToIncapacitate = abilityToIncapacitate;
     }
 
-    public float getTotalDamage() {
-        return damage + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage() *
-                characterLevel;
+    public int getTotalDamage() {
+        return totalDamage;
+    }
+
+    public void roundPassed() {
+        this.duration--;
+    }
+
+    public void setTotalDamage(int totalDamage) {
+        this.totalDamage = totalDamage;
     }
 }

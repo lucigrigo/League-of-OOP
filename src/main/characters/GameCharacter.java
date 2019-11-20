@@ -2,6 +2,7 @@ package main.characters;
 
 import main.data.LocationType;
 import main.data.MovementType;
+import main.gameplay.OverTimeAbility;
 
 public abstract class GameCharacter {
     private int colon;
@@ -13,6 +14,7 @@ public abstract class GameCharacter {
     private boolean isIncapacitated;
     private boolean isCurrentlyFighting;
     private String name;
+    private OverTimeAbility abilityAffectedBy;
 
 //    public GameCharacter(final int initCol,
 //                         final int initLin) {
@@ -35,6 +37,7 @@ public abstract class GameCharacter {
         this.isIncapacitated = false;
         this.isCurrentlyFighting = false;
         this.name = name;
+        this.abilityAffectedBy = null;
     }
 
     public int getColon() {
@@ -74,30 +77,62 @@ public abstract class GameCharacter {
     }
 
     public void applyMove(MovementType move) {
-        switch (move) {
-            case DOWN:
-                this.line = this.line + 1;
-                break;
-            case LEFT:
-                this.colon = this.colon - 1;
-                break;
-            case RIGHT:
-                this.colon = this.colon + 1;
-                break;
-            case UP:
-                this.line = this.line - 1;
-                break;
-            case NONE:
-                // do nothing
-                break;
-            default:
-                System.out.println("Error applying move!");
-                System.exit(4);
-                break;
+        if (!this.isDead() ||
+                !this.isIncapacitated) {
+            switch (move) {
+                case DOWN:
+                    this.line = this.line + 1;
+                    break;
+                case LEFT:
+                    this.colon = this.colon - 1;
+                    break;
+                case RIGHT:
+                    this.colon = this.colon + 1;
+                    break;
+                case UP:
+                    this.line = this.line - 1;
+                    break;
+                case NONE:
+                    // do nothing
+                    break;
+                default:
+                    System.out.println("Error applying move!");
+                    System.exit(4);
+                    break;
+            }
         }
     }
 
-    public abstract float computeDamageAgainst(GameCharacter enemy, LocationType location);
+    public abstract int computeDamageAgainst(GameCharacter enemy, LocationType location);
 
     public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location);
+
+    public abstract int getTotalOverTimeDamage(LocationType location,
+                                               GameCharacter enemy,
+                                               int roundsRemaining);
+
+    public OverTimeAbility getAbilityAffectedBy() {
+        return abilityAffectedBy;
+    }
+
+    public void setAbilityAffectedBy(OverTimeAbility abilityAffectedBy) {
+        this.abilityAffectedBy = abilityAffectedBy;
+    }
+
+    public void takeDamage(int damage) {
+//        System.out.println(currentHealth);
+        this.currentHealth -= damage;
+    }
+
+    public void fightWon() {
+        // TODO add exp
+    }
+
+    public void hasDied() {
+        this.currentHealth = 0;
+    }
+
+    public boolean isDead() {
+        return this.currentHealth <= 0;
+    }
 }

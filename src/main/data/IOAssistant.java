@@ -129,7 +129,7 @@ public class IOAssistant {
                 StringBuilder sb = new StringBuilder();
                 sb.append(character.getName());
                 sb.append(" ");
-                if (character.getHealth() == 0) {
+                if (character.isDead()) {
                     sb.append("dead");
                     sb.append("\n");
                     fileWriter.write(sb.toString());
