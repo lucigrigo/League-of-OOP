@@ -1,5 +1,6 @@
 package main.characters;
 
+import main.data.LocationType;
 import main.data.MovementType;
 
 public abstract class GameCharacter {
@@ -8,9 +9,10 @@ public abstract class GameCharacter {
     private int currentHealth;
     private int currentExperience;
     private int level;
-    private String type;
+    private CharacterType type;
     private boolean isIncapacitated;
     private boolean isCurrentlyFighting;
+    private String name;
 
 //    public GameCharacter(final int initCol,
 //                         final int initLin) {
@@ -22,7 +24,8 @@ public abstract class GameCharacter {
                          final int initLin,
                          final int currentHealth,
                          final int currentExperience,
-                         final String type) {
+                         final CharacterType type,
+                         final String name) {
         this.colon = initCol;
         this.line = initLin;
         this.currentHealth = currentHealth;
@@ -31,6 +34,7 @@ public abstract class GameCharacter {
         this.type = type;
         this.isIncapacitated = false;
         this.isCurrentlyFighting = false;
+        this.name = name;
     }
 
     public int getColon() {
@@ -49,12 +53,24 @@ public abstract class GameCharacter {
         return currentExperience;
     }
 
-    public String getType() {
+    public CharacterType getType() {
         return type;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public boolean isCurrentlyFighting() {
+        return isCurrentlyFighting;
+    }
+
+    public boolean isIncapacitated() {
+        return isIncapacitated;
     }
 
     public void applyMove(MovementType move) {
@@ -80,4 +96,8 @@ public abstract class GameCharacter {
                 break;
         }
     }
+
+    public abstract float computeDamageAgainst(GameCharacter enemy, LocationType location);
+
+    public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location);
 }

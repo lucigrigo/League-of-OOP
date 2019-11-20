@@ -121,15 +121,20 @@ public class IOAssistant {
     }
 
     public void writeFinalResults(final List<GameCharacter> characters) {
-        // rasa_pers level_pers xp_pers hp_pers row col
         File outputFile = new File(this.outputPath);
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
 
             for (GameCharacter character : characters) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(character.getType());
+                sb.append(character.getName());
                 sb.append(" ");
+                if (character.getHealth() == 0) {
+                    sb.append("dead");
+                    sb.append("\n");
+                    fileWriter.write(sb.toString());
+                    continue;
+                }
                 sb.append(character.getLevel());
                 sb.append(" ");
                 sb.append(character.getExperience());

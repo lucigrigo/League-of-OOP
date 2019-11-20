@@ -48,4 +48,8 @@ public class InputData {
     public MovementType[] getCurrentRoundMoves(int roundNumber) {
         return this.instructions[roundNumber];
     }
+
+    public LocationType[][] getMap() {
+        return map;
+    }
 }

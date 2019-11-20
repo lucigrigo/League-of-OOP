@@ -16,7 +16,8 @@ public class Wizard extends GameCharacter {
 
     public Wizard(final int initCol,
                   final int initLin) {
-        super(initCol, initLin, Constants.getInstance().getWizardInitialHealth(), 0, "W");
+        super(initCol, initLin, Constants.getInstance().getWizardInitialHealth(), 0,
+                CharacterType.WIZARD, "W");
     }
 
     // TODO implement WIZARD
