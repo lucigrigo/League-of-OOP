@@ -39,6 +39,7 @@ public final class Constants {
     private static final int PYROMANCER_IGNITE_LEVEL_SCALING_BASE_DAMAGE = 20;
     private static final int PYROMANCER_IGNITE_ROUND_DAMAGE = 50;
     private static final int PYROMANCER_IGNITE_LEVEL_SCALING_ROUND_DAMAGE = 30;
+    private static final int PYROMANCER_IGNITE_INITIAL_DURATION = 3;
     private static final int PYROMANCER_IGNITE_SUCCESSIVE_ROUNDS_NUMBER = 2;
     private static final int PYROMANCER_IGNITE_BONUS_VERSUS_ROGUE = -20;
     private static final int PYROMANCER_IGNITE_BONUS_VERSUS_KNIGHT = 20;
@@ -399,5 +400,9 @@ public final class Constants {
 
     public int getWinMagic40() {
         return WIN_MAGIC_40;
+    }
+
+    public int getPyromancerIgniteInitialDuration() {
+        return PYROMANCER_IGNITE_INITIAL_DURATION;
     }
 }

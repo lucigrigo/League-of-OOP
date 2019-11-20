@@ -103,37 +103,37 @@ public class Knight extends GameCharacter {
         OverTimeAbility slam = new OverTimeAbility(this, enemy);
         slam.setAbilityToIncapacitate(true);
         slam.setDuration(1);
-        slam.setDamage(Constants.getInstance().getKnightSlamBaseDamage()
+        slam.setOvertimeDamage(Constants.getInstance().getKnightSlamBaseDamage()
                 + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()
                 * this.getLevel());
         if (location == LocationType.LAND) {
-            slam.setDamage(Math.round(slam.getDamage()
-                    + slam.getDamage()
+            slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
+                    + slam.getOvertimeDamage()
                     * Constants.getInstance().getKnightLandBonus()
                     / 100f));
         }
         switch (enemy.getType()) {
             case ROGUE:
-                slam.setDamage(Math.round(slam.getDamage()
-                        + slam.getDamage()
+                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
+                        + slam.getOvertimeDamage()
                         * Constants.getInstance().getKnightSlamBonusVersusRogue()
                         / 100f));
                 break;
             case KNIGHT:
-                slam.setDamage(Math.round(slam.getDamage()
-                        + slam.getDamage()
+                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
+                        + slam.getOvertimeDamage()
                         * Constants.getInstance().getKnightSlamBonusVersusKnight()
                         / 100f));
                 break;
             case PYROMANCER:
-                slam.setDamage(Math.round(slam.getDamage()
-                        + slam.getDamage()
+                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
+                        + slam.getOvertimeDamage()
                         * Constants.getInstance().getKnightSlamBonusVersusPyromancer()
                         / 100f));
                 break;
             case WIZARD:
-                slam.setDamage(Math.round(slam.getDamage()
-                        + slam.getDamage()
+                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
+                        + slam.getOvertimeDamage()
                         * Constants.getInstance().getKnightSlamBonusVersusWizard()
                         / 100f));
                 break;

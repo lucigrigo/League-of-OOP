@@ -65,13 +65,13 @@ public class Rogue extends GameCharacter {
                                               final LocationType location) {
         OverTimeAbility paralysis = new OverTimeAbility(this, enemy);
         paralysis.setAbilityToIncapacitate(true);
-        paralysis.setDamage(Constants.getInstance().getRogueParalysisBaseDamage()
+        paralysis.setOvertimeDamage(Constants.getInstance().getRogueParalysisBaseDamage()
                 + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage()
                 * this.getLevel());
         if (location == LocationType.WOODS) {
             paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsWoodsNumber());
-            paralysis.setDamage(Math.round(paralysis.getDamage()
-                    + paralysis.getDamage()
+            paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
+                    + paralysis.getOvertimeDamage()
                     * Constants.getInstance().getRogueWoodsBonus()
                     / 100f));
         } else {
@@ -79,23 +79,23 @@ public class Rogue extends GameCharacter {
         }
         switch (enemy.getType()) {
             case ROGUE:
-                paralysis.setDamage(Math.round(paralysis.getDamage()
-                        + paralysis.getDamage()
+                paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
+                        + paralysis.getOvertimeDamage()
                         * Constants.getInstance().getRogueParalysisBonusVersusRogue() / 100f));
                 break;
             case KNIGHT:
-                paralysis.setDamage(Math.round(paralysis.getDamage()
-                        + paralysis.getDamage()
+                paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
+                        + paralysis.getOvertimeDamage()
                         * Constants.getInstance().getRogueParalysisBonusVersusKnight() / 100f));
                 break;
             case WIZARD:
-                paralysis.setDamage(Math.round(paralysis.getDamage()
-                        + paralysis.getDamage()
+                paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
+                        + paralysis.getOvertimeDamage()
                         * Constants.getInstance().getRogueParalysisBonusVersusWizard() / 100f));
                 break;
             case PYROMANCER:
-                paralysis.setDamage(Math.round(paralysis.getDamage()
-                        + paralysis.getDamage()
+                paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
+                        + paralysis.getOvertimeDamage()
                         * Constants.getInstance().getRogueParalysisBonusVersusPyromancer() / 100f));
                 break;
             default:

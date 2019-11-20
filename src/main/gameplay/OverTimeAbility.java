@@ -1,10 +1,13 @@
 package main.gameplay;
 
+import main.characters.CharacterType;
 import main.characters.GameCharacter;
+import main.data.Constants;
 
 public final class OverTimeAbility {
 
-    private int damage;
+    private int instantDamage;
+    private int overtimeDamage;
     private int duration;
     private boolean abilityToIncapacitate;
     private GameCharacter caster;
@@ -12,19 +15,25 @@ public final class OverTimeAbility {
     private int totalDamage;
 
     public OverTimeAbility(GameCharacter caster, GameCharacter victim) {
-        this.damage = 0;
+        this.instantDamage = 0;
+        this.overtimeDamage = 0;
         this.duration = 0;
         this.abilityToIncapacitate = false;
         this.caster = caster;
         this.victim = victim;
     }
 
-    public int getDamage() {
-        return damage;
+    public int getOvertimeDamage() {
+        if (caster.getType() == CharacterType.PYROMANCER) {
+            if (duration == Constants.getInstance().getPyromancerIgniteInitialDuration()) {
+                return instantDamage;
+            }
+        }
+        return overtimeDamage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public void setOvertimeDamage(int overtimeDamage) {
+        this.overtimeDamage = overtimeDamage;
     }
 
     public int getDuration() {
@@ -53,5 +62,13 @@ public final class OverTimeAbility {
 
     public void setTotalDamage(int totalDamage) {
         this.totalDamage = totalDamage;
+    }
+
+    public int getInstantDamage() {
+        return instantDamage;
+    }
+
+    public void setInstantDamage(int instantDamage) {
+        this.instantDamage = instantDamage;
     }
 }

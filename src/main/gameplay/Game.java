@@ -60,6 +60,8 @@ public final class Game {
         int instantDamage2 = character2.computeDamageAgainst(character1, location);
         character1.takeDamage(instantDamage2);
         character2.takeDamage(instantDamage1);
+//        character1.takeDamage(character1.getAbilityAffectedBy().getInstantDamage());
+//        character2.takeDamage(character2.getAbilityAffectedBy().getInstantDamage());
     }
 
     private void searchForFights(final List<GameCharacter> characters,
@@ -82,7 +84,7 @@ public final class Game {
     private void applyOverTimeDamage(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
             if (character.getAbilityAffectedBy() != null) {
-                character.takeDamage(character.getAbilityAffectedBy().getDamage());
+                character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage());
                 character.getAbilityAffectedBy().roundPassed();
             }
         }
@@ -101,7 +103,7 @@ public final class Game {
     private void manageOvertimeFights(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
             if (character.getAbilityAffectedBy() != null) {
-                character.takeDamage(character.getAbilityAffectedBy().getDamage());
+                character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage());
                 character.getAbilityAffectedBy().roundPassed();
             }
         }
