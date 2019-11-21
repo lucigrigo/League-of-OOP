@@ -2,6 +2,7 @@ package main.characters;
 
 import main.data.Constants;
 import main.data.LocationType;
+import main.gameplay.Ability;
 import main.gameplay.OverTimeAbility;
 
 public class Pyromancer extends GameCharacter {
@@ -20,44 +21,61 @@ public class Pyromancer extends GameCharacter {
     }
 
     @Override
-    public int computeDamageAgainst(final GameCharacter enemy,
-                                    final LocationType location) {
+    public int getMaxHealth() {
+        return Constants.getInstance().getPyromancerInitialHealth()
+                + Constants.getInstance().getPyromancerHealthRatio()
+                * this.getLevel();
+    }
+
+    @Override
+    public Ability computeDamageAgainst(final GameCharacter enemy,
+                                        final LocationType location,
+                                        final boolean addRaceModifier) {
+
         int totalDamage = Constants.getInstance().getPyromancerFireblastBaseDamage()
                 + Constants.getInstance().getPyromancerFireblastLevelScalingBaseDamage()
-                * Constants.getInstance().getPyromancerFireblastBaseDamage();
+                * this.getLevel();
+//        System.out.println(totalDamage);
         if (location == LocationType.VOLCANIC) {
             totalDamage = Math.round(totalDamage
                     + totalDamage
                     * Constants.getInstance().getPyromancerVolcanicBonus()
                     / 100f);
         }
-        float raceBonus = 0.0f;
-        switch (enemy.getType()) {
-            case PYROMANCER:
-                raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusPyromancer();
-                break;
-            case ROGUE:
-                raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusRogue();
-                break;
-            case KNIGHT:
-                raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusKnight();
-                break;
-            case WIZARD:
-                raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusWizard();
-                break;
-            default:
-                break;
+//        System.out.println(totalDamage);
+        int damageWithoutRaceModifier = Math.round(totalDamage);
+        if (addRaceModifier) {
+            float raceBonus = 0.0f;
+            switch (enemy.getType()) {
+                case PYROMANCER:
+                    raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusPyromancer();
+                    break;
+                case ROGUE:
+                    raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusRogue();
+                    break;
+                case KNIGHT:
+                    raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusKnight();
+                    break;
+                case WIZARD:
+                    raceBonus = Constants.getInstance().getPyromancerFireblastBonusVersusWizard();
+                    break;
+                default:
+                    break;
+            }
+            totalDamage = Math.round(totalDamage
+                    + totalDamage
+                    * raceBonus
+                    / 100f);
+        } else {
+            totalDamage = Math.round(totalDamage);
         }
-        totalDamage = Math.round(totalDamage
-                + totalDamage
-                * raceBonus
-                / 100f);
-        return totalDamage;
+//        System.out.println(totalDamage);
+        return new Ability("Fireblast", totalDamage, damageWithoutRaceModifier);
     }
 
     @Override
     public OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location) {
-        OverTimeAbility ignite = new OverTimeAbility(this, enemy);
+        OverTimeAbility ignite = new OverTimeAbility(this, enemy, "Ignite", location);
         ignite.setDuration(3);
         ignite.setAbilityToIncapacitate(false);
         int igniteInstantDamage = Constants.getInstance().getPyromancerIgniteBaseDamage()
@@ -76,6 +94,7 @@ public class Pyromancer extends GameCharacter {
                     * Constants.getInstance().getPyromancerVolcanicBonus()
                     / 100f);
         }
+        int damageWithoutRaceModifier = igniteInstantDamage;
         float raceBonus = 0.0f;
         switch (enemy.getType()) {
             case KNIGHT:
@@ -102,6 +121,9 @@ public class Pyromancer extends GameCharacter {
                 * raceBonus);
         ignite.setInstantDamage(igniteInstantDamage);
         ignite.setOvertimeDamage(igniteSuccesiveDamage);
+        ignite.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
+//        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
+//                this, location);
         return ignite;
     }
 }

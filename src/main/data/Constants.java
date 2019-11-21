@@ -77,6 +77,7 @@ public final class Constants {
     private static final int WIZARD_DRAIN_BONUS_VERSUS_KNIGHT = 20;
     private static final int WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER = -10;
     private static final int WIZARD_DRAIN_BONUS_VERSUS_WIZARD = 5;
+    private static final float WIZARD_DRAIN_HEALTH_PERCENTAGE = 0.3f;
     // DEFLECT
     private static final int WIZARD_DEFLECT_BASE_PERCENTAGE = 35;
     private static final int WIZARD_DEFLECT_LEVEL_SCALING_BASE_PERCENTAGE = 2;
@@ -86,7 +87,7 @@ public final class Constants {
     private static final int WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER = 30;
     private static final int WIZARD_DEFLECT_BONUS_VERSUS_WIZARD = 0;
     // Bonusul pentru DESERT
-    private static final int WIZRD_DESERT_BONUS = 10;
+    private static final int WIZARD_DESERT_BONUS = 10;
 
     // Abilitatile unui ROGUE
     // BACKSTAB
@@ -322,8 +323,8 @@ public final class Constants {
         return WIZARD_DEFLECT_BONUS_VERSUS_WIZARD;
     }
 
-    public int getWizrdDesertBonus() {
-        return WIZRD_DESERT_BONUS;
+    public int getWizardDesertBonus() {
+        return WIZARD_DESERT_BONUS;
     }
 
     public int getRogueBackstabBaseDamage() {
@@ -404,5 +405,9 @@ public final class Constants {
 
     public int getPyromancerIgniteInitialDuration() {
         return PYROMANCER_IGNITE_INITIAL_DURATION;
+    }
+
+    public float getWizardDrainHealthPercentage() {
+        return WIZARD_DRAIN_HEALTH_PERCENTAGE;
     }
 }

@@ -3,6 +3,7 @@ package main.characters;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.MovementType;
+import main.gameplay.Ability;
 import main.gameplay.OverTimeAbility;
 
 public abstract class GameCharacter {
@@ -104,8 +105,9 @@ public abstract class GameCharacter {
         }
     }
 
-    public abstract int computeDamageAgainst(GameCharacter enemy,
-                                             LocationType location);
+    public abstract Ability computeDamageAgainst(GameCharacter enemy,
+                                                 LocationType location,
+                                                 boolean addRaceModifier);
 
     public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy,
                                                        LocationType location);
@@ -113,6 +115,10 @@ public abstract class GameCharacter {
     public abstract int getTotalOverTimeDamage(LocationType location,
                                                GameCharacter enemy,
                                                int roundsRemaining);
+
+    public abstract int getMaxHealth();
+
+//    public abstract int getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location);
 
     public final OverTimeAbility getAbilityAffectedBy() {
         return abilityAffectedBy;
@@ -122,12 +128,23 @@ public abstract class GameCharacter {
         this.abilityAffectedBy = abilityAffectedBy;
     }
 
-    public void takeDamage(int damage) {
-//        System.out.println(currentHealth);
-        this.currentHealth -= damage;
+    public void takeDamage(final Ability ability,
+                           final GameCharacter enemy,
+                           final LocationType location) {
+        System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg " + ability.getDamage());
+//        System.out.println("vr sa ma fut cu edi " + ability.getDamageWithoutRaceModifier());
+//        if (!enemy.isDead()) {
+        this.currentHealth -= ability.getDamage();
+//        }
+        if (this.currentHealth <= 0) {
+            enemy.fightWon(this.getLevel());
+            this.hasDied();
+//            this.setAbilityAffectedBy(null);
+        }
     }
 
     public void fightWon(final int loserLevel) {
+//        System.out.println(this.getName() + " a castigat lupta!");
         this.currentExperience = this.currentExperience
                 + Math.max(0, Constants.getInstance().getWinMagic200()
                 - (this.getLevel() - loserLevel)

@@ -2,7 +2,9 @@ package main.data;
 
 import main.characters.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -121,17 +123,21 @@ public class IOAssistant {
     }
 
     public void writeFinalResults(final List<GameCharacter> characters) {
+        // rasa_pers level_pers xp_pers hp_pers row col
+        System.out.println("\n");
         File outputFile = new File(this.outputPath);
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
 
             for (GameCharacter character : characters) {
+//                System.out.println(character.getHealth());
                 StringBuilder sb = new StringBuilder();
                 sb.append(character.getName());
                 sb.append(" ");
                 if (character.isDead()) {
                     sb.append("dead");
                     sb.append("\n");
+                    System.out.println(sb.toString());
                     fileWriter.write(sb.toString());
                     continue;
                 }
@@ -145,6 +151,7 @@ public class IOAssistant {
                 sb.append(" ");
                 sb.append(character.getColon());
                 sb.append("\n");
+                System.out.println(sb.toString());
                 fileWriter.write(sb.toString());
             }
             fileWriter.flush();

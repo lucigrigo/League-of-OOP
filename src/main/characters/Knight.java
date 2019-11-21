@@ -2,6 +2,7 @@ package main.characters;
 
 import main.data.Constants;
 import main.data.LocationType;
+import main.gameplay.Ability;
 import main.gameplay.OverTimeAbility;
 
 public class Knight extends GameCharacter {
@@ -10,6 +11,13 @@ public class Knight extends GameCharacter {
                   final int initLin) {
         super(initCol, initLin, Constants.getInstance().getKnightInitialHealth(), 0,
                 CharacterType.KNIGHT, "K");
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return Constants.getInstance().getKnightInitialHealth()
+                + Constants.getInstance().getKnightHealthRatio()
+                * this.getLevel();
     }
 
     @Override
@@ -48,8 +56,9 @@ public class Knight extends GameCharacter {
     }
 
     @Override
-    public int computeDamageAgainst(final GameCharacter enemy,
-                                    final LocationType location) {
+    public Ability computeDamageAgainst(final GameCharacter enemy,
+                                        final LocationType location,
+                                        final boolean addRaceModifier) {
         float executeLimit = Constants.getInstance().getKnightExecuteHpLimitPercentage();
         executeLimit += this.getLevel();
         executeLimit *= enemy.getHealth();
@@ -57,7 +66,7 @@ public class Knight extends GameCharacter {
         if (enemy.getHealth() <= Math.round(executeLimit)) {
             enemy.hasDied();
             this.fightWon(enemy.getLevel());
-            return 0;
+            return null;
         }
         float totalDamage = Math.round(Constants.getInstance().getKnightExecuteBaseDamage()
                 + Constants.getInstance().getKnightExecuteLevelScalingBaseDamage()
@@ -68,39 +77,41 @@ public class Knight extends GameCharacter {
                     * Constants.getInstance().getKnightLandBonus()
                     / 100f);
         }
-        switch (enemy.getType()) {
-            case ROGUE:
-                totalDamage = totalDamage
-                        + totalDamage
-                        * Constants.getInstance().getKnightExecuteBonusVersusRogue() / 100f;
-                break;
-            case KNIGHT:
-                totalDamage = totalDamage
-                        + totalDamage
-                        * Constants.getInstance().getKnightExecuteBonusVersusKnight() / 100f;
-                break;
-            case WIZARD:
-                totalDamage = totalDamage
-                        + totalDamage
-                        * Constants.getInstance().getKnightExecuteBonusVersusWizard() / 100f;
-                break;
-            case PYROMANCER:
-                totalDamage = totalDamage
-                        + totalDamage
-                        * Constants.getInstance().getKnightExecuteBonusVersusPyromancer() / 100f;
-                break;
-            default:
-                break;
+        int damageWithoutRaceModifier = Math.round(totalDamage);
+        if (addRaceModifier) {
+            switch (enemy.getType()) {
+                case ROGUE:
+                    totalDamage = totalDamage
+                            + totalDamage
+                            * Constants.getInstance().getKnightExecuteBonusVersusRogue() / 100f;
+                    break;
+                case KNIGHT:
+                    totalDamage = totalDamage
+                            + totalDamage
+                            * Constants.getInstance().getKnightExecuteBonusVersusKnight() / 100f;
+                    break;
+                case WIZARD:
+                    totalDamage = totalDamage
+                            + totalDamage
+                            * Constants.getInstance().getKnightExecuteBonusVersusWizard() / 100f;
+                    break;
+                case PYROMANCER:
+                    totalDamage = totalDamage
+                            + totalDamage
+                            * Constants.getInstance().getKnightExecuteBonusVersusPyromancer() / 100f;
+                    break;
+                default:
+                    break;
+            }
         }
-
-        return Math.round(totalDamage);
+        return new Ability("Execute", Math.round(totalDamage), damageWithoutRaceModifier);
     }
 
     @Override
     public OverTimeAbility getAbilityOverTime(final GameCharacter enemy,
                                               final LocationType location) {
 
-        OverTimeAbility slam = new OverTimeAbility(this, enemy);
+        OverTimeAbility slam = new OverTimeAbility(this, enemy, "Slam", location);
         slam.setAbilityToIncapacitate(true);
         slam.setDuration(1);
         slam.setOvertimeDamage(Constants.getInstance().getKnightSlamBaseDamage()
@@ -112,6 +123,7 @@ public class Knight extends GameCharacter {
                     * Constants.getInstance().getKnightLandBonus()
                     / 100f));
         }
+        int damageWithoutRaceModifier = slam.getOvertimeDamage();
         switch (enemy.getType()) {
             case ROGUE:
                 slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
@@ -140,6 +152,9 @@ public class Knight extends GameCharacter {
             default:
                 break;
         }
+        slam.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
+//        enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
+//                this, location);
         return slam;
     }
 }

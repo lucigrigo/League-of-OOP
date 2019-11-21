@@ -14,7 +14,6 @@ public final class Game {
     private int currentRound;
 
     private Game() {
-        // TODO add anything if needed
         maxRounds = 0;
         currentRound = 0;
     }
@@ -29,7 +28,8 @@ public final class Game {
     private void applyCurrentRoundMoves(final List<GameCharacter> characters,
                                         final MovementType[] roundMoves) {
         for (int i = 0; i < roundMoves.length; i++) {
-            if (!characters.get(i).isIncapacitated()) {
+            if (!characters.get(i).isIncapacitated()
+                    && (!characters.get(i).isDead())) {
                 characters.get(i).applyMove(roundMoves[i]);
             }
         }
@@ -39,29 +39,22 @@ public final class Game {
                              final GameCharacter character2,
                              final LocationType location) {
         // todo "lupta nu va mai avea loc?"
-        if (character1.getTotalOverTimeDamage(location, character2, maxRounds - currentRound)
-                >= character2.getHealth()) {
-//            character1.fightWon();
-//            character2.hasDied();
-//            return;
-        }
-        if (character2.getAbilityOverTime(character1, location).getTotalDamage() >= character1.getHealth()) {
-//            character2.hasDied();
-//            character1.fightWon();
-//            return;
-        }
-        // todo add win event
-        OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
-        OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
-        character1.setAbilityAffectedBy(overTimeAbility2);
-        character2.setAbilityAffectedBy(overTimeAbility1);
+        // todo check for DoT killing potential
 
-        int instantDamage1 = character1.computeDamageAgainst(character2, location);
-        int instantDamage2 = character2.computeDamageAgainst(character1, location);
-        character1.takeDamage(instantDamage2);
-        character2.takeDamage(instantDamage1);
-//        character1.takeDamage(character1.getAbilityAffectedBy().getInstantDamage());
-//        character2.takeDamage(character2.getAbilityAffectedBy().getInstantDamage());
+        if ((character1.getAbilityAffectedBy() == null)
+                || (character1.getAbilityAffectedBy().getCaster() != character2)) {
+            OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
+            character1.setAbilityAffectedBy(overTimeAbility2);
+        }
+        if ((character2.getAbilityAffectedBy() == null)
+                || (character2.getAbilityAffectedBy().getCaster() != character1)) {
+            OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
+            character2.setAbilityAffectedBy(overTimeAbility1);
+        }
+        Ability secondCharacterAbility = character2.computeDamageAgainst(character1, location, true);
+        Ability firstCharacterAbility = character1.computeDamageAgainst(character2, location, true);
+        character2.takeDamage(firstCharacterAbility, character1, location);
+        character1.takeDamage(secondCharacterAbility, character2, location);
     }
 
     private void searchForFights(final List<GameCharacter> characters,
@@ -72,7 +65,9 @@ public final class Game {
                 if ((character1 != character2)
                         && (character1.getColon() == character2.getColon())
                         && (character1.getRow() == character2.getRow())
-                        && (!checkedFights[character1.getRow()][character1.getColon()])) {
+                        && (!checkedFights[character1.getRow()][character1.getColon()])
+                        && (!character1.isDead())
+                        && (!character2.isDead())) {
                     manageFight(character1, character2,
                             map[character1.getRow()][character1.getColon()]);
                     checkedFights[character1.getRow()][character1.getColon()] = true;
@@ -83,8 +78,14 @@ public final class Game {
 
     private void applyOverTimeDamage(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
-            if (character.getAbilityAffectedBy() != null) {
-                character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage());
+            if (character.getAbilityAffectedBy() != null
+                    && !character.isDead()) {
+//                System.out.println("eventual si cu tata ?! " + character.getAbilityAffectedBy().getDamageWithoutRaceModifier());
+                character.takeDamage(new Ability(character.getAbilityAffectedBy().getName(),
+                                character.getAbilityAffectedBy().getOvertimeDamage(),
+                                character.getAbilityAffectedBy().getDamageWithoutRaceModifier()),
+                        character.getAbilityAffectedBy().getCaster(),
+                        character.getAbilityAffectedBy().getLocation());
                 character.getAbilityAffectedBy().roundPassed();
             }
         }
@@ -102,9 +103,23 @@ public final class Game {
 
     private void manageOvertimeFights(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
-            if (character.getAbilityAffectedBy() != null) {
-                character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage());
+            if (character.getAbilityAffectedBy() != null
+                    && (!character.isDead())) {
+                character.takeDamage(new Ability(character.getAbilityAffectedBy().getName(),
+                                character.getAbilityAffectedBy().getOvertimeDamage(),
+                                character.getAbilityAffectedBy().getDamageWithoutRaceModifier()),
+                        character.getAbilityAffectedBy().getCaster(),
+                        character.getAbilityAffectedBy().getLocation());
                 character.getAbilityAffectedBy().roundPassed();
+            }
+        }
+    }
+
+    private void checkForDeadCharacters(final List<GameCharacter> characters) {
+        for (GameCharacter character : characters) {
+            if (character.getHealth() <= 0) {
+                character.setAbilityAffectedBy(null);
+                character.hasDied();
             }
         }
     }
@@ -112,13 +127,24 @@ public final class Game {
     public void startGame(final InputData data,
                           final Statistics statistics) {
         int maxRounds = data.getNrRounds();
+        this.maxRounds = maxRounds;
         int currentRound = 0;
         while (currentRound < maxRounds) {
-            applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
-            searchForFights(data.getCharacters(), data.getMap());
+            // todo check for won fights + add exp
+            this.currentRound = currentRound;
             applyOverTimeDamage(data.getCharacters());
             checkForOverTimeAbilitiesEnd(data.getCharacters());
+            applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
+//            checkForDeadCharacters(data.getCharacters());
+            searchForFights(data.getCharacters(), data.getMap());
+//            checkForDeadCharacters(data.getCharacters());
+//            applyOverTimeDamage(data.getCharacters());
+//            checkForOverTimeAbilitiesEnd(data.getCharacters());
             currentRound++;
+            System.out.println("HP la finalul rundei " + currentRound);
+            for (GameCharacter character : data.getCharacters()) {
+                System.out.println("\t" + character.getName() + " " + character.getHealth());
+            }
         }
         manageOvertimeFights(data.getCharacters());
     }
