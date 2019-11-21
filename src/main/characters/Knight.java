@@ -21,41 +21,6 @@ public class Knight extends GameCharacter {
     }
 
     @Override
-    public int getTotalOverTimeDamage(final LocationType location,
-                                      final GameCharacter enemy,
-                                      final int roundsRemaining) {
-        int totalOverTimeDamage = Constants.getInstance().getKnightSlamBaseDamage()
-                + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()
-                * this.getLevel();
-        if (location == LocationType.LAND) {
-            totalOverTimeDamage = Math.round(totalOverTimeDamage
-                    + totalOverTimeDamage
-                    * Constants.getInstance().getKnightLandBonus() / 100f);
-        }
-        float raceBonus = 0.0f;
-        switch (enemy.getType()) {
-            case ROGUE:
-                raceBonus = Constants.getInstance().getKnightSlamBonusVersusRogue() / 100f;
-                break;
-            case WIZARD:
-                raceBonus = Constants.getInstance().getKnightSlamBonusVersusWizard() / 100f;
-                break;
-            case PYROMANCER:
-                raceBonus = Constants.getInstance().getKnightSlamBonusVersusPyromancer() / 100f;
-                break;
-            case KNIGHT:
-                raceBonus = Constants.getInstance().getKnightSlamBonusVersusKnight() / 100f;
-                break;
-            default:
-                break;
-        }
-        totalOverTimeDamage = Math.round(totalOverTimeDamage
-                + totalOverTimeDamage
-                * raceBonus);
-        return totalOverTimeDamage;
-    }
-
-    @Override
     public Ability computeDamageAgainst(final GameCharacter enemy,
                                         final LocationType location,
                                         final boolean addRaceModifier) {
@@ -114,6 +79,7 @@ public class Knight extends GameCharacter {
         OverTimeAbility slam = new OverTimeAbility(this, enemy, "Slam", location);
         slam.setAbilityToIncapacitate(true);
         slam.setDuration(1);
+        slam.setCaster(this);
         slam.setOvertimeDamage(Constants.getInstance().getKnightSlamBaseDamage()
                 + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()
                 * this.getLevel());
@@ -153,8 +119,8 @@ public class Knight extends GameCharacter {
                 break;
         }
         slam.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-//        enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
-//                this, location);
+        enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
+                this, location);
         return slam;
     }
 }

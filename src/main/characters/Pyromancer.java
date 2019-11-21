@@ -14,13 +14,6 @@ public class Pyromancer extends GameCharacter {
     }
 
     @Override
-    public int getTotalOverTimeDamage(LocationType location, GameCharacter enemy,
-                                      int roundsRemaining) {
-        // TODO decide wheter this is important or not
-        return 0;
-    }
-
-    @Override
     public int getMaxHealth() {
         return Constants.getInstance().getPyromancerInitialHealth()
                 + Constants.getInstance().getPyromancerHealthRatio()
@@ -121,9 +114,10 @@ public class Pyromancer extends GameCharacter {
                 * raceBonus);
         ignite.setInstantDamage(igniteInstantDamage);
         ignite.setOvertimeDamage(igniteSuccesiveDamage);
+
         ignite.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-//        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
-//                this, location);
+        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
+                this, location);
         return ignite;
     }
 }

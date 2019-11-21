@@ -1,10 +1,15 @@
 package main.gameplay;
 
+import main.characters.GameCharacter;
+import main.data.LocationType;
+
 public final class Ability {
 
     private String name;
     private int damage;
     private int damageWithoutRaceModifier;
+    private GameCharacter caster;
+    private LocationType location;
 
     public Ability(final String name,
                    final int damage,
@@ -38,5 +43,21 @@ public final class Ability {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public GameCharacter getCaster() {
+        return caster;
+    }
+
+    public void setCaster(GameCharacter caster) {
+        this.caster = caster;
+    }
+
+    public LocationType getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationType location) {
+        this.location = location;
     }
 }

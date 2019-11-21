@@ -112,9 +112,9 @@ public abstract class GameCharacter {
     public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy,
                                                        LocationType location);
 
-    public abstract int getTotalOverTimeDamage(LocationType location,
-                                               GameCharacter enemy,
-                                               int roundsRemaining);
+    public void deflectDamage() {
+        // is implemented in the Wizard class
+    }
 
     public abstract int getMaxHealth();
 
@@ -131,16 +131,19 @@ public abstract class GameCharacter {
     public void takeDamage(final Ability ability,
                            final GameCharacter enemy,
                            final LocationType location) {
-        System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg " + ability.getDamage());
 //        System.out.println("vr sa ma fut cu edi " + ability.getDamageWithoutRaceModifier());
 //        if (!enemy.isDead()) {
-        this.currentHealth -= ability.getDamage();
+        if (ability != null) {
+            System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg " + ability.getDamage());
+            this.currentHealth -= ability.getDamage();
 //        }
-        if (this.currentHealth <= 0) {
-            enemy.fightWon(this.getLevel());
-            this.hasDied();
+            if (this.currentHealth <= 0) {
+                enemy.fightWon(this.getLevel());
+                this.hasDied();
 //            this.setAbilityAffectedBy(null);
+            }
         }
+
     }
 
     public void fightWon(final int loserLevel) {

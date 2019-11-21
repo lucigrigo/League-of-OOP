@@ -5,20 +5,18 @@ import main.data.LocationType;
 import main.gameplay.Ability;
 import main.gameplay.OverTimeAbility;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Wizard extends GameCharacter {
+
+    private List<Ability> abilitiesTakenThisRound;
 
     public Wizard(final int initCol,
                   final int initLin) {
         super(initCol, initLin, Constants.getInstance().getWizardInitialHealth(), 0,
                 CharacterType.WIZARD, "W");
-    }
-
-    @Override
-    public int getTotalOverTimeDamage(final LocationType location,
-                                      final GameCharacter enemy,
-                                      final int roundsRemaining) {
-        // TODO decide whether this is important or not
-        return 0;
+        this.abilitiesTakenThisRound = new ArrayList<>();
     }
 
     @Override
@@ -77,113 +75,77 @@ public class Wizard extends GameCharacter {
         return new OverTimeAbility(this, enemy, "None", location);
     }
 
-//    private int reverseRaceModifier(final GameCharacter enemy,
-//                                    final int initialDamage,
-//                                    final String abilityName) {
-//        float damageWithoutRaceModifiers = 0.0f;
-//        switch (enemy.getType()) {
-//            case ROGUE:
-//                if (abilityName.equals("Paralysis")) {
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getRogueParalysisBonusVersusWizard()
-//                            / 100f);
-//                } else {
-////                    System.out.println("aici");
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getRogueBackstabBonusVersusWizard()
-//                            / 100f);
-//                }
-//                break;
-//            case PYROMANCER:
-//                if (abilityName.equals("Ignite")) {
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getPyromancerFireblastBonusVersusWizard()
-//                            / 100f);
-//                } else {
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getPyromancerIgniteBonusVersusRogue()
-//                            / 100f);
-//                }
-//                break;
-//            case KNIGHT:
-//                if (abilityName.equals("Slam")) {
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getKnightSlamBonusVersusWizard()
-//                            / 100f);
-//                } else {
-//                    damageWithoutRaceModifiers = Math.round(initialDamage
-//                            - initialDamage
-//                            * Constants.getInstance().getKnightExecuteBonusVersusWizard()
-//                            / 100f);
-//                }
-//                break;
-//            case WIZARD:
-//                // doi wizard nu isi dau reciproc damage prin deflect
-//                break;
-//            default:
-//                break;
+    @Override
+    public void deflectDamage() {
+//        if(this.isDead()) {
+//            return;
 //        }
-//        return Math.round(damageWithoutRaceModifiers);
-//    }
+        int totalDamage = 0;
+        GameCharacter enemy = null;
+        LocationType location = null;
+        for (Ability ability : this.abilitiesTakenThisRound) {
+//            System.out.println(ability.getDamageWithoutRaceModifier());
+            enemy = ability.getCaster();
+            if ((enemy != null)
+                    && (enemy.getType() != CharacterType.WIZARD)) {
+                location = ability.getLocation();
+                float damagePercent = (Constants.getInstance().getWizardDeflectBasePercentage() +
+                        Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
+                                * this.getLevel())
+                        / 100f;
+                damagePercent = Math.min(0.7f, damagePercent);
+                if (location == LocationType.DESERT) {
+                    damagePercent = damagePercent
+                            + damagePercent
+                            * Constants.getInstance().getWizardDesertBonus()
+                            / 100f;
+                }
+                int abilityDeflectDamage = Math.round(damagePercent
+                        * ability.getDamageWithoutRaceModifier());
+                float raceModifier = 0.0f;
+
+                switch (enemy.getType()) {
+                    case WIZARD:
+                        // nu se ajunge aici niciodata
+                        break;
+                    case KNIGHT:
+                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusKnight();
+                        break;
+                    case PYROMANCER:
+                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusPyromancer();
+                        break;
+                    case ROGUE:
+                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusRogue();
+                        break;
+                    default:
+                        break;
+                }
+                raceModifier /= 100f;
+                abilityDeflectDamage = Math.round(abilityDeflectDamage
+                        + raceModifier
+                        * abilityDeflectDamage);
+                System.out.println(abilityDeflectDamage);
+                totalDamage += abilityDeflectDamage;
+            }
+        }
+        if (enemy != null) {
+            enemy.takeDamage(new Ability("Deflect", totalDamage, 0), this, location);
+        }
+        this.abilitiesTakenThisRound.clear();
+//        }
+    }
 
     @Override
     public void takeDamage(final Ability ability,
                            final GameCharacter enemy,
                            final LocationType location) {
         super.takeDamage(ability, enemy, location);
-        if (enemy.getType() != CharacterType.WIZARD) {
-            float damagePercent = (Constants.getInstance().getWizardDeflectBasePercentage() +
-                    Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
-                            * this.getLevel())
-                    / 100f;
-            damagePercent = Math.min(0.7f, damagePercent);
-//            int damageTakenWithoutRaceModifier = reverseRaceModifier(enemy, ability.getDamage(),
-//                    ability.getName());
-
-//            System.out.println("------ " + ability.getName() + " " + ability.getDamageWithoutRaceModifier());
-//            System.out.println("AICI " + totalDeflectDamage);
-            if (location == LocationType.DESERT) {
-                damagePercent = damagePercent
-                        + damagePercent
-                        * Constants.getInstance().getWizardDesertBonus()
-                        / 100f;
-            }
-            int totalDeflectDamage = Math.round(damagePercent
-                    * ability.getDamageWithoutRaceModifier());
-            float raceModifier = 0.0f;
-            switch (enemy.getType()) {
-                case WIZARD:
-                    // nu se ajunge aici niciodata
-                    break;
-                case KNIGHT:
-                    raceModifier = Constants.getInstance().getWizardDeflectBonusVersusKnight();
-                    break;
-                case PYROMANCER:
-                    raceModifier = Constants.getInstance().getWizardDeflectBonusVersusPyromancer();
-                    break;
-                case ROGUE:
-                    raceModifier = Constants.getInstance().getWizardDeflectBonusVersusRogue();
-                    break;
-                default:
-                    break;
-            }
-            raceModifier /= 100f;
-            totalDeflectDamage = Math.round(totalDeflectDamage
-                    + raceModifier
-                    * totalDeflectDamage);
-////            int damageTakenWithoutRaceModifier = reverseRaceModifier(enemy, ability.getDamage(),
-////                    ability.getName());
-////            int deflectDamage = Math.round(damagePercent * damageTakenWithoutRaceModifier);
-//            System.out.println("damage primit " + ability.getDamageWithoutRaceModifier());
-//            System.out.println("procent de la deflect " + damagePercent);
-//            System.out.println("modificator de rasa " + raceModifier);
-//            System.out.println("damage de la deflect " + totalDeflectDamage);
-            enemy.takeDamage(new Ability("Deflect", totalDeflectDamage, 0), this, location);
+        if (ability != null) {
+            Ability abilityTaken = new Ability(ability.getName(), ability.getDamage(),
+                    ability.getDamageWithoutRaceModifier());
+            abilityTaken.setLocation(location);
+            abilityTaken.setCaster(enemy);
+            this.abilitiesTakenThisRound.add(abilityTaken);
         }
     }
 }

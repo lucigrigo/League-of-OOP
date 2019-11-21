@@ -16,44 +16,6 @@ public class Rogue extends GameCharacter {
         this.backstabCount = 0;
     }
 
-    @Override
-    public int getTotalOverTimeDamage(final LocationType location,
-                                      final GameCharacter enemy,
-                                      final int roundsRemaining) {
-        int totalOverTimeDamage = Constants.getInstance().getRogueParalysisBaseDamage()
-                + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage()
-                * this.getLevel();
-        if (location == LocationType.WOODS) {
-            totalOverTimeDamage = Math.round(totalOverTimeDamage
-                    + totalOverTimeDamage
-                    * Constants.getInstance().getRogueWoodsBonus());
-            totalOverTimeDamage *= 6;
-        } else {
-            totalOverTimeDamage *= 3;
-        }
-        float raceBonus = 0.0f;
-        switch (enemy.getType()) {
-            case ROGUE:
-                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusRogue() / 100f;
-                break;
-            case KNIGHT:
-                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusKnight() / 100f;
-                break;
-            case WIZARD:
-                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusWizard() / 100f;
-                break;
-            case PYROMANCER:
-                raceBonus = Constants.getInstance().getRogueParalysisBonusVersusPyromancer() / 100f;
-                break;
-            default:
-                break;
-        }
-        totalOverTimeDamage = Math.round(totalOverTimeDamage
-                + totalOverTimeDamage
-                * raceBonus);
-        return totalOverTimeDamage;
-    }
-
     private float getBackstabDamage() {
         return Constants.getInstance().getRogueBackstabBaseDamage()
                 + Constants.getInstance().getRogueBackstabBaseDamage()
@@ -105,7 +67,6 @@ public class Rogue extends GameCharacter {
                 break;
         }
         paralysis.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-//        System.out.println("ma fut cu mama " + paralysis.getDamageWithoutRaceModifier());
         enemy.takeDamage(new Ability("Paralysis", paralysis.getOvertimeDamage(), damageWithoutRaceModifier),
                 this, location);
         return paralysis;
