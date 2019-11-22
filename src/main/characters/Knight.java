@@ -120,7 +120,7 @@ public class Knight extends GameCharacter {
         }
         slam.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
         enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location);
+                this, location, true);
         return slam;
     }
 }

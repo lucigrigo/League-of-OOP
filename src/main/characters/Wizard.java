@@ -63,6 +63,9 @@ public class Wizard extends GameCharacter {
                     + percentageHealth
                     * raceBonus);
         }
+//        System.out.println("Wizard da damage de :" + Math.round(percentageHealth
+//                * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
+//                * enemy.getMaxHealth(), enemy.getHealth())));
         return new Ability("Drain", Math.round(percentageHealth
                 * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
                 * enemy.getMaxHealth(), enemy.getHealth())), 0);
@@ -77,10 +80,10 @@ public class Wizard extends GameCharacter {
 
     @Override
     public void deflectDamage() {
-//        if(this.isDead()) {
+//        if (this.isDead()) {
 //            return;
 //        }
-        int totalDamage = 0;
+        float totalDamage = 0.0f;
         GameCharacter enemy = null;
         LocationType location = null;
         for (Ability ability : this.abilitiesTakenThisRound) {
@@ -100,8 +103,10 @@ public class Wizard extends GameCharacter {
                             * Constants.getInstance().getWizardDesertBonus()
                             / 100f;
                 }
-                int abilityDeflectDamage = Math.round(damagePercent
-                        * ability.getDamageWithoutRaceModifier());
+//                int abilityDeflectDamage = Math.round(damagePercent
+//                        * ability.getDamageWithoutRaceModifier());
+                float abilityDeflectDamage = damagePercent
+                        * ability.getDamageWithoutRaceModifier();
                 float raceModifier = 0.0f;
 
                 switch (enemy.getType()) {
@@ -121,15 +126,21 @@ public class Wizard extends GameCharacter {
                         break;
                 }
                 raceModifier /= 100f;
-                abilityDeflectDamage = Math.round(abilityDeflectDamage
+//                abilityDeflectDamage = Math.round(abilityDeflectDamage
+//                        + raceModifier
+//                        * abilityDeflectDamage);
+                abilityDeflectDamage = abilityDeflectDamage
                         + raceModifier
-                        * abilityDeflectDamage);
-                System.out.println(abilityDeflectDamage);
-                totalDamage += abilityDeflectDamage;
+                        * abilityDeflectDamage;
+                totalDamage += Math.round(abilityDeflectDamage);
+//                totalDamage += abilityDeflectDamage;
             }
         }
         if (enemy != null) {
-            enemy.takeDamage(new Ability("Deflect", totalDamage, 0), this, location);
+            System.out.println("Damage de la deflect " + totalDamage);
+
+            enemy.takeDamage(new Ability("Deflect", Math.round(totalDamage),
+                    0), this, location, true);
         }
         this.abilitiesTakenThisRound.clear();
 //        }
@@ -138,9 +149,11 @@ public class Wizard extends GameCharacter {
     @Override
     public void takeDamage(final Ability ability,
                            final GameCharacter enemy,
-                           final LocationType location) {
-        super.takeDamage(ability, enemy, location);
+                           final LocationType location,
+                           final boolean isOvertimeAbility) {
+        super.takeDamage(ability, enemy, location, isOvertimeAbility);
         if (ability != null) {
+//                && !isOvertimeAbility) {
             Ability abilityTaken = new Ability(ability.getName(), ability.getDamage(),
                     ability.getDamageWithoutRaceModifier());
             abilityTaken.setLocation(location);

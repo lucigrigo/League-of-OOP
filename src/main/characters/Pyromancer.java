@@ -114,10 +114,9 @@ public class Pyromancer extends GameCharacter {
                 * raceBonus);
         ignite.setInstantDamage(igniteInstantDamage);
         ignite.setOvertimeDamage(igniteSuccesiveDamage);
-
         ignite.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
         enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location);
+                this, location, true);
         return ignite;
     }
 }

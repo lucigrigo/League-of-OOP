@@ -16,6 +16,8 @@ public final class Constants {
 
     private static final int WIN_MAGIC_200 = 200;
     private static final int WIN_MAGIC_40 = 40;
+    private static final int EXPERIENCE_BASE = 250;
+    private static final int EXPERIENCE_SCALING = 50;
 
     private static final int WIZARD_INITIAL_HEALTH = 400;
     private static final int WIZARD_HEALTH_RATIO = 30;
@@ -409,5 +411,13 @@ public final class Constants {
 
     public float getWizardDrainHealthPercentage() {
         return WIZARD_DRAIN_HEALTH_PERCENTAGE;
+    }
+
+    public int getExperienceBase() {
+        return EXPERIENCE_BASE;
+    }
+
+    public int getExperienceScaling() {
+        return EXPERIENCE_SCALING;
     }
 }

@@ -32,13 +32,13 @@ public class Rogue extends GameCharacter {
                 + Constants.getInstance().getRogueParalysisLevelScalingBaseDamage()
                 * this.getLevel());
         if (location == LocationType.WOODS) {
-            paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsWoodsNumber());
+            paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsWoodsNumber() - 1);
             paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
                     + paralysis.getOvertimeDamage()
                     * Constants.getInstance().getRogueWoodsBonus()
                     / 100f));
         } else {
-            paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsNormalNumber());
+            paralysis.setDuration(Constants.getInstance().getRogueParalysisRoundsNormalNumber() - 1);
         }
 //        System.out.println("----- " + paralysis.getOvertimeDamage());
         int damageWithoutRaceModifier = paralysis.getOvertimeDamage();
@@ -68,7 +68,7 @@ public class Rogue extends GameCharacter {
         }
         paralysis.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
         enemy.takeDamage(new Ability("Paralysis", paralysis.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location);
+                this, location, true);
         return paralysis;
     }
 
@@ -85,16 +85,20 @@ public class Rogue extends GameCharacter {
                                         final boolean addRaceModifier) {
         float totalDamage = 0.0f;
         totalDamage += getBackstabDamage();
-        this.backstabCount++;
+//        this.backstabCount++;
         if (location == LocationType.WOODS) {
-            if (this.backstabCount ==
-                    Constants.getInstance().getRogueBackstabCriticalHitOccurence()) {
+            if (this.backstabCount %
+                    Constants.getInstance().getRogueBackstabCriticalHitOccurence() == 0) {
+                System.out.println("Critical damage de la rogue -------------");
                 totalDamage *= Constants.getInstance().getRogueBackstabCriticalHitRatio();
-                this.backstabCount = 0;
+                this.backstabCount++;
             }
+//            } else {
+//                this.backstabCount++;
+//            }
             totalDamage += totalDamage * Constants.getInstance().getRogueWoodsBonus() / 100f;
         }
-        totalDamage = Math.round(totalDamage);
+//        totalDamage = Math.round(totalDamage);
         int damageWithoutRaceModifier = Math.round(totalDamage);
         if (addRaceModifier) {
             switch (enemy.getType()) {

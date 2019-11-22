@@ -130,14 +130,16 @@ public abstract class GameCharacter {
 
     public void takeDamage(final Ability ability,
                            final GameCharacter enemy,
-                           final LocationType location) {
+                           final LocationType location,
+                           final boolean isOvertimeAbility) {
 //        System.out.println("vr sa ma fut cu edi " + ability.getDamageWithoutRaceModifier());
 //        if (!enemy.isDead()) {
         if (ability != null) {
             System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg " + ability.getDamage());
             this.currentHealth -= ability.getDamage();
 //        }
-            if (this.currentHealth <= 0) {
+            if (this.currentHealth <= 0
+                    && !isOvertimeAbility) {
                 enemy.fightWon(this.getLevel());
                 this.hasDied();
 //            this.setAbilityAffectedBy(null);
@@ -152,6 +154,14 @@ public abstract class GameCharacter {
                 + Math.max(0, Constants.getInstance().getWinMagic200()
                 - (this.getLevel() - loserLevel)
                 * Constants.getInstance().getWinMagic40());
+        System.out.println("experienta " + this.currentExperience);
+        if (this.currentExperience
+                >= Constants.getInstance().getExperienceBase()
+                + this.getLevel()
+                * Constants.getInstance().getExperienceScaling()) {
+            this.level++;
+            this.currentHealth = this.getMaxHealth();
+        }
     }
 
     public void hasDied() {

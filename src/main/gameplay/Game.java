@@ -40,22 +40,32 @@ public final class Game {
                              final GameCharacter character2,
                              final LocationType location) {
         // todo "lupta nu va mai avea loc?"
-        // todo check for DoT killing potential
 
-        if ((character1.getAbilityAffectedBy() == null)
-                || (character1.getAbilityAffectedBy().getCaster() != character2)) {
-            OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
-            character1.setAbilityAffectedBy(overTimeAbility2);
+        if ((character1.getAbilityAffectedBy() != null
+                && (character1.getAbilityAffectedBy().getOvertimeDamage() >= character1.getHealth()))
+                || (character2.getAbilityAffectedBy() != null
+                && (character2.getAbilityAffectedBy().getOvertimeDamage() >= character1.getHealth()))) {
+//            return;
         }
+
         if ((character2.getAbilityAffectedBy() == null)
                 || (character2.getAbilityAffectedBy().getCaster() != character1)) {
             OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
             character2.setAbilityAffectedBy(overTimeAbility1);
         }
+        if ((character1.getAbilityAffectedBy() == null)
+                || (character1.getAbilityAffectedBy().getCaster() != character2)) {
+            OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
+            character1.setAbilityAffectedBy(overTimeAbility2);
+        }
         Ability secondCharacterAbility = character2.computeDamageAgainst(character1, location, true);
         Ability firstCharacterAbility = character1.computeDamageAgainst(character2, location, true);
-        character2.takeDamage(firstCharacterAbility, character1, location);
-        character1.takeDamage(secondCharacterAbility, character2, location);
+//        if (!character1.isDead()) {
+        character2.takeDamage(firstCharacterAbility, character1, location, false);
+//        }
+//        if (!character2.isDead()) {
+        character1.takeDamage(secondCharacterAbility, character2, location, false);
+//        }
     }
 
     private void searchForFights(final List<GameCharacter> characters,
@@ -66,9 +76,9 @@ public final class Game {
                 if ((character1 != character2)
                         && (character1.getColon() == character2.getColon())
                         && (character1.getRow() == character2.getRow())
-                        && (!checkedFights[character1.getRow()][character1.getColon()])) {
-//                        && (!character1.isDead())
-//                        && (!character2.isDead())) {
+                        && (!checkedFights[character1.getRow()][character1.getColon()])
+                        && ((!character1.isDead())
+                        || (!character2.isDead()))) {
                     manageFight(character1, character2,
                             map[character1.getRow()][character1.getColon()]);
                     checkedFights[character1.getRow()][character1.getColon()] = true;
@@ -83,18 +93,20 @@ public final class Game {
             if (character.getAbilityAffectedBy() != null
                     && !character.isDead()) {
 //                    && !character.getAbilityAffectedBy().getName().equals("Paralysis")) {
+                System.out.println(character.getName() + " ia dmg DoT");
 //                System.out.println("eventual si cu tata ?! " + character.getAbilityAffectedBy().getDamageWithoutRaceModifier());
                 character.takeDamage(new Ability(character.getAbilityAffectedBy().getName(),
                                 character.getAbilityAffectedBy().getOvertimeDamage(),
                                 character.getAbilityAffectedBy().getDamageWithoutRaceModifier()),
                         character.getAbilityAffectedBy().getCaster(),
-                        character.getAbilityAffectedBy().getLocation());
+                        character.getAbilityAffectedBy().getLocation(),
+                        true);
                 character.getAbilityAffectedBy().roundPassed();
             }
         }
     }
 
-    public void checkForOverTimeAbilitiesEnd(final List<GameCharacter> characters) {
+    private void checkForOverTimeAbilitiesEnd(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
             if (character.getAbilityAffectedBy() != null) {
                 if (character.getAbilityAffectedBy().getDuration() == 0) {
@@ -110,28 +122,32 @@ public final class Game {
             done = true;
             for (GameCharacter character : characters) {
                 if (character.getAbilityAffectedBy() != null
-                        && (!character.isDead()
-                        && (character.getAbilityAffectedBy().getDuration() > 0))) {
-//                    done = false;
+                        && !character.isDead()
+                        && (character.getAbilityAffectedBy().getDuration() > 0)) {
+                    System.out.println(character.getName() + " ia dmg DoT");
+                    done = false;
                     character.takeDamage(new Ability(character.getAbilityAffectedBy().getName(),
                                     character.getAbilityAffectedBy().getOvertimeDamage(),
                                     character.getAbilityAffectedBy().getDamageWithoutRaceModifier()),
                             character.getAbilityAffectedBy().getCaster(),
-                            character.getAbilityAffectedBy().getLocation());
+                            character.getAbilityAffectedBy().getLocation(),
+                            true);
                     character.getAbilityAffectedBy().roundPassed();
                 }
             }
+            checkForWizardDeflect(characters);
         }
 
     }
 
-    private void checkForDeadCharacters(final List<GameCharacter> characters) {
+    private boolean checkForOnlySurvivor(final List<GameCharacter> characters) {
+        int nrOfAliveChampions = 0;
         for (GameCharacter character : characters) {
-            if (character.getHealth() <= 0) {
-                character.setAbilityAffectedBy(null);
-                character.hasDied();
+            if (!character.isDead()) {
+                nrOfAliveChampions++;
             }
         }
+        return nrOfAliveChampions <= 1;
     }
 
     private void checkForWizardDeflect(final List<GameCharacter> characters) {
@@ -142,28 +158,33 @@ public final class Game {
         }
     }
 
+
     public void startGame(final InputData data,
                           final Statistics statistics) {
         int maxRounds = data.getNrRounds();
         this.maxRounds = maxRounds;
         int currentRound = 0;
         while (currentRound < maxRounds) {
-            // todo check for won fights + add exp
             this.currentRound = currentRound;
             applyOverTimeDamage(data.getCharacters());
             applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
 //            checkForDeadCharacters(data.getCharacters());
             searchForFights(data.getCharacters(), data.getMap());
+//            if (checkForOnlySurvivor(data.getCharacters())) {
+//                break;
+//            }
 //            checkForDeadCharacters(data.getCharacters());
 //            applyOverTimeDamage(data.getCharacters());
 //            checkForOverTimeAbilitiesEnd(data.getCharacters());
             checkForWizardDeflect(data.getCharacters());
             checkForOverTimeAbilitiesEnd(data.getCharacters());
-
             currentRound++;
             System.out.println("HP la finalul rundei " + currentRound);
             for (GameCharacter character : data.getCharacters()) {
                 System.out.println("\t" + character.getName() + " " + character.getHealth());
+            }
+            if (checkForOnlySurvivor(data.getCharacters())) {
+                break;
             }
         }
         manageOvertimeFights(data.getCharacters());
