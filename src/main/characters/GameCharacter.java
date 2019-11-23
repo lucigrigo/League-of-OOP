@@ -17,6 +17,7 @@ public abstract class GameCharacter {
     private boolean isCurrentlyFighting;
     private String name;
     private OverTimeAbility abilityAffectedBy;
+    private boolean hasMadeAKillThisRound;
 
 //    public GameCharacter(final int initCol,
 //                         final int initLin) {
@@ -40,6 +41,15 @@ public abstract class GameCharacter {
         this.isCurrentlyFighting = false;
         this.name = name;
         this.abilityAffectedBy = null;
+        this.hasMadeAKillThisRound = false;
+    }
+
+    public boolean isHasMadeAKillThisRound() {
+        return hasMadeAKillThisRound;
+    }
+
+    public void setHasMadeAKillThisRound(boolean hasMadeAKillThisRound) {
+        this.hasMadeAKillThisRound = hasMadeAKillThisRound;
     }
 
     public final int getColon() {
@@ -75,7 +85,8 @@ public abstract class GameCharacter {
     }
 
     public final boolean isIncapacitated() {
-        return isIncapacitated;
+        return this.abilityAffectedBy != null
+                && this.abilityAffectedBy.isAbilityToIncapacitate();
     }
 
     public final void applyMove(MovementType move) {
@@ -112,11 +123,15 @@ public abstract class GameCharacter {
     public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy,
                                                        LocationType location);
 
-    public void deflectDamage() {
-        // is implemented in the Wizard class
-    }
+//    public void deflectDamage() {
+//        // is implemented in the Wizard class
+////        return 0.0f;
+//    }
 
     public abstract int getMaxHealth();
+
+    public abstract float getDamageWithoutRaceModifier(GameCharacter enemy,
+                                                       LocationType location);
 
 //    public abstract int getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location);
 
@@ -134,12 +149,23 @@ public abstract class GameCharacter {
                            final boolean isOvertimeAbility) {
 //        System.out.println("vr sa ma fut cu edi " + ability.getDamageWithoutRaceModifier());
 //        if (!enemy.isDead()) {
+
         if (ability != null) {
-            System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg " + ability.getDamage());
+            System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg "
+                    + ability.getDamage());
+            if (ability.getCaster() != null) {
+                System.out.println(" de la "
+                        + ability.getCaster().getName()
+                        + " cu hp " + ability.getCaster().getHealth()
+                        + " la linia " + ability.getCaster().getRow()
+                        + " si coloana " + ability.getCaster().getColon());
+            }
+
             this.currentHealth -= ability.getDamage();
 //        }
             if (this.currentHealth <= 0
                     && !isOvertimeAbility) {
+                enemy.setHasMadeAKillThisRound(true);
                 enemy.fightWon(this.getLevel());
                 this.hasDied();
 //            this.setAbilityAffectedBy(null);
@@ -148,20 +174,48 @@ public abstract class GameCharacter {
 
     }
 
+    public void doRoundEndingRoutine() {
+//        System.out.println("acsuihacasca? aaaaaa");
+//        System.out.println(this.getAbilityAffectedBy() != null);
+        if ((this.getAbilityAffectedBy() != null)
+                && this.getAbilityAffectedBy().isFirstRound()) {
+            this.getAbilityAffectedBy().setFirstRound(false);
+        }
+        if (this.hasMadeAKillThisRound) {
+            this.checkForLevelUp();
+            this.hasMadeAKillThisRound = false;
+        }
+//        System.out.println(this.getAbilityAffectedBy().isFirstRound() + " adsdasdsadas");
+
+
+    }
+
     public void fightWon(final int loserLevel) {
-//        System.out.println(this.getName() + " a castigat lupta!");
+        System.out.println(this.getName() + " a castigat lupta!");
         this.currentExperience = this.currentExperience
                 + Math.max(0, Constants.getInstance().getWinMagic200()
                 - (this.getLevel() - loserLevel)
                 * Constants.getInstance().getWinMagic40());
-        System.out.println("experienta " + this.currentExperience);
-        if (this.currentExperience
+//                System.out.println("experienta " + this.currentExperience);
+
+//        this.checkForLevelUp();
+    }
+
+    public void checkForLevelUp() {
+        if ((this.currentExperience
                 >= Constants.getInstance().getExperienceBase()
                 + this.getLevel()
-                * Constants.getInstance().getExperienceScaling()) {
-            this.level++;
+                * Constants.getInstance().getExperienceScaling())
+                && !this.isDead()) {
+//                && this.hasMadeAKillThisRound) {
+            this.level = (this.currentExperience
+                    - Constants.getInstance().getExperienceBase())
+                    / Constants.getInstance().getExperienceScaling() + 1;
             this.currentHealth = this.getMaxHealth();
         }
+        System.out.println("---\n--- " + this.getName()
+                + " " + this.getExperience()
+                + " " + this.getLevel() + "\n---");
     }
 
     public void hasDied() {

@@ -24,14 +24,17 @@ public class Knight extends GameCharacter {
     public Ability computeDamageAgainst(final GameCharacter enemy,
                                         final LocationType location,
                                         final boolean addRaceModifier) {
+//        if (enemy.isDead())
+//            return null;
         float executeLimit = Constants.getInstance().getKnightExecuteHpLimitPercentage();
         executeLimit += this.getLevel();
         executeLimit *= enemy.getHealth();
         executeLimit /= 100f;
-        if (enemy.getHealth() <= Math.round(executeLimit)) {
+        if ((enemy.getHealth() <= Math.round(executeLimit))
+                && (!enemy.isDead())) {
             enemy.hasDied();
             this.fightWon(enemy.getLevel());
-            return null;
+            return new Ability("Execute", enemy.getHealth(), enemy.getHealth());
         }
         float totalDamage = Math.round(Constants.getInstance().getKnightExecuteBaseDamage()
                 + Constants.getInstance().getKnightExecuteLevelScalingBaseDamage()
@@ -69,7 +72,41 @@ public class Knight extends GameCharacter {
                     break;
             }
         }
+////        System.out.println(totalDamage);
+//        if ((enemy.getAbilityAffectedBy() == null)
+//                || (enemy.getAbilityAffectedBy().getCaster() != this)
+//                || (!addRaceModifier)) {
+//            System.out.println("asdasdasdasdasda");
+
+        if (addRaceModifier) {
+            totalDamage += this.getAbilityOverTime(enemy, location).getTotalDamage();
+        } else {
+//                System.out.println("total inainte  " + totalDamage);
+            totalDamage += this.getAbilityOverTime(enemy, location).getDamageWithoutRaceModifier();
+//                System.out.println("total dupa " + totalDamage);
+//            }
+        }
+//        System.out.println(totalDamage);
+//        System.out.println("----");
+//        Ability execute =
         return new Ability("Execute", Math.round(totalDamage), damageWithoutRaceModifier);
+    }
+
+    @Override
+    public void doRoundEndingRoutine() {
+        super.doRoundEndingRoutine();
+        // do nothing
+    }
+
+    @Override
+    public float getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location) {
+//        return this.computeDamageAgainst(enemy, location, false).getDamageWithoutRaceModifier();
+        Ability ability = this.computeDamageAgainst(enemy, location, false);
+//        if (ability != null) {
+//            System.out.println(ability.getDamage() + " de aicea nane");
+        return ability.getDamage();
+//        }
+//        return 0.0f;
     }
 
     @Override
@@ -119,8 +156,12 @@ public class Knight extends GameCharacter {
                 break;
         }
         slam.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-        enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location, true);
+//        enemy.takeDamage(new Ability("Slam", slam.getOvertimeDamage(), damageWithoutRaceModifier),
+//                this, location, true);
+//        slam.setOvertimeDamage(0);
+        slam.setTotalDamage(slam.getOvertimeDamage());
+        slam.setFirstRound(false);
+        slam.setOvertimeDamage(0);
         return slam;
     }
 }

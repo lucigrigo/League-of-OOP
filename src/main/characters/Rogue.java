@@ -8,12 +8,14 @@ import main.gameplay.OverTimeAbility;
 public class Rogue extends GameCharacter {
 
     private int backstabCount;
+    private boolean appliedBackstabThisRound;
 
     public Rogue(final int initCol,
                  final int initLin) {
         super(initCol, initLin, Constants.getInstance().getRogueInitialHealth(), 0,
                 CharacterType.ROGUE, "R");
         this.backstabCount = 0;
+        this.appliedBackstabThisRound = false;
     }
 
     private float getBackstabDamage() {
@@ -42,6 +44,7 @@ public class Rogue extends GameCharacter {
         }
 //        System.out.println("----- " + paralysis.getOvertimeDamage());
         int damageWithoutRaceModifier = paralysis.getOvertimeDamage();
+        paralysis.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
         switch (enemy.getType()) {
             case ROGUE:
                 paralysis.setOvertimeDamage(Math.round(paralysis.getOvertimeDamage()
@@ -66,9 +69,8 @@ public class Rogue extends GameCharacter {
             default:
                 break;
         }
-        paralysis.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-        enemy.takeDamage(new Ability("Paralysis", paralysis.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location, true);
+//        enemy.takeDamage(new Ability("Paralysis", paralysis.getOvertimeDamage(), damageWithoutRaceModifier),
+//                this, location, true);
         return paralysis;
     }
 
@@ -77,6 +79,10 @@ public class Rogue extends GameCharacter {
         return Constants.getInstance().getRogueInitialHealth()
                 + Constants.getInstance().getRogueHealthRatio()
                 * this.getLevel();
+    }
+
+    public void increaseBackstabCount() {
+        this.backstabCount++;
     }
 
     @Override
@@ -91,11 +97,14 @@ public class Rogue extends GameCharacter {
                     Constants.getInstance().getRogueBackstabCriticalHitOccurence() == 0) {
                 System.out.println("Critical damage de la rogue -------------");
                 totalDamage *= Constants.getInstance().getRogueBackstabCriticalHitRatio();
-                this.backstabCount++;
             }
-//            } else {
-//                this.backstabCount++;
+//                if (!addRaceModifier) {
+////                    this.backstabCount++;
+//                }
 //            }
+////            } else {
+////                this.backstabCount++;
+////            }
             totalDamage += totalDamage * Constants.getInstance().getRogueWoodsBonus() / 100f;
         }
 //        totalDamage = Math.round(totalDamage);
@@ -122,7 +131,45 @@ public class Rogue extends GameCharacter {
                     break;
             }
         }
-//        totalDamage += this.getAbilityOverTime(enemy, location).getOvertimeDamage();
-        return new Ability("Backstab", Math.round(totalDamage), damageWithoutRaceModifier);
+//        totalDamage += this.getAbilityOverTime(enemy, location).get();
+//        if (((enemy.getAbilityAffectedBy() == null)
+//                || (enemy.getAbilityAffectedBy().getCaster() != this))
+//                || (!addRaceModifier)) {
+////                && (!addRaceModifier)) {
+        if (addRaceModifier) {
+//                System.out.println("aici?");
+            totalDamage += this.getAbilityOverTime(enemy, location).getOvertimeDamage();
+        } else {
+//            System.out.println("total inainte  " + totalDamage);
+            totalDamage += this.getAbilityOverTime(enemy, location).getDamageWithoutRaceModifier();
+//            System.out.println("total dupa " + totalDamage);
+        }
+//        }
+//        System.out.println("dmg de la backstab? " + totalDamage);
+
+        return new Ability("Backstab", Math.round(totalDamage), damageWithoutRaceModifier, this);
+    }
+
+    @Override
+    public void doRoundEndingRoutine() {
+        super.doRoundEndingRoutine();
+        if (appliedBackstabThisRound) {
+            this.backstabCount++;
+            appliedBackstabThisRound = false;
+        }
+    }
+
+    public void hasAppliedBackStab() {
+        this.appliedBackstabThisRound = true;
+    }
+
+    @Override
+    public float getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location) {
+        Ability ability = this.computeDamageAgainst(enemy, location, false);
+//        if (ability != null) {
+//        System.out.println("de unde ma ? " + ability.getDamage());
+        return ability.getDamage();
+//        }
+//        return 0.0f;
     }
 }

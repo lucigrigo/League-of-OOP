@@ -25,15 +25,15 @@ public class Pyromancer extends GameCharacter {
                                         final LocationType location,
                                         final boolean addRaceModifier) {
 
-        int totalDamage = Constants.getInstance().getPyromancerFireblastBaseDamage()
+        float totalDamage = Constants.getInstance().getPyromancerFireblastBaseDamage()
                 + Constants.getInstance().getPyromancerFireblastLevelScalingBaseDamage()
                 * this.getLevel();
 //        System.out.println(totalDamage);
         if (location == LocationType.VOLCANIC) {
-            totalDamage = Math.round(totalDamage
+            totalDamage = totalDamage
                     + totalDamage
                     * Constants.getInstance().getPyromancerVolcanicBonus()
-                    / 100f);
+                    / 100f;
         }
 //        System.out.println(totalDamage);
         int damageWithoutRaceModifier = Math.round(totalDamage);
@@ -55,21 +55,47 @@ public class Pyromancer extends GameCharacter {
                 default:
                     break;
             }
-            totalDamage = Math.round(totalDamage
+            totalDamage = totalDamage
                     + totalDamage
                     * raceBonus
-                    / 100f);
+                    / 100f;
+        }
+//        } else {
+////            totalDamage = Math.round(totalDamage);
+//        }
+        if (addRaceModifier) {
+//                System.out.println("aici?");
+            totalDamage += this.getAbilityOverTime(enemy, location).getInstantDamage();
         } else {
-            totalDamage = Math.round(totalDamage);
+//            System.out.println("total inainte  " + totalDamage);
+            totalDamage += this.getAbilityOverTime(enemy, location).getDamageWithoutRaceModifier();
+//            System.out.println("total dupa " + totalDamage);
         }
 //        System.out.println(totalDamage);
-        return new Ability("Fireblast", totalDamage, damageWithoutRaceModifier);
+        return new Ability("Fireblast", Math.round(totalDamage), damageWithoutRaceModifier);
+    }
+
+    @Override
+    public void doRoundEndingRoutine() {
+        super.doRoundEndingRoutine();
+        // do nothing
+    }
+
+    @Override
+    public float getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location) {
+//        return this.computeDamageAgainst(enemy, location, false).getDamageWithoutRaceModifier();
+        Ability ability = this.computeDamageAgainst(enemy, location, false);
+//        if (ability != null) {
+//            System.out.println(ability.getDamage() + " de aicea nane");
+        return ability.getDamage();
+//        }
+//        return 0.0f;
     }
 
     @Override
     public OverTimeAbility getAbilityOverTime(GameCharacter enemy, LocationType location) {
         OverTimeAbility ignite = new OverTimeAbility(this, enemy, "Ignite", location);
-        ignite.setDuration(3);
+        ignite.setDuration(1);
         ignite.setAbilityToIncapacitate(false);
         int igniteInstantDamage = Constants.getInstance().getPyromancerIgniteBaseDamage()
                 + Constants.getInstance().getPyromancerIgniteLevelScalingBaseDamage()
@@ -115,8 +141,8 @@ public class Pyromancer extends GameCharacter {
         ignite.setInstantDamage(igniteInstantDamage);
         ignite.setOvertimeDamage(igniteSuccesiveDamage);
         ignite.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
-                this, location, true);
+//        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
+//                this, location, true);
         return ignite;
     }
 }

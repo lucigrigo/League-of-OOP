@@ -136,8 +136,8 @@ public class IOAssistant {
                 sb.append(" ");
                 if (character.isDead()) {
                     sb.append("dead");
-                    sb.append("\n");
                     System.out.println(sb.toString());
+                    sb.append("\n");
                     fileWriter.write(sb.toString());
                     continue;
                 }
@@ -150,8 +150,9 @@ public class IOAssistant {
                 sb.append(character.getRow());
                 sb.append(" ");
                 sb.append(character.getColon());
-                sb.append("\n");
                 System.out.println(sb.toString());
+
+                sb.append("\n");
                 fileWriter.write(sb.toString());
             }
             fileWriter.flush();

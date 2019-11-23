@@ -1,8 +1,6 @@
 package main.gameplay;
 
-import main.characters.CharacterType;
 import main.characters.GameCharacter;
-import main.data.Constants;
 import main.data.LocationType;
 
 public final class OverTimeAbility {
@@ -17,6 +15,7 @@ public final class OverTimeAbility {
     private LocationType location;
     private String name;
     private int damageWithoutRaceModifier;
+    private boolean firstRound;
 
     public OverTimeAbility(final GameCharacter caster,
                            final GameCharacter victim,
@@ -32,15 +31,16 @@ public final class OverTimeAbility {
         this.location = location;
         this.name = name;
         this.damageWithoutRaceModifier = 0;
+        this.firstRound = true;
     }
 
     public int getOvertimeDamage() {
-        if (caster.getType() == CharacterType.PYROMANCER) {
-            if (duration == Constants.getInstance().getPyromancerIgniteInitialDuration()) {
-                return instantDamage;
-            }
-            this.setDamageWithoutRaceModifier(overtimeDamage);
-        }
+//        if (caster.getType() == CharacterType.PYROMANCER) {
+//            if (duration == Constants.getInstance().getPyromancerIgniteInitialDuration()) {
+//                return instantDamage;
+//            }
+//            this.setDamageWithoutRaceModifier(overtimeDamage);
+//        }
         return overtimeDamage;
     }
 
@@ -122,5 +122,13 @@ public final class OverTimeAbility {
 
     public LocationType getLocation() {
         return location;
+    }
+
+    public boolean isFirstRound() {
+        return firstRound;
+    }
+
+    public void setFirstRound(boolean firstRound) {
+        this.firstRound = firstRound;
     }
 }

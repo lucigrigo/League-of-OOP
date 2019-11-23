@@ -5,18 +5,15 @@ import main.data.LocationType;
 import main.gameplay.Ability;
 import main.gameplay.OverTimeAbility;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Wizard extends GameCharacter {
 
-    private List<Ability> abilitiesTakenThisRound;
+//    private List<Ability> abilitiesTakenThisRound;
 
     public Wizard(final int initCol,
                   final int initLin) {
         super(initCol, initLin, Constants.getInstance().getWizardInitialHealth(), 0,
                 CharacterType.WIZARD, "W");
-        this.abilitiesTakenThisRound = new ArrayList<>();
+//        this.abilitiesTakenThisRound = new ArrayList<>();
     }
 
     @Override
@@ -66,9 +63,21 @@ public class Wizard extends GameCharacter {
 //        System.out.println("Wizard da damage de :" + Math.round(percentageHealth
 //                * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
 //                * enemy.getMaxHealth(), enemy.getHealth())));
-        return new Ability("Drain", Math.round(percentageHealth
+        float totalDamage = percentageHealth
                 * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
-                * enemy.getMaxHealth(), enemy.getHealth())), 0);
+                * enemy.getMaxHealth(), enemy.getHealth());
+        float enemyDamage = enemy.getDamageWithoutRaceModifier(this, location);
+//        System.out.println("si ceas vrei ? " + enemyDamage);
+//        totalDamage = Math.round(totalDamage);
+        totalDamage += getDeflectDamage(enemy, location, enemyDamage);
+//        System.out.println(totalDamage);
+//        System.out.println("~~~~~~~");
+//        totalDamage += enemyDamage;
+//        System.out.println("asdajndaksjda " + totalDamage);
+        Ability drainAndDeflect = new Ability("Drain", Math.round(totalDamage),
+                0, this);
+//        drainAndDeflect.setCaster(this);
+        return drainAndDeflect;
 
     }
 
@@ -78,87 +87,75 @@ public class Wizard extends GameCharacter {
         return new OverTimeAbility(this, enemy, "None", location);
     }
 
-    @Override
-    public void deflectDamage() {
-//        if (this.isDead()) {
-//            return;
-//        }
-        float totalDamage = 0.0f;
-        GameCharacter enemy = null;
-        LocationType location = null;
-        for (Ability ability : this.abilitiesTakenThisRound) {
-//            System.out.println(ability.getDamageWithoutRaceModifier());
-            enemy = ability.getCaster();
-            if ((enemy != null)
-                    && (enemy.getType() != CharacterType.WIZARD)) {
-                location = ability.getLocation();
-                float damagePercent = (Constants.getInstance().getWizardDeflectBasePercentage() +
-                        Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
-                                * this.getLevel())
-                        / 100f;
-                damagePercent = Math.min(0.7f, damagePercent);
-                if (location == LocationType.DESERT) {
-                    damagePercent = damagePercent
-                            + damagePercent
-                            * Constants.getInstance().getWizardDesertBonus()
-                            / 100f;
-                }
+    private float getDeflectDamage(final GameCharacter enemy,
+                                   final LocationType location,
+                                   final float damage) {
+//        System.out.println("damage primit de wizard " + damage);
+//        float totalDamage = 0.0f;
+        float damagePercent = ((float) Constants.getInstance().getWizardDeflectBasePercentage() +
+                (float) Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
+                        * (float) this.getLevel())
+                / (float) 100;
+        damagePercent = Math.min((float) 0.7, (float) damagePercent);
+
+        if (location == LocationType.DESERT) {
+            damagePercent = (float) damagePercent
+                    + (float) damagePercent
+                    * (float) Constants.getInstance().getWizardDesertBonus()
+                    / (float) 100.0;
+        }
+//        System.out.println("percentaj " + damagePercent);
 //                int abilityDeflectDamage = Math.round(damagePercent
 //                        * ability.getDamageWithoutRaceModifier());
-                float abilityDeflectDamage = damagePercent
-                        * ability.getDamageWithoutRaceModifier();
-                float raceModifier = 0.0f;
+//        if(ability == null) {
+//            System.out.println("ce caca se intampla?");
+//        }
+        float abilityDeflectDamage = (float) damagePercent
+                * (float) damage;
+        float raceModifier = (float) 0;
 
-                switch (enemy.getType()) {
-                    case WIZARD:
-                        // nu se ajunge aici niciodata
-                        break;
-                    case KNIGHT:
-                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusKnight();
-                        break;
-                    case PYROMANCER:
-                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusPyromancer();
-                        break;
-                    case ROGUE:
-                        raceModifier = Constants.getInstance().getWizardDeflectBonusVersusRogue();
-                        break;
-                    default:
-                        break;
-                }
-                raceModifier /= 100f;
+        switch (enemy.getType()) {
+            case WIZARD:
+                // nu se ajunge aici niciodata
+                break;
+            case KNIGHT:
+                raceModifier = (float) Constants.getInstance().getWizardDeflectBonusVersusKnight();
+                break;
+            case PYROMANCER:
+                raceModifier = (float) Constants.getInstance().getWizardDeflectBonusVersusPyromancer();
+                break;
+            case ROGUE:
+                raceModifier = (float) Constants.getInstance().getWizardDeflectBonusVersusRogue();
+                break;
+            default:
+                break;
+        }
+        raceModifier /= (float) 100.0;
 //                abilityDeflectDamage = Math.round(abilityDeflectDamage
 //                        + raceModifier
 //                        * abilityDeflectDamage);
-                abilityDeflectDamage = abilityDeflectDamage
-                        + raceModifier
-                        * abilityDeflectDamage;
-                totalDamage += Math.round(abilityDeflectDamage);
-//                totalDamage += abilityDeflectDamage;
-            }
-        }
-        if (enemy != null) {
-            System.out.println("Damage de la deflect " + totalDamage);
+//        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta");
 
-            enemy.takeDamage(new Ability("Deflect", Math.round(totalDamage),
-                    0), this, location, true);
-        }
-        this.abilitiesTakenThisRound.clear();
-//        }
+        abilityDeflectDamage = Math.round((float) abilityDeflectDamage
+                + (float) raceModifier
+                * (float) abilityDeflectDamage);
+//        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta "
+//                + Math.round((float) abilityDeflectDamage));
+//        float x = (float) 175 * (float) 1.3;
+//        System.out.println(Math.round(x));
+//        totalDamage += Math.round(abilityDeflectDamage);
+//                totalDamage += abilityDeflectDamage;
+        return (float) abilityDeflectDamage;
     }
 
     @Override
-    public void takeDamage(final Ability ability,
-                           final GameCharacter enemy,
-                           final LocationType location,
-                           final boolean isOvertimeAbility) {
-        super.takeDamage(ability, enemy, location, isOvertimeAbility);
-        if (ability != null) {
-//                && !isOvertimeAbility) {
-            Ability abilityTaken = new Ability(ability.getName(), ability.getDamage(),
-                    ability.getDamageWithoutRaceModifier());
-            abilityTaken.setLocation(location);
-            abilityTaken.setCaster(enemy);
-            this.abilitiesTakenThisRound.add(abilityTaken);
-        }
+    public void doRoundEndingRoutine() {
+        super.doRoundEndingRoutine();
+        // do nothing
+    }
+
+    @Override
+    public float getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location) {
+        return 0.0f;
     }
 }
