@@ -43,43 +43,23 @@ public final class Game {
     private void manageFight(final GameCharacter character1,
                              final GameCharacter character2,
                              final LocationType location) {
-
-//        if (character1.isDead() || character2.isDead()) {
-//            return;
-//        }
-        if ((character1.getAbilityAffectedBy() != null
-                && (character1.getAbilityAffectedBy().getOvertimeDamage() >= character1.getHealth())
-                && (character1.getAbilityAffectedBy().getCaster() != character2))
-                || (character2.getAbilityAffectedBy() != null
-                && (character2.getAbilityAffectedBy().getOvertimeDamage() >= character1.getHealth())
-                && (character2.getAbilityAffectedBy().getCaster() != character1))) {
-            return;
-        }
-
-
-//        System.out.println("sper ca aici");
-
-//        if(character1.isDead() || character2.isDead()) {
-//            return;
-//        }
         Ability firstCharacterAbility = character1.computeDamageAgainst(character2, location, true);
         Ability secondCharacterAbility = character2.computeDamageAgainst(character1, location, true);
         character2.takeDamage(firstCharacterAbility, character1, location, false);
-//        if(character2.isDead()) {
-//            return;
-//        }
         character1.takeDamage(secondCharacterAbility, character2, location, false);
 
         if ((character2.getAbilityAffectedBy() == null)
                 || (character2.getAbilityAffectedBy().getCaster() != character1)) {
             OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
             character2.setAbilityAffectedBy(overTimeAbility1);
+//            System.out.println(character2.getName() + " este afectat DoT de " + character2.getAbilityAffectedBy().getName());
 //            System.out.println("aicea?");
         }
         if ((character1.getAbilityAffectedBy() == null)
                 || (character1.getAbilityAffectedBy().getCaster() != character2)) {
             OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
             character1.setAbilityAffectedBy(overTimeAbility2);
+//            System.out.println(character1.getName() + " este afectat DoT de " + character1.getAbilityAffectedBy().getName());
 //            System.out.println("aiceas?");
         }
     }
@@ -164,8 +144,12 @@ public final class Game {
         int currentRound = 0;
         while (currentRound < maxRounds) {
             System.out.println("======= Runda " + currentRound + "=======");
-            applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
 
+            applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
+            for (GameCharacter character : data.getCharacters()) {
+                System.out.println("\t" + character.getName() + " " + character.getHealth() + " " + character.getRow()
+                        + " " + character.getColon());
+            }
             applyOverTimeDamage(data.getCharacters());
             this.currentRound = currentRound;
 
@@ -176,10 +160,7 @@ public final class Game {
 //            checkForOverTimeAbilitiesEnd(data.getCharacters());
             currentRound++;
             System.out.println("HP la finalul rundei " + currentRound);
-            for (GameCharacter character : data.getCharacters()) {
-                System.out.println("\t" + character.getName() + " " + character.getHealth() + " " + character.getRow()
-                        + " " + character.getColon());
-            }
+
             if (checkForOnlySurvivor(data.getCharacters())) {
                 break;
             }

@@ -115,7 +115,7 @@ public class Knight extends GameCharacter {
 
         OverTimeAbility slam = new OverTimeAbility(this, enemy, "Slam", location);
         slam.setAbilityToIncapacitate(true);
-        slam.setDuration(1);
+        slam.setDuration(2);
         slam.setCaster(this);
         slam.setOvertimeDamage(Constants.getInstance().getKnightSlamBaseDamage()
                 + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()

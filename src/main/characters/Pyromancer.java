@@ -65,11 +65,13 @@ public class Pyromancer extends GameCharacter {
 //        }
         if (addRaceModifier) {
 //                System.out.println("aici?");
+//            System.out.println("total inainte  " + totalDamage);
             totalDamage += this.getAbilityOverTime(enemy, location).getInstantDamage();
+//            System.out.println("total inainte  " + totalDamage);
         } else {
 //            System.out.println("total inainte  " + totalDamage);
             totalDamage += this.getAbilityOverTime(enemy, location).getDamageWithoutRaceModifier();
-//            System.out.println("total dupa " + totalDamage);
+//            System.out.println("total inainte  " + totalDamage);
         }
 //        System.out.println(totalDamage);
         return new Ability("Fireblast", Math.round(totalDamage), damageWithoutRaceModifier);
@@ -97,23 +99,23 @@ public class Pyromancer extends GameCharacter {
         OverTimeAbility ignite = new OverTimeAbility(this, enemy, "Ignite", location);
         ignite.setDuration(1);
         ignite.setAbilityToIncapacitate(false);
-        int igniteInstantDamage = Constants.getInstance().getPyromancerIgniteBaseDamage()
+        float igniteInstantDamage = Constants.getInstance().getPyromancerIgniteBaseDamage()
                 + Constants.getInstance().getPyromancerIgniteLevelScalingBaseDamage()
                 * this.getLevel();
-        int igniteSuccesiveDamage = Constants.getInstance().getPyromancerIgniteRoundDamage()
+        float igniteSuccesiveDamage = Constants.getInstance().getPyromancerIgniteRoundDamage()
                 + Constants.getInstance().getPyromancerIgniteSuccessiveRoundsNumber()
                 * this.getLevel();
         if (location == LocationType.VOLCANIC) {
-            igniteInstantDamage = Math.round(igniteInstantDamage
+            igniteInstantDamage = igniteInstantDamage
                     + igniteInstantDamage
                     * Constants.getInstance().getPyromancerVolcanicBonus()
-                    / 100f);
-            igniteSuccesiveDamage = Math.round(igniteSuccesiveDamage
+                    / 100f;
+            igniteSuccesiveDamage = igniteSuccesiveDamage
                     + igniteSuccesiveDamage
                     * Constants.getInstance().getPyromancerVolcanicBonus()
-                    / 100f);
+                    / 100f;
         }
-        int damageWithoutRaceModifier = igniteInstantDamage;
+        int damageWithoutRaceModifier = Math.round(igniteInstantDamage);
         float raceBonus = 0.0f;
         switch (enemy.getType()) {
             case KNIGHT:
@@ -132,14 +134,14 @@ public class Pyromancer extends GameCharacter {
                 break;
         }
         raceBonus /= 100f;
-        igniteInstantDamage = Math.round(igniteInstantDamage
+        igniteInstantDamage = igniteInstantDamage
                 + igniteInstantDamage
-                * raceBonus);
-        igniteSuccesiveDamage = Math.round(igniteSuccesiveDamage
+                * raceBonus;
+        igniteSuccesiveDamage = igniteSuccesiveDamage
                 + igniteSuccesiveDamage
-                * raceBonus);
-        ignite.setInstantDamage(igniteInstantDamage);
-        ignite.setOvertimeDamage(igniteSuccesiveDamage);
+                * raceBonus;
+        ignite.setInstantDamage(Math.round(igniteInstantDamage));
+        ignite.setOvertimeDamage(Math.round(igniteSuccesiveDamage));
         ignite.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
 //        enemy.takeDamage(new Ability("Ignite", ignite.getOvertimeDamage(), damageWithoutRaceModifier),
 //                this, location, true);

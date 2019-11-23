@@ -70,6 +70,14 @@ public final class OverTimeAbility {
 
     public void roundPassed() {
         this.duration--;
+        if (this.duration == 0) {
+            this.instantDamage = 0;
+            this.overtimeDamage = 0;
+            this.duration = 0;
+            this.totalDamage = 0;
+            this.abilityToIncapacitate = false;
+            this.damageWithoutRaceModifier = 0;
+        }
     }
 
     public void setTotalDamage(final int totalDamage) {

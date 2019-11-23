@@ -41,35 +41,35 @@ public class Wizard extends GameCharacter {
             float raceBonus = 0.0f;
             switch (enemy.getType()) {
                 case WIZARD:
-                    raceBonus = Constants.getInstance().getWizardDrainBonusVersusWizard();
+                    raceBonus = (float) Constants.getInstance().getWizardDrainBonusVersusWizard();
                     break;
                 case ROGUE:
-                    raceBonus = Constants.getInstance().getWizardDrainBonusVersusRogue();
+                    raceBonus = (float) Constants.getInstance().getWizardDrainBonusVersusRogue();
                     break;
                 case PYROMANCER:
-                    raceBonus = Constants.getInstance().getWizardDrainBonusVersusPyromancer();
+                    raceBonus = (float) Constants.getInstance().getWizardDrainBonusVersusPyromancer();
                     break;
                 case KNIGHT:
-                    raceBonus = Constants.getInstance().getWizardDrainBonusVersusKnight();
+                    raceBonus = (float) Constants.getInstance().getWizardDrainBonusVersusKnight();
                     break;
                 default:
                     break;
             }
-            raceBonus /= 100f;
-            percentageHealth = (percentageHealth
-                    + percentageHealth
-                    * raceBonus);
+            raceBonus /= (float) 100f;
+            percentageHealth = (float) ((float) percentageHealth
+                    + (float) percentageHealth
+                    * (float) raceBonus);
         }
 //        System.out.println("Wizard da damage de :" + Math.round(percentageHealth
 //                * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
 //                * enemy.getMaxHealth(), enemy.getHealth())));
-        float totalDamage = percentageHealth
+        float totalDamage = (float) percentageHealth
                 * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
                 * enemy.getMaxHealth(), enemy.getHealth());
-        float enemyDamage = enemy.getDamageWithoutRaceModifier(this, location);
+        float enemyDamage = (float) enemy.getDamageWithoutRaceModifier(this, location);
 //        System.out.println("si ceas vrei ? " + enemyDamage);
 //        totalDamage = Math.round(totalDamage);
-        totalDamage += getDeflectDamage(enemy, location, enemyDamage);
+        totalDamage += (float) Math.round(getDeflectDamage(enemy, location, enemyDamage));
 //        System.out.println(totalDamage);
 //        System.out.println("~~~~~~~");
 //        totalDamage += enemyDamage;
@@ -95,14 +95,14 @@ public class Wizard extends GameCharacter {
         float damagePercent = ((float) Constants.getInstance().getWizardDeflectBasePercentage() +
                 (float) Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
                         * (float) this.getLevel())
-                / (float) 100;
-        damagePercent = Math.min((float) 0.7, (float) damagePercent);
+                / (float) 100f;
+        damagePercent = Math.min((float) 0.7f, (float) damagePercent);
 
         if (location == LocationType.DESERT) {
             damagePercent = (float) damagePercent
                     + (float) damagePercent
                     * (float) Constants.getInstance().getWizardDesertBonus()
-                    / (float) 100.0;
+                    / (float) 100f;
         }
 //        System.out.println("percentaj " + damagePercent);
 //                int abilityDeflectDamage = Math.round(damagePercent
@@ -112,7 +112,7 @@ public class Wizard extends GameCharacter {
 //        }
         float abilityDeflectDamage = (float) damagePercent
                 * (float) damage;
-        float raceModifier = (float) 0;
+        float raceModifier = (float) 0f;
 
         switch (enemy.getType()) {
             case WIZARD:
@@ -136,16 +136,16 @@ public class Wizard extends GameCharacter {
 //                        * abilityDeflectDamage);
 //        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta");
 
-        abilityDeflectDamage = Math.round((float) abilityDeflectDamage
+        abilityDeflectDamage = (float) abilityDeflectDamage
                 + (float) raceModifier
-                * (float) abilityDeflectDamage);
+                * (float) abilityDeflectDamage;
 //        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta "
 //                + Math.round((float) abilityDeflectDamage));
 //        float x = (float) 175 * (float) 1.3;
 //        System.out.println(Math.round(x));
 //        totalDamage += Math.round(abilityDeflectDamage);
 //                totalDamage += abilityDeflectDamage;
-        return (float) abilityDeflectDamage;
+        return (float) Math.round(abilityDeflectDamage);
     }
 
     @Override
