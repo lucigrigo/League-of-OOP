@@ -96,13 +96,14 @@ public class Wizard extends GameCharacter {
                 (float) Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
                         * (float) this.getLevel())
                 / (float) 100;
+//        System.out.println(damagePercent);
         damagePercent = Math.min((float) 0.7, (float) damagePercent);
 
         if (location == LocationType.DESERT) {
             damagePercent = (float) damagePercent
                     + (float) damagePercent
                     * (float) Constants.getInstance().getWizardDesertBonus()
-                    / (float) 100.0;
+                    * (float) 0.01f;
         }
 //        System.out.println("percentaj " + damagePercent);
 //                int abilityDeflectDamage = Math.round(damagePercent
@@ -112,7 +113,7 @@ public class Wizard extends GameCharacter {
 //        }
         float abilityDeflectDamage = (float) damagePercent
                 * (float) damage;
-        float raceModifier = (float) 0;
+        float raceModifier = (float) 0f;
 
         switch (enemy.getType()) {
             case WIZARD:
@@ -130,22 +131,23 @@ public class Wizard extends GameCharacter {
             default:
                 break;
         }
-        raceModifier /= (float) 100.0;
+        raceModifier *= (float) 0.01f;
 //                abilityDeflectDamage = Math.round(abilityDeflectDamage
 //                        + raceModifier
 //                        * abilityDeflectDamage);
 //        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta");
-
-        abilityDeflectDamage = Math.round((float) abilityDeflectDamage
-                + (float) raceModifier
-                * (float) abilityDeflectDamage);
+        abilityDeflectDamage = (1f + raceModifier)
+                * abilityDeflectDamage;
+//        abilityDeflectDamage = Math.round((float) abilityDeflectDamage
+//                + (float) raceModifier
+//                * (float) abilityDeflectDamage);
 //        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta "
 //                + Math.round((float) abilityDeflectDamage));
 //        float x = (float) 175 * (float) 1.3;
 //        System.out.println(Math.round(x));
 //        totalDamage += Math.round(abilityDeflectDamage);
 //                totalDamage += abilityDeflectDamage;
-        return (float) abilityDeflectDamage;
+        return Math.round(abilityDeflectDamage);
     }
 
     @Override
