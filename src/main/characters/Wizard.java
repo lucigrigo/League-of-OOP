@@ -30,12 +30,12 @@ public class Wizard extends GameCharacter {
         float percentageHealth = (Constants.getInstance().getWizardDrainBasePercentage()
                 + Constants.getInstance().getWizardDrainLevelScalingPercentage()
                 * this.getLevel())
-                / 100f;
+                * 0.01f;
         if (location == LocationType.DESERT) {
             percentageHealth = percentageHealth
                     + Constants.getInstance().getWizardDesertBonus()
                     * percentageHealth
-                    / 100f;
+                    * 0.01f;
         }
         if (addRaceModifier) {
             float raceBonus = 0.0f;
@@ -55,10 +55,13 @@ public class Wizard extends GameCharacter {
                 default:
                     break;
             }
-            raceBonus /= (float) 100f;
-            percentageHealth = (float) ((float) percentageHealth
-                    + (float) percentageHealth
-                    * (float) raceBonus);
+            raceBonus *= 0.01f;
+//            percentageHealth = (float) ((float) percentageHealth
+//                    + (float) percentageHealth
+//                    * (float) raceBonus);
+            percentageHealth = (1f
+                    + raceBonus)
+                    * percentageHealth;
         }
 //        System.out.println("Wizard da damage de :" + Math.round(percentageHealth
 //                * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
@@ -66,14 +69,16 @@ public class Wizard extends GameCharacter {
         float totalDamage = (float) percentageHealth
                 * Math.min(Constants.getInstance().getWizardDrainHealthPercentage()
                 * enemy.getMaxHealth(), enemy.getHealth());
-        float enemyDamage = (float) enemy.getDamageWithoutRaceModifier(this, location);
+        totalDamage = Math.round(totalDamage);
+        float enemyDamage = enemy.getDamageWithoutRaceModifier(this, location);
 //        System.out.println("si ceas vrei ? " + enemyDamage);
 //        totalDamage = Math.round(totalDamage);
+//        System.out.println("asdajndaksjda " + totalDamage);
+
         totalDamage += (float) Math.round(getDeflectDamage(enemy, location, enemyDamage));
 //        System.out.println(totalDamage);
 //        System.out.println("~~~~~~~");
 //        totalDamage += enemyDamage;
-//        System.out.println("asdajndaksjda " + totalDamage);
         Ability drainAndDeflect = new Ability("Drain", Math.round(totalDamage),
                 0, this);
 //        drainAndDeflect.setCaster(this);
@@ -92,17 +97,21 @@ public class Wizard extends GameCharacter {
                                    final float damage) {
 //        System.out.println("damage primit de wizard " + damage);
 //        float totalDamage = 0.0f;
-        float damagePercent = ((float) Constants.getInstance().getWizardDeflectBasePercentage() +
-                (float) Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
-                        * (float) this.getLevel())
-                / (float) 100f;
+        float damagePercent = ((float) Constants.getInstance().getWizardDeflectBasePercentage()
+                + (float) Constants.getInstance().getWizardDeflectLevelScalingBasePercentage()
+                * (float) this.getLevel())
+                * (float) 0.01f;
         damagePercent = Math.min((float) 0.7f, (float) damagePercent);
 
         if (location == LocationType.DESERT) {
-            damagePercent = (float) damagePercent
-                    + (float) damagePercent
-                    * (float) Constants.getInstance().getWizardDesertBonus()
-                    * (float) 0.01f;
+//            damagePercent = (float) damagePercent
+//                    + (float) damagePercent
+//                    * (float) Constants.getInstance().getWizardDesertBonus()
+//                    * (float) 0.01f;
+            damagePercent = (1f
+                    + Constants.getInstance().getWizardDesertBonus()
+                    * 0.01f)
+                    * damagePercent;
         }
 //        System.out.println("percentaj " + damagePercent);
 //                int abilityDeflectDamage = Math.round(damagePercent
@@ -113,7 +122,6 @@ public class Wizard extends GameCharacter {
         float abilityDeflectDamage = (float) damagePercent
                 * (float) damage;
         float raceModifier = (float) 0f;
-
         switch (enemy.getType()) {
             case WIZARD:
                 // nu se ajunge aici niciodata
@@ -135,7 +143,8 @@ public class Wizard extends GameCharacter {
 //                        + raceModifier
 //                        * abilityDeflectDamage);
 //        System.out.println(abilityDeflectDamage + " hai cu doamne agiuta");
-        abilityDeflectDamage = (1f + raceModifier)
+        abilityDeflectDamage = (1f
+                + raceModifier)
                 * abilityDeflectDamage;
 //        abilityDeflectDamage = Math.round((float) abilityDeflectDamage
 //                + (float) raceModifier

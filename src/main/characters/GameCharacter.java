@@ -123,17 +123,10 @@ public abstract class GameCharacter {
     public abstract OverTimeAbility getAbilityOverTime(GameCharacter enemy,
                                                        LocationType location);
 
-//    public void deflectDamage() {
-//        // is implemented in the Wizard class
-////        return 0.0f;
-//    }
-
     public abstract int getMaxHealth();
 
     public abstract float getDamageWithoutRaceModifier(GameCharacter enemy,
                                                        LocationType location);
-
-//    public abstract int getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location);
 
     public final OverTimeAbility getAbilityAffectedBy() {
         return abilityAffectedBy;
@@ -147,8 +140,6 @@ public abstract class GameCharacter {
                            final GameCharacter enemy,
                            final LocationType location,
                            final boolean isOvertimeAbility) {
-//        System.out.println("vr sa ma fut cu edi " + ability.getDamageWithoutRaceModifier());
-//        if (!enemy.isDead()) {
 
         if (ability != null) {
             System.out.println(this.name + " are hp " + this.getHealth() + " si ia dmg "
@@ -160,15 +151,12 @@ public abstract class GameCharacter {
                         + " la linia " + ability.getCaster().getRow()
                         + " si coloana " + ability.getCaster().getColon());
             }
-
             this.currentHealth -= ability.getDamage();
-//        }
             if (this.currentHealth <= 0
                     && !isOvertimeAbility) {
                 enemy.setHasMadeAKillThisRound(true);
                 enemy.fightWon(this.getLevel());
                 this.hasDied();
-//            this.setAbilityAffectedBy(null);
             }
         }
 
@@ -185,9 +173,6 @@ public abstract class GameCharacter {
             this.checkForLevelUp();
             this.hasMadeAKillThisRound = false;
         }
-//        System.out.println(this.getAbilityAffectedBy().isFirstRound() + " adsdasdsadas");
-
-
     }
 
     public void fightWon(final int loserLevel) {
@@ -196,9 +181,7 @@ public abstract class GameCharacter {
                 + Math.max(0, Constants.getInstance().getWinMagic200()
                 - (this.getLevel() - loserLevel)
                 * Constants.getInstance().getWinMagic40());
-//                System.out.println("experienta " + this.currentExperience);
-
-//        this.checkForLevelUp();
+//        checkForLevelUp();
     }
 
     public void checkForLevelUp() {
@@ -207,7 +190,6 @@ public abstract class GameCharacter {
                 + this.getLevel()
                 * Constants.getInstance().getExperienceScaling())
                 && !this.isDead()) {
-//                && this.hasMadeAKillThisRound) {
             this.level = (this.currentExperience
                     - Constants.getInstance().getExperienceBase())
                     / Constants.getInstance().getExperienceScaling() + 1;
