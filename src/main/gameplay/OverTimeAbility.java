@@ -15,7 +15,8 @@ public final class OverTimeAbility {
     private LocationType location;
     private String name;
     private int damageWithoutRaceModifier;
-    private boolean firstRound;
+    //    private boolean firstRound;
+    private int incapacityDuration;
 
     public OverTimeAbility(final GameCharacter caster,
                            final GameCharacter victim,
@@ -31,29 +32,69 @@ public final class OverTimeAbility {
         this.location = location;
         this.name = name;
         this.damageWithoutRaceModifier = 0;
-        this.firstRound = true;
+//        this.firstRound = true;
+//        this.incapacityDuration = duration;
     }
 
-    public int getOvertimeDamage() {
-//        if (caster.getType() == CharacterType.PYROMANCER) {
-//            if (duration == Constants.getInstance().getPyromancerIgniteInitialDuration()) {
-//                return instantDamage;
-//            }
-//            this.setDamageWithoutRaceModifier(overtimeDamage);
-//        }
+    public OverTimeAbility(final GameCharacter caster,
+                           final GameCharacter victim,
+                           final String name,
+                           final LocationType location,
+                           final int damage) {
+        this.overtimeDamage = damage;
+        this.caster = caster;
+        this.victim = victim;
+        this.location = location;
+        this.name = name;
+//        this.firstRound = false;
+        this.duration = 0;
+//        this.incapacityDuration = duration;
+        this.abilityToIncapacitate = false;
+    }
+
+    public OverTimeAbility(final GameCharacter caster,
+                           final GameCharacter victim,
+                           final String name,
+                           final LocationType location,
+                           final int damage,
+                           final int duration) {
+        this.overtimeDamage = damage;
+        this.caster = caster;
+        this.victim = victim;
+        this.location = location;
+        this.name = name;
+        this.duration = duration;
+//        this.firstRound = false;
+        this.incapacityDuration = duration;
+        this.abilityToIncapacitate = false;
+
+    }
+
+    public OverTimeAbility(final GameCharacter caster,
+                           final GameCharacter victim,
+                           final String name,
+                           final LocationType location,
+                           final int damage,
+                           final int duration,
+                           final boolean abilityToIncapacitate) {
+        this.overtimeDamage = damage;
+        this.caster = caster;
+        this.victim = victim;
+        this.location = location;
+        this.name = name;
+        this.duration = duration;
+        this.incapacityDuration = duration;
+//        this.firstRound = false;
+        this.abilityToIncapacitate = abilityToIncapacitate;
+    }
+
+
+    int getOvertimeDamage() {
         return overtimeDamage;
     }
 
-    public void setOvertimeDamage(final int overtimeDamage) {
+    private void setOvertimeDamage(final int overtimeDamage) {
         this.overtimeDamage = overtimeDamage;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(final int duration) {
-        this.duration = duration;
     }
 
     public boolean isAbilityToIncapacitate() {
@@ -68,31 +109,26 @@ public final class OverTimeAbility {
         return totalDamage;
     }
 
-    public void roundPassed() {
-        this.duration--;
+    void damageDealt() {
+        this.duration -= 1;
         if (this.duration == 0) {
-            this.instantDamage = 0;
-            this.overtimeDamage = 0;
-            this.duration = 0;
-            this.totalDamage = 0;
-            this.abilityToIncapacitate = false;
-            this.damageWithoutRaceModifier = 0;
+            this.setOvertimeDamage(0);
+        }
+        if (this.duration == 0
+                && this.incapacityDuration == 0) {
+            this.getVictim().setAbilityAffectedBy(null);
         }
     }
 
-    public void setTotalDamage(final int totalDamage) {
-        this.totalDamage = totalDamage;
+    void incapacityUsed() {
+        this.incapacityDuration -= 1;
+        if (this.duration == 0
+                && this.incapacityDuration == 0) {
+            this.getVictim().setAbilityAffectedBy(null);
+        }
     }
 
-    public int getInstantDamage() {
-        return instantDamage;
-    }
-
-    public void setInstantDamage(final int instantDamage) {
-        this.instantDamage = instantDamage;
-    }
-
-    public GameCharacter getCaster() {
+    GameCharacter getCaster() {
         return caster;
     }
 
@@ -100,43 +136,19 @@ public final class OverTimeAbility {
         this.caster = caster;
     }
 
-    public GameCharacter getVictim() {
+    private GameCharacter getVictim() {
         return victim;
     }
 
-    public void setVictim(GameCharacter victim) {
-        this.victim = victim;
+    int getDuration() {
+        return duration;
     }
 
-    public String getName() {
-        return name;
+    public int getIncapacityDuration() {
+        return incapacityDuration;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLocation(LocationType location) {
-        this.location = location;
-    }
-
-    public int getDamageWithoutRaceModifier() {
-        return damageWithoutRaceModifier;
-    }
-
-    public void setDamageWithoutRaceModifier(int damageWithoutRaceModifier) {
-        this.damageWithoutRaceModifier = damageWithoutRaceModifier;
-    }
-
-    public LocationType getLocation() {
-        return location;
-    }
-
-    public boolean isFirstRound() {
-        return firstRound;
-    }
-
-    public void setFirstRound(boolean firstRound) {
-        this.firstRound = firstRound;
+    public boolean isFinished() {
+        return this.duration == 0 && this.incapacityDuration == 0;
     }
 }

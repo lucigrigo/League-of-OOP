@@ -10,12 +10,8 @@ import java.util.List;
 public final class Game {
 
     private static Game instance = null;
-    private int maxRounds;
-    private int currentRound;
 
     private Game() {
-        maxRounds = 0;
-        currentRound = 0;
     }
 
     public static Game getInstance() {
@@ -28,40 +24,23 @@ public final class Game {
     private void applyCurrentRoundMoves(final List<GameCharacter> characters,
                                         final MovementType[] roundMoves) {
         for (int i = 0; i < roundMoves.length; i++) {
-//            System.out.println("miscarea " + roundMoves[i] + " lui " + characters.get(i).getName());
-//            System.out.println(characters.get(i).getName() + i + characters.get(i).isIncapacitated());
             if (!characters.get(i).isIncapacitated()
-                    && (!characters.get(i).isDead())) {
+                    && !characters.get(i).isDead()) {
                 characters.get(i).applyMove(roundMoves[i]);
+            } else if (characters.get(i).isIncapacitated()) {
+                characters.get(i).getAbilityAffectedBy().incapacityUsed();
             }
-//            if (characters.get(i).isIncapacitated()) {
-//                System.out.println(characters.get(i).getName() + " nu se poate misca!");
-//            }
         }
     }
 
     private void manageFight(final GameCharacter character1,
                              final GameCharacter character2,
                              final LocationType location) {
-        Ability firstCharacterAbility = character1.computeDamageAgainst(character2, location, true);
-        Ability secondCharacterAbility = character2.computeDamageAgainst(character1, location, true);
-        character2.takeDamage(firstCharacterAbility, character1, location, false);
-        character1.takeDamage(secondCharacterAbility, character2, location, false);
+        character2.getAttackedBy(character1, location);
+        character1.getAttackedBy(character2, location);
 
-        if ((character2.getAbilityAffectedBy() == null)
-                || (character2.getAbilityAffectedBy().getCaster() != character1)) {
-            OverTimeAbility overTimeAbility1 = character1.getAbilityOverTime(character2, location);
-            character2.setAbilityAffectedBy(overTimeAbility1);
-//            System.out.println(character2.getName() + " este afectat DoT de " + character2.getAbilityAffectedBy().getName());
-//            System.out.println("aicea?");
-        }
-        if ((character1.getAbilityAffectedBy() == null)
-                || (character1.getAbilityAffectedBy().getCaster() != character2)) {
-            OverTimeAbility overTimeAbility2 = character2.getAbilityOverTime(character1, location);
-            character1.setAbilityAffectedBy(overTimeAbility2);
-//            System.out.println(character1.getName() + " este afectat DoT de " + character1.getAbilityAffectedBy().getName());
-//            System.out.println("aiceas?");
-        }
+        character2.getAffectedBy(character1, location);
+        character1.getAffectedBy(character2, location);
     }
 
     private void searchForFights(final List<GameCharacter> characters,
@@ -86,85 +65,49 @@ public final class Game {
     private void applyOverTimeDamage(final List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
             if (character.getAbilityAffectedBy() != null
-                    && !character.isDead()) {
-//                    && !character.getAbilityAffectedBy().isFirstRound()) {
-//                    && !character.getAbilityAffectedBy().getName().equals("Paralysis")) {
-                System.out.println(character.getName() + " ia DoT");
-//                System.out.println(character.getAbilityAffectedBy().isFirstRound());
-//                System.out.println("eventual si cu tata ?! " + character.getAbilityAffectedBy().getDamageWithoutRaceModifier());
-                character.takeDamage(new Ability(character.getAbilityAffectedBy().getName(),
-                                character.getAbilityAffectedBy().getOvertimeDamage(),
-                                character.getAbilityAffectedBy().getDamageWithoutRaceModifier()),
-                        character.getAbilityAffectedBy().getCaster(),
-                        character.getAbilityAffectedBy().getLocation(),
-                        true);
-//                character.getAbilityAffectedBy().roundPassed();
+                    && !character.isDead()
+                    && character.getAbilityAffectedBy().getDuration() > 0) {
+                character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage(), true);
+                character.getAbilityAffectedBy().damageDealt();
             }
         }
-    }
-
-//    private void checkForOverTimeAbilitiesEnd(final List<GameCharacter> characters) {
-//        for (GameCharacter character : characters) {
-//            if (character.getAbilityAffectedBy() != null) {
-//                if (character.getAbilityAffectedBy().getDuration() == 0) {
-//                    character.setAbilityAffectedBy(null);
-//                }
-//            }
-//        }
-//    }
-
-
-    private boolean checkForOnlySurvivor(final List<GameCharacter> characters) {
-        int nrOfAliveChampions = 0;
-        for (GameCharacter character : characters) {
-            if (!character.isDead()) {
-                nrOfAliveChampions++;
-            }
-        }
-        return nrOfAliveChampions <= 1;
     }
 
     private void roundEnding(List<GameCharacter> characters) {
         for (GameCharacter character : characters) {
-            if (character.getAbilityAffectedBy() != null) {
-                if (!character.getAbilityAffectedBy().isFirstRound()) {
-                    character.getAbilityAffectedBy().roundPassed();
-                }
-//                System.out.println(character.getAbilityAffectedBy().isFirstRound());
-            }
-
             character.doRoundEndingRoutine();
         }
     }
 
-    public void startGame(final InputData data,
-                          final Statistics statistics) {
+    public void startGame(final InputData data) {
         int maxRounds = data.getNrRounds();
-        this.maxRounds = maxRounds;
         int currentRound = 0;
         while (currentRound < maxRounds) {
-            System.out.println("======= Runda " + currentRound + "=======");
+//            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~ Runda " + currentRound + "~~~~~~~~~~~~~~~~~~~~~");
+//            System.out.println("\n" +
+//                    "Inainte sa-si schimbe pozitia si sa primeasca overtime damage");
+//            System.out.println(data.getCharacters().toString());
 
             applyCurrentRoundMoves(data.getCharacters(), data.getCurrentRoundMoves(currentRound));
-            for (GameCharacter character : data.getCharacters()) {
-                System.out.println("\t" + character.getName() + " " + character.getHealth() + " " + character.getRow()
-                        + " " + character.getColon());
-            }
             applyOverTimeDamage(data.getCharacters());
-            this.currentRound = currentRound;
 
+//            System.out.println("Dup ce si-au schimbat pozitia si sa primeasca overtime damage");
+//            System.out.println(data.getCharacters().toString());
 
             searchForFights(data.getCharacters(), data.getMap());
-
             roundEnding(data.getCharacters());
 //            checkForOverTimeAbilitiesEnd(data.getCharacters());
-            currentRound++;
-            System.out.println("HP la finalul rundei " + currentRound);
 
-            if (checkForOnlySurvivor(data.getCharacters())) {
-                break;
+//            System.out.println("Dupa lupte");
+//            System.out.println(data.getCharacters().toString());
+            System.out.println("Round: " + currentRound);
+            for (GameCharacter character : data.getCharacters()) {
+                System.out.println(character.toString());
             }
+            System.out.println("-----------END ROUND--------");
+            currentRound++;
         }
-//        manageOvertimeFights(data.getCharacters());
+//        System.out.println("\nRezultat final:");
+//        System.out.println(data.getCharacters().toString());
     }
 }

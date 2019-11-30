@@ -108,11 +108,10 @@ public class IOAssistant {
                             break;
                         default:
                             System.out.println("Invalid movement input!");
-                            System.exit(3);
+                            System.exit(1);
                     }
                 }
             }
-
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,7 +121,7 @@ public class IOAssistant {
                 nrRounds, instructions);
     }
 
-    public void writeFinalResults(final List<GameCharacter> characters) {
+    public final void writeFinalResults(final List<GameCharacter> characters) {
         // rasa_pers level_pers xp_pers hp_pers row col
         System.out.println("\n");
         File outputFile = new File(this.outputPath);
@@ -136,7 +135,7 @@ public class IOAssistant {
                 sb.append(" ");
                 if (character.isDead()) {
                     sb.append("dead");
-                    System.out.println(sb.toString());
+//                    System.out.println(sb.toString());
                     sb.append("\n");
                     fileWriter.write(sb.toString());
                     continue;
@@ -150,7 +149,7 @@ public class IOAssistant {
                 sb.append(character.getRow());
                 sb.append(" ");
                 sb.append(character.getColon());
-                System.out.println(sb.toString());
+//                System.out.println(sb.toString());
 
                 sb.append("\n");
                 fileWriter.write(sb.toString());

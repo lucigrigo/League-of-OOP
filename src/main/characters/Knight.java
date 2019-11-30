@@ -9,14 +9,14 @@ public class Knight extends GameCharacter {
 
     public Knight(final int initCol,
                   final int initLin) {
-        super(initCol, initLin, Constants.getInstance().getKnightInitialHealth(), 0,
+        super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0,
                 CharacterType.KNIGHT, "K");
     }
 
     @Override
     public int getMaxHealth() {
-        return Constants.getInstance().getKnightInitialHealth()
-                + Constants.getInstance().getKnightHealthRatio()
+        return Constants.KNIGHT_INITIAL_HEALTH
+                + Constants.KNIGHT_HEALTH_RATIO
                 * this.getLevel();
     }
 
@@ -24,178 +24,269 @@ public class Knight extends GameCharacter {
     public Ability computeDamageAgainst(final GameCharacter enemy,
                                         final LocationType location,
                                         final boolean addRaceModifier) {
-        float executeLimit = Constants.getInstance().getKnightExecuteHpLimitPercentage();
-        executeLimit += this.getLevel();
-        executeLimit *= enemy.getHealth();
-        executeLimit *= 0.01f;
-        if ((enemy.getHealth()
-                <= Math.round(executeLimit))
-                && (!enemy.isDead())) {
-            enemy.hasDied();
-            this.fightWon(enemy.getLevel());
-            return new Ability("Execute", enemy.getHealth(), enemy.getHealth());
-        }
-        float totalDamage = Constants.getInstance().getKnightExecuteBaseDamage()
-                + Constants.getInstance().getKnightExecuteLevelScalingBaseDamage()
-                * this.getLevel();
-        if (location == LocationType.LAND) {
-//            totalDamage = totalDamage
-//                    + totalDamage
-//                    * Constants.getInstance().getKnightLandBonus()
-//                    * 0.01f;
-            totalDamage = (1f
-                    + Constants.getInstance().getKnightLandBonus()
-                    * 0.01f)
-                    * totalDamage;
-        }
-        int damageWithoutRaceModifier = Math.round(totalDamage);
-        if (addRaceModifier) {
-            switch (enemy.getType()) {
-                case ROGUE:
-//                    totalDamage = totalDamage
-//                            + totalDamage
-//                            * Constants.getInstance().getKnightExecuteBonusVersusRogue()
-//                            * 0.01f;
-                    totalDamage = (1f
-                            + Constants.getInstance().getKnightExecuteBonusVersusRogue()
-                            * 0.01f)
-                            * totalDamage;
-                    break;
-                case KNIGHT:
-//                    totalDamage = totalDamage
-//                            + totalDamage
-//                            * Constants.getInstance().getKnightExecuteBonusVersusKnight()
-//                            * 0.01f;
-                    totalDamage = (1f
-                            + Constants.getInstance().getKnightExecuteBonusVersusKnight()
-                            * 0.01f)
-                            * totalDamage;
-                    break;
-                case WIZARD:
-//                    totalDamage = totalDamage
-//                            + totalDamage
-//                            * Constants.getInstance().getKnightExecuteBonusVersusWizard()
-//                            * 0.01f;
-                    totalDamage = (1f
-                            + Constants.getInstance().getKnightExecuteBonusVersusWizard()
-                            * 0.01f)
-                            * totalDamage;
-                    break;
-                case PYROMANCER:
-//                    totalDamage = totalDamage
-//                            + totalDamage
-//                            * Constants.getInstance().getKnightExecuteBonusVersusPyromancer()
-//                            * 0.01f;
-                    totalDamage = (1f
-                            + Constants.getInstance().getKnightExecuteBonusVersusPyromancer()
-                            * 0.01f)
-                            * totalDamage;
-                    break;
-                default:
-                    break;
-            }
-        }
-        totalDamage = Math.round(totalDamage);
-        if (addRaceModifier) {
-            totalDamage += this.getAbilityOverTime(enemy, location)
-                    .getTotalDamage();
-        } else {
-            totalDamage += this.getAbilityOverTime(enemy, location)
-                    .getDamageWithoutRaceModifier();
-        }
-        return new Ability("Execute", Math.round(totalDamage), damageWithoutRaceModifier);
-    }
-
-    @Override
-    public void doRoundEndingRoutine() {
-        super.doRoundEndingRoutine();
+        return null;
     }
 
     @Override
     public float getDamageWithoutRaceModifier(GameCharacter enemy, LocationType location) {
-//        return this.computeDamageAgainst(enemy, location, false).getDamageWithoutRaceModifier();
         Ability ability = this.computeDamageAgainst(enemy, location, false);
-//        if (ability != null) {
-//            System.out.println(ability.getDamage() + " de aicea nane");
         return ability.getDamage();
-//        }
-//        return 0.0f;
     }
 
     @Override
     public OverTimeAbility getAbilityOverTime(final GameCharacter enemy,
                                               final LocationType location) {
-
-        OverTimeAbility slam = new OverTimeAbility(this, enemy, "Slam", location);
-        slam.setAbilityToIncapacitate(true);
-        slam.setDuration(1);
-        slam.setCaster(this);
-        float overtimeDamage = Constants.getInstance().getKnightSlamBaseDamage()
-                + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()
-                * this.getLevel();
-//        slam.setOvertimeDamage(Constants.getInstance().getKnightSlamBaseDamage()
-//                + Constants.getInstance().getKnightSlamLevelScalingBaseDamage()
-//                * this.getLevel());
-        if (location == LocationType.LAND) {
-//            slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
-//                    + slam.getOvertimeDamage()
-//                    * Constants.getInstance().getKnightLandBonus()
-//                    * 0.01f));
-            overtimeDamage = (1f
-                    + Constants.getInstance().getKnightLandBonus()
-                    * 0.01f)
-                    * overtimeDamage;
-        }
-        int damageWithoutRaceModifier = Math.round(overtimeDamage);
-        switch (enemy.getType()) {
-            case ROGUE:
-//                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
-//                        + slam.getOvertimeDamage()
-//                        * Constants.getInstance().getKnightSlamBonusVersusRogue()
-//                        * 0.01f));
-                overtimeDamage = (1f
-                        + Constants.getInstance().getKnightSlamBonusVersusRogue()
-                        * 0.01f)
-                        * overtimeDamage;
-                break;
-            case KNIGHT:
-//                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
-//                        + slam.getOvertimeDamage()
-//                        * Constants.getInstance().getKnightSlamBonusVersusKnight()
-//                        * 0.01f));
-                overtimeDamage = (1f
-                        + Constants.getInstance().getKnightSlamBonusVersusKnight()
-                        * 0.01f)
-                        * overtimeDamage;
-                break;
-            case PYROMANCER:
-//                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
-//                        + slam.getOvertimeDamage()
-//                        * Constants.getInstance().getKnightSlamBonusVersusPyromancer()
-//                        * 0.01f));
-                overtimeDamage = (1f
-                        + Constants.getInstance().getKnightSlamBonusVersusPyromancer()
-                        * 0.01f)
-                        * overtimeDamage;
-                break;
-            case WIZARD:
-//                slam.setOvertimeDamage(Math.round(slam.getOvertimeDamage()
-//                        + slam.getOvertimeDamage()
-//                        * Constants.getInstance().getKnightSlamBonusVersusWizard()
-//                        * 0.01f));
-                overtimeDamage = (1f
-                        + Constants.getInstance().getKnightSlamBonusVersusWizard()
-                        * 0.01f)
-                        * overtimeDamage;
-                break;
-            default:
-                break;
-        }
-        slam.setDamageWithoutRaceModifier(damageWithoutRaceModifier);
-        slam.setTotalDamage(Math.round(overtimeDamage));
-//        slam.setTotalDamage(slam.getOvertimeDamage());
-        slam.setFirstRound(true);
-        slam.setOvertimeDamage(0);
-        return slam;
+        return null;
     }
+
+    @Override
+    public float computeInitialDamage(final LocationType location) {
+        float damage = Constants.KNIGHT_EXECUTE_BASE_DAMAGE
+                + Constants.KNIGHT_EXECUTE_LEVEL_SCALING_BASE_DAMAGE
+                * this.getLevel();
+        if (location == LocationType.LAND) {
+            damage *= Constants.KNIGHT_LAND_BONUS;
+        }
+        return damage;
+    }
+
+    private boolean checkExecutePossibility(final int enemyCurrentHealth,
+                                            final int enemyMaxHealth) {
+        float damagePercent = Constants.KNIGHT_EXECUTE_HP_LIMIT_PERCENTAGE
+                + Constants.KNIGHT_EXECUTE_HP_LIMIT_LEVEL_SCALING_PERCENTAGE
+                * this.getLevel();
+        damagePercent = Math.min(damagePercent,
+                Constants.KNIGHT_EXECUTE_MAXIMUM_HP_PERCENTAGE);
+        return damagePercent * enemyMaxHealth
+                >= enemyCurrentHealth;
+    }
+
+    public float computeInitialOvertimeDamage(final LocationType location) {
+        float damage = Constants.KNIGHT_SLAM_BASE_DAMAGE
+                + Constants.KNIGHT_SLAM_LEVEL_SCALING_BASE_DAMAGE
+                * this.getLevel();
+        if (location == LocationType.LAND) {
+            damage *= Constants.KNIGHT_LAND_BONUS;
+        }
+        return damage;
+    }
+
+    @Override
+    public void getAttackedBy(final GameCharacter enemy,
+                              final LocationType location) {
+        enemy.attack(this, location, true, false);
+    }
+
+    @Override
+    public float attack(final Wizard enemy,
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
+        if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+//            System.out.println("current: " + enemy.getHealth());
+
+            if (!isForDeflectPurpose) {
+                this.fightWon(enemy.getLevel());
+                enemy.hasDied();
+            }
+            return enemy.getHealth();
+        }
+        float damage = computeInitialDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD;
+        }
+        damage = Math.round(damage);
+        if (!isForDeflectPurpose) {
+            damage += Math.round(this.affectOvertime(enemy,
+                    location, false, true));
+            if (enemy.takeDamage(Math.round(damage), false)) {
+                this.fightWon(enemy.getLevel());
+            }
+            return 0f;
+        }
+        damage += Math.round(this.affectOvertime(enemy, location,
+                false, false));
+        return damage;
+    }
+
+    @Override
+    public float attack(final Rogue enemy,
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
+        if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            this.fightWon(enemy.getLevel());
+            enemy.hasDied();
+            return 0f;
+        }
+        float damage = computeInitialDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE;
+        }
+        damage = Math.round(damage);
+        if (!isForDeflectPurpose) {
+            damage += Math.round(this.affectOvertime(enemy,
+                    location, false, true));
+            if (enemy.takeDamage(Math.round(damage), false)) {
+                this.fightWon(enemy.getLevel());
+            }
+            return 0f;
+        }
+        damage += Math.round(this.affectOvertime(enemy, location,
+                false, false));
+        return damage;
+    }
+
+    @Override
+    public float attack(final Pyromancer enemy,
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
+        if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            this.fightWon(enemy.getLevel());
+            enemy.hasDied();
+            return 0f;
+        }
+        float damage = computeInitialDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER;
+        }
+        damage = Math.round(damage);
+        if (!isForDeflectPurpose) {
+            damage += Math.round(this.affectOvertime(enemy,
+                    location, false, true));
+            if (enemy.takeDamage(Math.round(damage), false)) {
+                this.fightWon(enemy.getLevel());
+            }
+            return 0f;
+        }
+        damage += Math.round(this.affectOvertime(enemy, location,
+                false, false));
+        return damage;
+    }
+
+    @Override
+    public float attack(final Knight enemy,
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
+        if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            this.fightWon(enemy.getLevel());
+            enemy.hasDied();
+            return 0f;
+        }
+        float damage = computeInitialDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_KNIGHT;
+        }
+        damage = Math.round(damage);
+        if (!isForDeflectPurpose) {
+            damage += Math.round(this.affectOvertime(enemy,
+                    location, false, true));
+            if (enemy.takeDamage(Math.round(damage), false)) {
+                this.fightWon(enemy.getLevel());
+            }
+            return 0f;
+        }
+        damage += Math.round(this.affectOvertime(enemy, location,
+                false, false));
+        return damage;
+//        return this.finaliseAttack(enemy, location, isForDeflectPurpose, Math.round(damage));
+    }
+
+    @Override
+    public void getAffectedBy(final GameCharacter enemy,
+                              final LocationType location) {
+        enemy.affectOvertime(this, location, true, true);
+    }
+
+    @Override
+    public float affectOvertime(final Wizard enemy,
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
+        float damage = computeInitialOvertimeDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD;
+        }
+        if (startNow) {
+            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
+                    "Slam", location, 0, Constants.KNIGHT_SLAM_DURATION,
+                    true));
+            return 0f;
+        }
+        return damage;
+    }
+
+    @Override
+    public float affectOvertime(final Rogue enemy,
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
+        float damage = computeInitialOvertimeDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_SLAM_BONUS_VERSUS_ROGUE;
+        }
+        if (startNow) {
+            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
+                    "Slam", location, 0, Constants.KNIGHT_SLAM_DURATION,
+                    true));
+            return 0f;
+        }
+        return damage;
+    }
+
+    @Override
+    public float affectOvertime(final Knight enemy,
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
+        float damage = computeInitialOvertimeDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT;
+        }
+        if (startNow) {
+            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
+                    "Slam", location, 0, Constants.KNIGHT_SLAM_DURATION,
+                    true));
+            return 0f;
+        }
+        return damage;
+    }
+
+    @Override
+    public float affectOvertime(final Pyromancer enemy,
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
+        float damage = computeInitialOvertimeDamage(location);
+        if (addRaceModifier) {
+            damage *= Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER;
+        }
+        if (startNow) {
+            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
+                    "Slam", location, 0, Constants.KNIGHT_SLAM_DURATION,
+                    true));
+            return 0f;
+        }
+        return damage;
+    }
+
+//    @Override
+//    public float finaliseAttack(final Wizard enemy,
+//                                final LocationType location,
+//                                final boolean isForDeflectPurpose,
+//                                int damage) {
+//        if (!isForDeflectPurpose) {
+//            damage += Math.round(this.affectOvertime(enemy,
+//                    location, false, true));
+//            if (enemy.takeDamage(Math.round(damage), false)) {
+//                this.fightWon(enemy.getLevel());
+//            }
+//            return 0f;
+//        }
+//        damage += Math.round(this.affectOvertime(enemy, location,
+//                false, false));
+//        return damage;
+//    }
 }
