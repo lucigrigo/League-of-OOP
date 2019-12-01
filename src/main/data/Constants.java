@@ -1,14 +1,21 @@
 package main.data;
 
+/**
+ * Class where constants are saved.
+ */
 public final class Constants {
 
-    // constante pentru level up
+    private Constants() {
+        // just to trigger checkstyle :)
+    }
+
+    // level-up
     public static final int WIN_MAGIC_200 = 200;
     public static final int WIN_MAGIC_40 = 40;
     public static final int EXPERIENCE_BASE = 250;
     public static final int EXPERIENCE_SCALING = 50;
 
-    // constante legate de health si scaling
+    // health and scaling
     public static final int WIZARD_INITIAL_HEALTH = 400;
     public static final int WIZARD_HEALTH_RATIO = 30;
     public static final int ROGUE_INITIAL_HEALTH = 600;
@@ -18,7 +25,7 @@ public final class Constants {
     public static final int KNIGHT_INITIAL_HEALTH = 900;
     public static final int KNIGHT_HEALTH_RATIO = 80;
 
-    // Abilitatile unui PYROMANCER
+    // PYROMANCER abilities
     // FIREBLAST
     public static final float PYROMANCER_FIREBLAST_BASE_DAMAGE = 350f;
     public static final float PYROMANCER_FIREBLAST_LEVEL_SCALING_BASE_DAMAGE = 50f;
@@ -36,10 +43,10 @@ public final class Constants {
     public static final float PYROMANCER_IGNITE_BONUS_VERSUS_KNIGHT = 1.2f;
     public static final float PYROMANCER_IGNITE_BONUS_VERSUS_PYROMANCER = 0.9f;
     public static final float PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD = 1.05f;
-    // Bonusul pentru VOLCANIC
+    // VOLCANIC bonus
     public static final float PYROMANCER_VOLCANIC_BONUS = 1.25f;
 
-    // Abilitatile unui KNIGHT
+    // KNIGHT abilities
     // EXECUTE
     public static final float KNIGHT_EXECUTE_BASE_DAMAGE = 200;
     public static final float KNIGHT_EXECUTE_LEVEL_SCALING_BASE_DAMAGE = 30;
@@ -58,10 +65,10 @@ public final class Constants {
     public static final float KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER = 0.9f;
     public static final float KNIGHT_SLAM_BONUS_VERSUS_WIZARD = 1.05f;
     public static final int KNIGHT_SLAM_DURATION = 1;
-    // Bonusul pentru LAND
+    // LAND bonus
     public static final float KNIGHT_LAND_BONUS = 1.15f;
 
-    // Abilitatile unui WIZARD
+    // WIZARD abilities
     // DRAIN
     public static final float WIZARD_DRAIN_BASE_PERCENTAGE = 0.2f;
     public static final float WIZARD_DRAIN_LEVEL_SCALING_PERCENTAGE = 0.05f;
@@ -77,10 +84,10 @@ public final class Constants {
     public static final float WIZARD_DEFLECT_BONUS_VERSUS_ROGUE = 1.2f;
     public static final float WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT = 1.4f;
     public static final float WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER = 1.3f;
-    // Bonusul pentru DESERT
+    // DESERT bonus
     public static final float WIZARD_DESERT_BONUS = 1.1f;
 
-    // Abilitatile unui ROGUE
+    // ROGUE abilities
     // BACKSTAB
     public static final float ROGUE_BACKSTAB_BASE_DAMAGE = 200;
     public static final float ROGUE_BACKSTAB_LEVEL_SCALING_BASE_DAMAGE = 20;
@@ -99,6 +106,6 @@ public final class Constants {
     public static final float ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT = 0.8f;
     public static final float ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER = 1.2f;
     public static final float ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD = 1.25f;
-    // Bonusul pentru WOODS
+    // WOODS bonus
     public static final float ROGUE_WOODS_BONUS = 1.15f;
 }

@@ -1,6 +1,13 @@
-package main.data;
+package main.gameplay;
 
-import main.characters.*;
+import main.characters.GameCharacter;
+import main.characters.Knight;
+import main.characters.Pyromancer;
+import main.characters.Rogue;
+import main.characters.Wizard;
+import main.data.InputData;
+import main.data.LocationType;
+import main.data.MovementType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Class that does the reading and writing duties.
+ */
 public class IOAssistant {
     private String inputPath;
     private String outputPath;
@@ -19,6 +29,11 @@ public class IOAssistant {
         this.outputPath = outputPath;
     }
 
+    /**
+     * Function that reads input data.
+     *
+     * @return input data
+     */
     public final InputData readInput() {
         int mapWidth;
         int mapHeight;
@@ -28,13 +43,17 @@ public class IOAssistant {
         MovementType[][] instructions;
         LocationType[][] map;
 
+        // opening file
         File inputFile = new File(inputPath);
         try {
+            // opening scanner
             Scanner scanner = new Scanner(inputFile);
 
+            // reading map dimensions
             mapHeight = scanner.nextInt();
             mapWidth = scanner.nextInt();
 
+            // reading the map
             map = new LocationType[mapHeight][mapWidth];
             for (int i = 0; i < mapHeight; i++) {
                 String line = scanner.next();
@@ -59,8 +78,10 @@ public class IOAssistant {
                 }
             }
 
+            // reading heroes count
             nrCharacters = scanner.nextInt();
 
+            // reading heroes types
             for (int i = 0; i < nrCharacters; i++) {
                 String line = scanner.next();
                 int initialLine = scanner.nextInt();
@@ -84,8 +105,10 @@ public class IOAssistant {
                 }
             }
 
+            // reading rounds number
             nrRounds = scanner.nextInt();
 
+            // reading instructions (moves) for every hero
             instructions = new MovementType[nrRounds][nrCharacters];
             for (int i = 0; i < nrRounds; i++) {
                 String instructionLine = scanner.next();
@@ -112,49 +135,39 @@ public class IOAssistant {
                     }
                 }
             }
+
+            // closing scanner
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+        // returning data
         return new InputData(mapHeight, mapWidth, map, nrCharacters, characters,
                 nrRounds, instructions);
     }
 
+    /**
+     * Function that writes endgame results.
+     *
+     * @param characters heroes of the game
+     */
     public final void writeFinalResults(final List<GameCharacter> characters) {
-        // rasa_pers level_pers xp_pers hp_pers row col
-        System.out.println("\n");
+        // opening file
         File outputFile = new File(this.outputPath);
         try {
+            // opening file writer
             FileWriter fileWriter = new FileWriter(outputFile);
 
+            // writing information about each hero
             for (GameCharacter character : characters) {
-//                System.out.println(character.getHealth());
-                StringBuilder sb = new StringBuilder();
-                sb.append(character.getName());
-                sb.append(" ");
-                if (character.isDead()) {
-                    sb.append("dead");
-//                    System.out.println(sb.toString());
-                    sb.append("\n");
-                    fileWriter.write(sb.toString());
-                    continue;
-                }
-                sb.append(character.getLevel());
-                sb.append(" ");
-                sb.append(character.getExperience());
-                sb.append(" ");
-                sb.append(character.getHealth());
-                sb.append(" ");
-                sb.append(character.getRow());
-                sb.append(" ");
-                sb.append(character.getColon());
-//                System.out.println(sb.toString());
-
-                sb.append("\n");
-                fileWriter.write(sb.toString());
+                fileWriter.write(character.toString());
             }
+
+            // flushing informations
             fileWriter.flush();
+
+            // closing file writer
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();

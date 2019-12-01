@@ -3,55 +3,21 @@ package main.gameplay;
 import main.characters.GameCharacter;
 import main.data.LocationType;
 
+/**
+ * Class that represents a type of overtime ability.
+ */
 public final class OverTimeAbility {
 
-    private int instantDamage;
     private int overtimeDamage;
     private int duration;
     private boolean abilityToIncapacitate;
     private GameCharacter caster;
     private GameCharacter victim;
-    private int totalDamage;
     private LocationType location;
     private String name;
-    private int damageWithoutRaceModifier;
-    //    private boolean firstRound;
     private int incapacityDuration;
 
-    public OverTimeAbility(final GameCharacter caster,
-                           final GameCharacter victim,
-                           final String name,
-                           final LocationType location) {
-        this.instantDamage = 0;
-        this.overtimeDamage = 0;
-        this.duration = 0;
-        this.totalDamage = 0;
-        this.abilityToIncapacitate = false;
-        this.caster = caster;
-        this.victim = victim;
-        this.location = location;
-        this.name = name;
-        this.damageWithoutRaceModifier = 0;
-//        this.firstRound = true;
-//        this.incapacityDuration = duration;
-    }
-
-    public OverTimeAbility(final GameCharacter caster,
-                           final GameCharacter victim,
-                           final String name,
-                           final LocationType location,
-                           final int damage) {
-        this.overtimeDamage = damage;
-        this.caster = caster;
-        this.victim = victim;
-        this.location = location;
-        this.name = name;
-//        this.firstRound = false;
-        this.duration = 0;
-//        this.incapacityDuration = duration;
-        this.abilityToIncapacitate = false;
-    }
-
+    // Constructor for abilities without incapacitation.
     public OverTimeAbility(final GameCharacter caster,
                            final GameCharacter victim,
                            final String name,
@@ -64,12 +30,11 @@ public final class OverTimeAbility {
         this.location = location;
         this.name = name;
         this.duration = duration;
-//        this.firstRound = false;
         this.incapacityDuration = duration;
         this.abilityToIncapacitate = false;
-
     }
 
+    // Constructor for abilities with incapacitation.
     public OverTimeAbility(final GameCharacter caster,
                            final GameCharacter victim,
                            final String name,
@@ -84,42 +49,29 @@ public final class OverTimeAbility {
         this.name = name;
         this.duration = duration;
         this.incapacityDuration = duration;
-//        this.firstRound = false;
         this.abilityToIncapacitate = abilityToIncapacitate;
     }
 
-
+    // returns overtime damage
     int getOvertimeDamage() {
         return overtimeDamage;
     }
 
-    private void setOvertimeDamage(final int overtimeDamage) {
-        this.overtimeDamage = overtimeDamage;
-    }
-
+    // checks the ability to incapacitate
     public boolean isAbilityToIncapacitate() {
         return abilityToIncapacitate;
     }
 
-    public void setAbilityToIncapacitate(final boolean abilityToIncapacitate) {
-        this.abilityToIncapacitate = abilityToIncapacitate;
-    }
-
-    public int getTotalDamage() {
-        return totalDamage;
-    }
-
+    // reducing damage duration
     void damageDealt() {
         this.duration -= 1;
-        if (this.duration == 0) {
-            this.setOvertimeDamage(0);
-        }
         if (this.duration == 0
                 && this.incapacityDuration == 0) {
             this.getVictim().setAbilityAffectedBy(null);
         }
     }
 
+    // reducing incapacitation duration
     void incapacityUsed() {
         this.incapacityDuration -= 1;
         if (this.duration == 0
@@ -128,27 +80,18 @@ public final class OverTimeAbility {
         }
     }
 
-    GameCharacter getCaster() {
-        return caster;
-    }
-
-    public void setCaster(GameCharacter caster) {
-        this.caster = caster;
-    }
-
+    // returning victim
     private GameCharacter getVictim() {
         return victim;
     }
 
+    // returning damage duration
     int getDuration() {
         return duration;
     }
 
+    // returning incapacitation duration
     public int getIncapacityDuration() {
         return incapacityDuration;
-    }
-
-    public boolean isFinished() {
-        return this.duration == 0 && this.incapacityDuration == 0;
     }
 }
