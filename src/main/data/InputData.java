@@ -1,6 +1,6 @@
 package main.data;
 
-import main.characters.GameCharacter;
+import main.heroes.Hero;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Class that represents input data for the game.
  */
 public class InputData {
-    private List<GameCharacter> characters;
+    private List<Hero> characters;
     private int nrRounds;
     private MovementType[][] instructions;
     private LocationType[][] map;
@@ -18,7 +18,7 @@ public class InputData {
                      final int mapWidth,
                      final LocationType[][] map,
                      final int nrCharacters,
-                     final List<GameCharacter> characters,
+                     final List<Hero> characters,
                      final int nrRounds,
                      final MovementType[][] instructions) {
         this.characters = characters;
@@ -33,7 +33,7 @@ public class InputData {
     }
 
     // returning heroes of the game
-    public final List<GameCharacter> getCharacters() {
+    public final List<Hero> getCharacters() {
         return characters;
     }
 

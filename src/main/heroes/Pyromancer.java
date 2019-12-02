@@ -1,6 +1,6 @@
-package main.characters;
+package main.heroes;
 
-import main.data.CharacterType;
+import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.gameplay.OverTimeAbility;
@@ -8,12 +8,12 @@ import main.gameplay.OverTimeAbility;
 /**
  * Class to implement PYROMANCER logic.
  */
-public class Pyromancer extends GameCharacter {
+public class Pyromancer extends Hero {
 
     public Pyromancer(final int initCol,
                       final int initLin) {
         super(initCol, initLin, Constants.PYROMANCER_INITIAL_HEALTH, 0,
-                CharacterType.PYROMANCER, "P");
+                HeroType.PYROMANCER, "P");
     }
 
     // returning maximum health for a PYROMANCER
@@ -50,7 +50,7 @@ public class Pyromancer extends GameCharacter {
 
     // getting attacked as a PYROMANCER
     @Override
-    public final void getAttackedBy(final GameCharacter enemy,
+    public final void getAttackedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.attack(this, location, true, false);
     }
@@ -147,7 +147,7 @@ public class Pyromancer extends GameCharacter {
 
     // getting affected overtime as a PYROMANCER
     @Override
-    public final void getAffectedBy(final GameCharacter enemy,
+    public final void getAffectedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }

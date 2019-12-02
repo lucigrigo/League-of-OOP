@@ -1,10 +1,10 @@
 package main.gameplay;
 
-import main.characters.GameCharacter;
-import main.characters.Knight;
-import main.characters.Pyromancer;
-import main.characters.Rogue;
-import main.characters.Wizard;
+import main.heroes.Hero;
+import main.heroes.Knight;
+import main.heroes.Pyromancer;
+import main.heroes.Rogue;
+import main.heroes.Wizard;
 import main.data.InputData;
 import main.data.LocationType;
 import main.data.MovementType;
@@ -39,7 +39,7 @@ public class IOAssistant {
         int mapHeight;
         int nrCharacters;
         int nrRounds;
-        List<GameCharacter> characters = new ArrayList<>();
+        List<Hero> characters = new ArrayList<>();
         MovementType[][] instructions;
         LocationType[][] map;
 
@@ -152,7 +152,7 @@ public class IOAssistant {
      *
      * @param characters heroes of the game
      */
-    public final void writeFinalResults(final List<GameCharacter> characters) {
+    public final void writeFinalResults(final List<Hero> characters) {
         // opening file
         File outputFile = new File(this.outputPath);
         try {
@@ -160,7 +160,7 @@ public class IOAssistant {
             FileWriter fileWriter = new FileWriter(outputFile);
 
             // writing information about each hero
-            for (GameCharacter character : characters) {
+            for (Hero character : characters) {
                 fileWriter.write(character.toString());
             }
 

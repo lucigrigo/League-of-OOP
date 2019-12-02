@@ -3,7 +3,7 @@ package main.data;
 /**
  * Types of heroes.
  */
-public enum CharacterType {
+public enum HeroType {
     ROGUE,
     WIZARD,
     KNIGHT,

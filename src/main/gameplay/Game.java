@@ -1,6 +1,6 @@
 package main.gameplay;
 
-import main.characters.GameCharacter;
+import main.heroes.Hero;
 import main.data.InputData;
 import main.data.LocationType;
 import main.data.MovementType;
@@ -30,7 +30,7 @@ public final class Game {
      * @param characters game heroes
      * @param roundMoves current round moves
      */
-    private void applyCurrentRoundMoves(final List<GameCharacter> characters,
+    private void applyCurrentRoundMoves(final List<Hero> characters,
                                         final MovementType[] roundMoves) {
         for (int i = 0; i < roundMoves.length; i++) {
             if (!characters.get(i).isIncapacitated()
@@ -48,8 +48,8 @@ public final class Game {
      *
      * @param characters heroes of the game
      */
-    private void applyOverTimeDamage(final List<GameCharacter> characters) {
-        for (GameCharacter character : characters) {
+    private void applyOverTimeDamage(final List<Hero> characters) {
+        for (Hero character : characters) {
             if (character.getAbilityAffectedBy() != null
                     && !character.isDead()
                     && character.getAbilityAffectedBy().getDuration() > 0) {
@@ -66,11 +66,11 @@ public final class Game {
      * @param characters heroes of the game
      * @param map        map of the game
      */
-    private void searchForFights(final List<GameCharacter> characters,
+    private void searchForFights(final List<Hero> characters,
                                  final LocationType[][] map) {
         boolean[][] checkedFights = new boolean[map.length][map.length];
-        for (GameCharacter character1 : characters) {
-            for (GameCharacter character2 : characters) {
+        for (Hero character1 : characters) {
+            for (Hero character2 : characters) {
                 if ((character1 != character2)
                         && (character1.getColon() == character2.getColon())
                         && (character1.getRow() == character2.getRow())
@@ -92,8 +92,8 @@ public final class Game {
      * @param character2 second hero
      * @param location   the place where the fight takes place
      */
-    private void manageFight(final GameCharacter character1,
-                             final GameCharacter character2,
+    private void manageFight(final Hero character1,
+                             final Hero character2,
                              final LocationType location) {
         character2.getAttackedBy(character1, location);
         character1.getAttackedBy(character2, location);
@@ -107,8 +107,8 @@ public final class Game {
      *
      * @param characters heroes of the game
      */
-    private void roundEnding(final List<GameCharacter> characters) {
-        for (GameCharacter character : characters) {
+    private void roundEnding(final List<Hero> characters) {
+        for (Hero character : characters) {
             character.doRoundEndingRoutine();
         }
     }

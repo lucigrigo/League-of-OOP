@@ -1,6 +1,6 @@
-package main.characters;
+package main.heroes;
 
-import main.data.CharacterType;
+import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.MovementType;
@@ -9,7 +9,7 @@ import main.gameplay.OverTimeAbility;
 /**
  * Abstract class for a hero.
  */
-public abstract class GameCharacter {
+public abstract class Hero {
     private int colon;
     private int line;
     private int currentHealth;
@@ -21,12 +21,12 @@ public abstract class GameCharacter {
     private int initialRoundHealth;
 
     // Constructor
-    GameCharacter(final int initCol,
-                  final int initLin,
-                  final int currentHealth,
-                  final int currentExperience,
-                  final CharacterType type,
-                  final String name) {
+    Hero(final int initCol,
+         final int initLin,
+         final int currentHealth,
+         final int currentExperience,
+         final HeroType type,
+         final String name) {
         this.colon = initCol;
         this.line = initLin;
         this.currentHealth = currentHealth;
@@ -202,7 +202,7 @@ public abstract class GameCharacter {
     public abstract float computeInitialOvertimeDamage(LocationType location);
 
     // getting attacked
-    public abstract void getAttackedBy(GameCharacter enemy,
+    public abstract void getAttackedBy(Hero enemy,
                                        LocationType location);
 
     // attacking a WIZARD
@@ -230,7 +230,7 @@ public abstract class GameCharacter {
                                 boolean isForDeflectPurpose);
 
     // getting affected overtime
-    public abstract void getAffectedBy(GameCharacter enemy,
+    public abstract void getAffectedBy(Hero enemy,
                                        LocationType location);
 
     // affecting overtime a WIZARD

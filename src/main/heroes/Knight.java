@@ -1,6 +1,6 @@
-package main.characters;
+package main.heroes;
 
-import main.data.CharacterType;
+import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.gameplay.OverTimeAbility;
@@ -8,12 +8,12 @@ import main.gameplay.OverTimeAbility;
 /**
  * Class to implement Knight logic.
  */
-public class Knight extends GameCharacter {
+public class Knight extends Hero {
 
     public Knight(final int initCol,
                   final int initLin) {
         super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0,
-                CharacterType.KNIGHT, "K");
+                HeroType.KNIGHT, "K");
     }
 
     // returning maximum health for KNIGHT
@@ -61,7 +61,7 @@ public class Knight extends GameCharacter {
 
     // getting attacked as KNIGHT
     @Override
-    public final void getAttackedBy(final GameCharacter enemy,
+    public final void getAttackedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.attack(this, location, true, false);
     }
@@ -187,7 +187,7 @@ public class Knight extends GameCharacter {
 
     // getting affected overtime as a KNIGHT
     @Override
-    public final void getAffectedBy(final GameCharacter enemy,
+    public final void getAffectedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }

@@ -1,6 +1,6 @@
 package main.gameplay;
 
-import main.characters.GameCharacter;
+import main.heroes.Hero;
 import main.data.LocationType;
 
 /**
@@ -11,15 +11,15 @@ public final class OverTimeAbility {
     private int overtimeDamage;
     private int duration;
     private boolean abilityToIncapacitate;
-    private GameCharacter caster;
-    private GameCharacter victim;
+    private Hero caster;
+    private Hero victim;
     private LocationType location;
     private String name;
     private int incapacityDuration;
 
     // Constructor for abilities without incapacitation.
-    public OverTimeAbility(final GameCharacter caster,
-                           final GameCharacter victim,
+    public OverTimeAbility(final Hero caster,
+                           final Hero victim,
                            final String name,
                            final LocationType location,
                            final int damage,
@@ -35,8 +35,8 @@ public final class OverTimeAbility {
     }
 
     // Constructor for abilities with incapacitation.
-    public OverTimeAbility(final GameCharacter caster,
-                           final GameCharacter victim,
+    public OverTimeAbility(final Hero caster,
+                           final Hero victim,
                            final String name,
                            final LocationType location,
                            final int damage,
@@ -81,7 +81,7 @@ public final class OverTimeAbility {
     }
 
     // returning victim
-    private GameCharacter getVictim() {
+    private Hero getVictim() {
         return victim;
     }
 

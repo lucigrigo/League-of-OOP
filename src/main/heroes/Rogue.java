@@ -1,6 +1,6 @@
-package main.characters;
+package main.heroes;
 
-import main.data.CharacterType;
+import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.gameplay.OverTimeAbility;
@@ -8,7 +8,7 @@ import main.gameplay.OverTimeAbility;
 /**
  * Class to implement ROGUE logic.
  */
-public class Rogue extends GameCharacter {
+public class Rogue extends Hero {
 
     private int backStabCount;
     private boolean appliedBackStabThisRound;
@@ -16,7 +16,7 @@ public class Rogue extends GameCharacter {
     public Rogue(final int initCol,
                  final int initLin) {
         super(initCol, initLin, Constants.ROGUE_INITIAL_HEALTH, 0,
-                CharacterType.ROGUE, "R");
+                HeroType.ROGUE, "R");
         this.backStabCount = 0;
         this.appliedBackStabThisRound = false;
     }
@@ -75,7 +75,7 @@ public class Rogue extends GameCharacter {
 
     // getting attacked as a ROGUE
     @Override
-    public final void getAttackedBy(final GameCharacter enemy,
+    public final void getAttackedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.attack(this, location, true, false);
     }
@@ -179,7 +179,7 @@ public class Rogue extends GameCharacter {
 
     // getting affected as a ROGUE
     @Override
-    public final void getAffectedBy(final GameCharacter enemy,
+    public final void getAffectedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }

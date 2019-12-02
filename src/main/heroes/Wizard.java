@@ -1,18 +1,18 @@
-package main.characters;
+package main.heroes;
 
-import main.data.CharacterType;
+import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 
 /**
  * Class to implement WIZARD logic.
  */
-public class Wizard extends GameCharacter {
+public class Wizard extends Hero {
 
     public Wizard(final int initCol,
                   final int initLin) {
         super(initCol, initLin, Constants.WIZARD_INITIAL_HEALTH, 0,
-                CharacterType.WIZARD, "W");
+                HeroType.WIZARD, "W");
     }
 
     // returning maximum health as a WIZARD
@@ -50,7 +50,7 @@ public class Wizard extends GameCharacter {
 
     // getting attacked as a WIZARD
     @Override
-    public final void getAttackedBy(final GameCharacter enemy,
+    public final void getAttackedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.attack(this, location, true, false);
     }
@@ -135,7 +135,7 @@ public class Wizard extends GameCharacter {
     }
 
     @Override
-    public final void getAffectedBy(final GameCharacter enemy,
+    public final void getAffectedBy(final Hero enemy,
                                     final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }
