@@ -1,7 +1,9 @@
 package main.data;
 
+import main.angels.Angel;
 import main.heroes.Hero;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ public class InputData {
     private int nrRounds;
     private MovementType[][] instructions;
     private LocationType[][] map;
+    private HashMap<Integer, List<Angel>> angels;
 
     // Constructor
     public InputData(final int mapHeight,
@@ -20,11 +23,13 @@ public class InputData {
                      final int nrCharacters,
                      final List<Hero> characters,
                      final int nrRounds,
-                     final MovementType[][] instructions) {
+                     final MovementType[][] instructions,
+                     final HashMap<Integer, List<Angel>> angels) {
         this.characters = characters;
         this.nrRounds = nrRounds;
         this.instructions = instructions;
         this.map = map;
+        this.angels = angels;
     }
 
     // returning number of rounds
@@ -45,5 +50,9 @@ public class InputData {
     // returning the map
     public final LocationType[][] getMap() {
         return map;
+    }
+
+    public final HashMap<Integer, List<Angel>> getAngels() {
+        return angels;
     }
 }

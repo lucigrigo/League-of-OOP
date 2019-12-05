@@ -1,19 +1,22 @@
 package main.heroes;
 
+import main.angels.Angel;
 import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
+import main.data.Visitable;
 import main.gameplay.OverTimeAbility;
 
 /**
  * Class to implement Knight logic.
  */
-public class Knight extends Hero {
+public class Knight extends Hero implements Visitable {
 
     public Knight(final int initCol,
-                  final int initLin) {
+                  final int initLin,
+                  final int index) {
         super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0,
-                HeroType.KNIGHT, "K");
+                HeroType.KNIGHT, "K", index);
     }
 
     // returning maximum health for KNIGHT
@@ -266,5 +269,10 @@ public class Knight extends Hero {
             return 0f;
         }
         return damage; // returning damage
+    }
+
+    @Override
+    public final void getHelpedBy(final Angel angel) {
+        angel.helpHero(this);
     }
 }

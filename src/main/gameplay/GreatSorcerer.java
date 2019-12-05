@@ -1,4 +1,17 @@
 package main.gameplay;
 
-public class GreatSorcerer {
+public final class GreatSorcerer {
+
+    private static GreatSorcerer instance = null;
+
+    private GreatSorcerer() {
+
+    }
+
+    public GreatSorcerer getInstance() {
+        if (instance == null) {
+            instance = new GreatSorcerer();
+        }
+        return instance;
+    }
 }

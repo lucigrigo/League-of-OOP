@@ -19,6 +19,7 @@ public abstract class Hero {
     private OverTimeAbility abilityAffectedBy;
     private boolean hasMadeAKillThisRound;
     private int initialRoundHealth;
+    private int index;
 
     // Constructor
     Hero(final int initCol,
@@ -26,7 +27,8 @@ public abstract class Hero {
          final int currentHealth,
          final int currentExperience,
          final HeroType type,
-         final String name) {
+         final String name,
+         final int index) {
         this.colon = initCol;
         this.line = initLin;
         this.currentHealth = currentHealth;
@@ -36,6 +38,7 @@ public abstract class Hero {
         this.name = name;
         this.abilityAffectedBy = null;
         this.hasMadeAKillThisRound = false;
+        this.index = index;
     }
 
     // if the hero has made a kill this round
@@ -66,6 +69,10 @@ public abstract class Hero {
     // returning name
     private String getName() {
         return name;
+    }
+
+    public final int getIndex() {
+        return index;
     }
 
     // returning current level

@@ -1,19 +1,22 @@
 package main.heroes;
 
+import main.angels.Angel;
 import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
+import main.data.Visitable;
 import main.gameplay.OverTimeAbility;
 
 /**
  * Class to implement PYROMANCER logic.
  */
-public class Pyromancer extends Hero {
+public class Pyromancer extends Hero implements Visitable {
 
     public Pyromancer(final int initCol,
-                      final int initLin) {
+                      final int initLin,
+                      final int index) {
         super(initCol, initLin, Constants.PYROMANCER_INITIAL_HEALTH, 0,
-                HeroType.PYROMANCER, "P");
+                HeroType.PYROMANCER, "P", index);
     }
 
     // returning maximum health for a PYROMANCER
@@ -262,5 +265,10 @@ public class Pyromancer extends Hero {
             return 0f;
         }
         return damage;
+    }
+
+    @Override
+    public final void getHelpedBy(final Angel angel) {
+        angel.helpHero(this);
     }
 }

@@ -1,22 +1,25 @@
 package main.heroes;
 
+import main.angels.Angel;
 import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
+import main.data.Visitable;
 import main.gameplay.OverTimeAbility;
 
 /**
  * Class to implement ROGUE logic.
  */
-public class Rogue extends Hero {
+public class Rogue extends Hero implements Visitable {
 
     private int backStabCount;
     private boolean appliedBackStabThisRound;
 
     public Rogue(final int initCol,
-                 final int initLin) {
+                 final int initLin,
+                 final int index) {
         super(initCol, initLin, Constants.ROGUE_INITIAL_HEALTH, 0,
-                HeroType.ROGUE, "R");
+                HeroType.ROGUE, "R", index);
         this.backStabCount = 0;
         this.appliedBackStabThisRound = false;
     }
@@ -278,5 +281,10 @@ public class Rogue extends Hero {
             return 0f;
         }
         return damage;
+    }
+
+    @Override
+    public final void getHelpedBy(final Angel angel) {
+        angel.helpHero(this);
     }
 }

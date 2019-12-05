@@ -1,18 +1,21 @@
 package main.heroes;
 
+import main.angels.Angel;
 import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
+import main.data.Visitable;
 
 /**
  * Class to implement WIZARD logic.
  */
-public class Wizard extends Hero {
+public class Wizard extends Hero implements Visitable {
 
     public Wizard(final int initCol,
-                  final int initLin) {
+                  final int initLin,
+                  final int index) {
         super(initCol, initLin, Constants.WIZARD_INITIAL_HEALTH, 0,
-                HeroType.WIZARD, "W");
+                HeroType.WIZARD, "W", index);
     }
 
     // returning maximum health as a WIZARD
@@ -192,5 +195,10 @@ public class Wizard extends Hero {
             enemyDamage *= Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER;
         }
         return enemyDamage;
+    }
+
+    @Override
+    public final void getHelpedBy(final Angel angel) {
+        angel.helpHero(this);
     }
 }

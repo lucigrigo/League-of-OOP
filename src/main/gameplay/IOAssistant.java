@@ -1,18 +1,18 @@
 package main.gameplay;
 
-import main.heroes.Hero;
-import main.heroes.Knight;
-import main.heroes.Pyromancer;
-import main.heroes.Rogue;
-import main.heroes.Wizard;
+import main.angels.Angel;
+import main.data.HeroType;
 import main.data.InputData;
 import main.data.LocationType;
 import main.data.MovementType;
+import main.heroes.Hero;
+import main.heroes.HeroFactory;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,6 +40,7 @@ public class IOAssistant {
         int nrCharacters;
         int nrRounds;
         List<Hero> characters = new ArrayList<>();
+        HashMap<Integer, List<Angel>> angels = new HashMap<>();
         MovementType[][] instructions;
         LocationType[][] map;
 
@@ -81,6 +82,7 @@ public class IOAssistant {
             // reading heroes count
             nrCharacters = scanner.nextInt();
 
+            HeroFactory heroFactory = new HeroFactory();
             // reading heroes types
             for (int i = 0; i < nrCharacters; i++) {
                 String line = scanner.next();
@@ -88,20 +90,24 @@ public class IOAssistant {
                 int initialColumn = scanner.nextInt();
                 switch (line.charAt(0)) {
                     case 'W':
-                        characters.add(new Wizard(initialColumn, initialLine));
+                        characters.add(heroFactory.createHero(HeroType.WIZARD,
+                                initialLine, initialColumn, i));
                         break;
                     case 'R':
-                        characters.add(new Rogue(initialColumn, initialLine));
+                        characters.add(heroFactory.createHero(HeroType.ROGUE,
+                                initialLine, initialColumn, i));
                         break;
                     case 'P':
-                        characters.add(new Pyromancer(initialColumn, initialLine));
+                        characters.add(heroFactory.createHero(HeroType.PYROMANCER,
+                                initialLine, initialColumn, i));
                         break;
                     case 'K':
-                        characters.add(new Knight(initialColumn, initialLine));
+                        characters.add(heroFactory.createHero(HeroType.KNIGHT,
+                                initialLine, initialColumn, i));
                         break;
                     default:
                         System.out.println("Invalid input for the characters!");
-                        System.exit(2);
+                        System.exit(1);
                 }
             }
 
@@ -136,6 +142,10 @@ public class IOAssistant {
                 }
             }
 
+            for (int i = 0; i < nrRounds; i++) {
+                // TODO create angels for every round
+            }
+
             // closing scanner
             scanner.close();
         } catch (IOException e) {
@@ -144,7 +154,7 @@ public class IOAssistant {
         }
         // returning data
         return new InputData(mapHeight, mapWidth, map, nrCharacters, characters,
-                nrRounds, instructions);
+                nrRounds, instructions, angels);
     }
 
     /**
