@@ -1,4 +1,5 @@
 Starting audit...
-[ERROR] /Users/grigorelucian/Documents/League-of-OOP/src/main/gameplay/OverTimeAbility.java:6: First sentence should end with a period. [JavadocStyle]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/gameplay/IOAssistant.java:145:48: Must have at least one statement. [EmptyBlock]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/data/InputData.java:20:12: More than 7 parameters (found 8). [ParameterNumber]
 Audit done.
-Checkstyle ends with 1 errors.
+Checkstyle ends with 2 errors.

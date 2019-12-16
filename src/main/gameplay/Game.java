@@ -130,6 +130,8 @@ public final class Game {
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
             // doing round ending routines
+            // TODO add angel interactions
+//            angelSpawning();
             roundEnding(data.getCharacters());
             // increasing round number
             currentRound++;

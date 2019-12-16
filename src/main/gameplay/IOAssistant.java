@@ -6,7 +6,7 @@ import main.data.InputData;
 import main.data.LocationType;
 import main.data.MovementType;
 import main.heroes.Hero;
-import main.heroes.HeroFactory;
+import main.factories.HeroFactory;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -8,9 +8,9 @@
 
 package main;
 
-import main.gameplay.IOAssistant;
 import main.data.InputData;
 import main.gameplay.Game;
+import main.gameplay.IOAssistant;
 
 /**
  * Main starting point of the game.

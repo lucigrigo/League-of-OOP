@@ -1,6 +1,7 @@
 package main.gameplay;
 
 public final class Map {
+
     private static Map instance = null;
 
     private Map() {

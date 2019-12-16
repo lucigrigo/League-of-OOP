@@ -1,6 +1,7 @@
 package main.gameplay;
 
 public final class GreatSorcerer {
+//        implements GameObserver{
 
     private static GreatSorcerer instance = null;
 
