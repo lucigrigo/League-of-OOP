@@ -14,26 +14,30 @@ public class Spawner extends Angel implements Visitor {
     @Override
     public void helpHero(final Wizard wizard) {
         wizard.revive(Constants.SPAWNER_WIZARD_HP);
+        computeObservation(wizard);
     }
 
     @Override
     public void helpHero(final Rogue rogue) {
         rogue.revive(Constants.SPAWNER_ROGUE_HP);
+        computeObservation(rogue);
     }
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
         pyromancer.revive(Constants.SPAWNER_PYROMANCER_HP);
+        computeObservation(pyromancer);
     }
 
     @Override
     public void helpHero(final Knight knight) {
         knight.revive(Constants.SPAWNER_KNIGHT_HP);
+        computeObservation(knight);
     }
 
     @Override
     public void computeObservation(Hero hero) {
-        String message = "Spawner helped " + hero.getName() + " " + hero.getIndex() + "\n";
+        String message = "Spawner helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

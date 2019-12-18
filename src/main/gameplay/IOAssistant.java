@@ -154,6 +154,10 @@ public class IOAssistant {
                             Integer.parseInt(singleAngel[1]), Integer.parseInt(singleAngel[2])));
                 }
                 angels.put(i, singleRoundAngels);
+//                System.out.println("pentru runda " + i);
+//                for(Angel angel : singleRoundAngels) {
+//                    System.out.println(angel.getName());
+//                }
             }
 
             // closing scanner

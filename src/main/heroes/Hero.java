@@ -5,10 +5,12 @@ import main.gameplay.GreatSorcerer;
 import main.gameplay.OverTimeAbility;
 import main.strategies.Strategy;
 
+import java.util.Observable;
+
 /**
  * Abstract class for a hero.
  */
-public abstract class Hero implements Visitable {
+public abstract class Hero extends Observable implements Visitable {
     private int colon;
     private int line;
     private int currentHealth;
@@ -21,6 +23,7 @@ public abstract class Hero implements Visitable {
     private int initialRoundHealth;
     private int index;
     private Strategy strategy;
+    protected float angelBonus;
 
     // Constructor
     Hero(final int initCol,
@@ -43,6 +46,16 @@ public abstract class Hero implements Visitable {
         this.hasMadeAKillThisRound = false;
         this.index = index;
         this.strategy = null;
+        this.angelBonus = 0f;
+        addObserver(GreatSorcerer.getInstance());
+    }
+
+    public void addAngelBonus(final float bonus) {
+        this.angelBonus += bonus;
+    }
+
+    public void resetAngelBonus() {
+        this.angelBonus = 0f;
     }
 
     // if the hero has made a kill this round
@@ -92,12 +105,28 @@ public abstract class Hero implements Visitable {
     public final void hasDied(final boolean isAngelInteraction) {
         this.currentHealth = 0;
         if (isAngelInteraction) {
-            GreatSorcerer.getInstance().writeAngelKill(this);
+            String message = "Player " + getFullName() + " "
+                    + getIndex() + " was killed by an angel\n";
+            setChanged();
+            notifyObservers(message);
         }
     }
 
-    public final void increaseXP(final int XPAmount) {
-        this.currentExperience = this.currentExperience + XPAmount;
+    public void getToNextLevel() {
+        int nextLevelXp = Constants.EXPERIENCE_BASE
+                + (level + 1)
+                * Constants.EXPERIENCE_SCALING;
+        nextLevelXp -= currentExperience;
+        increaseXP(nextLevelXp);
+    }
+
+    public final void increaseHP(final int hpAmount) {
+        this.currentHealth += hpAmount;
+    }
+
+    public final void increaseXP(final int xpAmount) {
+        this.currentExperience = this.currentExperience + xpAmount;
+        checkForLevelUp();
     }
 
     public final void revive(final int reviveHp) {
@@ -161,12 +190,12 @@ public abstract class Hero implements Visitable {
 
     // the hero taking damage
     public final boolean takeDamage(final int damage,
-                                    final boolean isOverTimeAbility) {
+                                    final boolean isOverTimeAbility,
+                                    final boolean isAngelInteraction) {
         this.currentHealth -= damage;
         if (this.currentHealth <= 0
                 && !isOverTimeAbility) {
-            this.hasDied(false);
-            // TODO add events for observer
+            this.hasDied(isAngelInteraction);
             return true;
         } else if (this.currentHealth <= 0) {
             this.hasDied(false);
@@ -194,6 +223,9 @@ public abstract class Hero implements Visitable {
                     - Constants.EXPERIENCE_BASE)
                     / Constants.EXPERIENCE_SCALING + 1;
             this.currentHealth = this.getMaxHealth();
+            String message = fullName + " " + index + " reached level " + level;
+            setChanged();
+            notifyObservers(message);
         }
     }
 
@@ -283,4 +315,11 @@ public abstract class Hero implements Visitable {
                                          LocationType location,
                                          boolean startNow,
                                          boolean addRaceModifier);
+
+    public void computeObservation(Hero enemy) {
+        String message = "Player " + enemy.getFullName() + " " + enemy.getIndex()
+                + " was killed by " + getFullName() + " " + getIndex() + "\n";
+        setChanged();
+        notifyObservers(message);
+    }
 }

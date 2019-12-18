@@ -66,13 +66,15 @@ public class Wizard extends Hero implements Visitable {
                               final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD;
+            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
+                    + angelBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
-        if (enemy.takeDamage(Math.round(damage), false)) {
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
             this.fightWon(enemy.getLevel());
+            computeObservation(enemy);
         }
         return 0f;
     }
@@ -85,15 +87,17 @@ public class Wizard extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE;
+            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
+                    + angelBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
-        if (enemy.takeDamage(Math.round(damage), false)) {
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
             this.fightWon(enemy.getLevel());
+            computeObservation(enemy);
         }
     }
 
@@ -105,15 +109,17 @@ public class Wizard extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER;
+            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
+                    + angelBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
-        if (enemy.takeDamage(Math.round(damage), false)) {
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
             this.fightWon(enemy.getLevel());
+            computeObservation(enemy);
         }
     }
 
@@ -125,15 +131,17 @@ public class Wizard extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT;
+            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
+                    + angelBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
-        if (enemy.takeDamage(Math.round(damage), false)) {
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
             this.fightWon(enemy.getLevel());
+            computeObservation(enemy);
         }
     }
 
@@ -162,7 +170,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE;
+            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
+                    + angelBonus);
         }
         return enemyDamage;
     }
@@ -177,7 +186,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT;
+            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
+                    + angelBonus);
         }
         return enemyDamage;
     }
@@ -192,7 +202,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER;
+            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
+                    + angelBonus);
         }
         return enemyDamage;
     }

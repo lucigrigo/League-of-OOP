@@ -124,13 +124,13 @@ public final class Constants {
 
     // Dracula
     public static final float DRACULA_KNIGHT_BONUS_DAMAGE = -0.2f;
-    public static final int DRACULA_KNIGHT_BONUS_HP = -60;
+    public static final int DRACULA_KNIGHT_BONUS_HP = 60;
     public static final float DRACULA_PYROMANCER_BONUS_DAMAGE = -0.3f;
-    public static final int DRACULA_PYROMANCER_BONUS_HP = -40;
+    public static final int DRACULA_PYROMANCER_BONUS_HP = 40;
     public static final float DRACULA_ROGUE_BONUS_DAMAGE = -0.1f;
-    public static final int DRACULA_ROGUE_BONUS_HP = -35;
+    public static final int DRACULA_ROGUE_BONUS_HP = 35;
     public static final float DRACULA_WIZARD_BONUS_DAMAGE = -0.4f;
-    public static final int DRACULA_WIZARD_BONUS_HP = -20;
+    public static final int DRACULA_WIZARD_BONUS_HP = 20;
 
     // GoodBoy
     public static final float GOODBOY_KNIGHT_BONUS_DAMAGE = 0.4f;

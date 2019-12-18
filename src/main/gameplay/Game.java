@@ -55,9 +55,15 @@ public final class Game {
                     && !character.isDead()
                     && character.getAbilityAffectedBy().getDuration() > 0) {
                 character.takeDamage(character.getAbilityAffectedBy().getOvertimeDamage(),
-                        true);
+                        true, false);
                 character.getAbilityAffectedBy().damageDealt();
             }
+        }
+    }
+
+    private void resetAngelBonuses(final List<Hero> characters) {
+        for (Hero hero : characters) {
+            hero.resetAngelBonus();
         }
     }
 
@@ -84,6 +90,7 @@ public final class Game {
                 }
             }
         }
+        resetAngelBonuses(characters);
     }
 
     /**
@@ -131,10 +138,8 @@ public final class Game {
             return;
         }
         for (Angel angel : currentRoundAngels) {
-//            System.out.println(angel.getName());
             angel.spawn();
             checkForInteraction(angel, data.getCharacters());
-//            System.out.println(angel.getName());
         }
     }
 
@@ -146,6 +151,7 @@ public final class Game {
     public void startGame(final InputData data) {
         int maxRounds = data.getNrRounds();
         int currentRound = 0;
+//        angelSpawning(data, -1);
         while (currentRound < maxRounds) {
             GreatSorcerer.getInstance().newRound(currentRound + 1);
             // moving the heroes
@@ -156,7 +162,7 @@ public final class Game {
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
 
-            // TODO add angel interactions
+            // todo angel interaction
             angelSpawning(data, currentRound);
 
             // doing round ending routines

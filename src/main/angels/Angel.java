@@ -52,6 +52,5 @@ public abstract class Angel extends Observable implements Visitor {
                 + spawnRow + " " + spawnCol + "\n";
         setChanged();
         notifyObservers(message);
-//        System.out.println(message);
     }
 }
