@@ -1,9 +1,10 @@
 package main.gameplay;
 
-import main.heroes.Hero;
+import main.angels.Angel;
 import main.data.InputData;
 import main.data.LocationType;
 import main.data.MovementType;
+import main.heroes.Hero;
 
 import java.util.List;
 
@@ -113,6 +114,30 @@ public final class Game {
         }
     }
 
+    private void checkForInteraction(final Angel angel,
+                                     final List<Hero> heroes) {
+        for (Hero hero : heroes) {
+            if (angel.getRow() == hero.getRow()
+                    && angel.getCol() == hero.getColon()) {
+                hero.getHelpedBy(angel);
+            }
+        }
+    }
+
+    private void angelSpawning(final InputData data,
+                               final int currentRound) {
+        List<Angel> currentRoundAngels = data.getAngels().get(currentRound + 1);
+        if (currentRoundAngels == null) {
+            return;
+        }
+        for (Angel angel : currentRoundAngels) {
+//            System.out.println(angel.getName());
+            angel.spawn();
+            checkForInteraction(angel, data.getCharacters());
+//            System.out.println(angel.getName());
+        }
+    }
+
     /**
      * Main function that manages the unfolding of the game.
      *
@@ -122,6 +147,7 @@ public final class Game {
         int maxRounds = data.getNrRounds();
         int currentRound = 0;
         while (currentRound < maxRounds) {
+            GreatSorcerer.getInstance().newRound(currentRound + 1);
             // moving the heroes
             applyCurrentRoundMoves(data.getCharacters(),
                     data.getCurrentRoundMoves(currentRound));
@@ -129,9 +155,11 @@ public final class Game {
             applyOverTimeDamage(data.getCharacters());
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
-            // doing round ending routines
+
             // TODO add angel interactions
-//            angelSpawning();
+            angelSpawning(data, currentRound);
+
+            // doing round ending routines
             roundEnding(data.getCharacters());
             // increasing round number
             currentRound++;

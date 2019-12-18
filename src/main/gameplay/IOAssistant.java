@@ -1,12 +1,10 @@
 package main.gameplay;
 
 import main.angels.Angel;
-import main.data.HeroType;
-import main.data.InputData;
-import main.data.LocationType;
-import main.data.MovementType;
-import main.heroes.Hero;
+import main.data.*;
+import main.factories.AngelFactory;
 import main.factories.HeroFactory;
+import main.heroes.Hero;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -56,6 +54,7 @@ public class IOAssistant {
 
             // reading the map
             map = new LocationType[mapHeight][mapWidth];
+//            Map.getInstance().setDimensions(mapHeight, mapWidth);
             for (int i = 0; i < mapHeight; i++) {
                 String line = scanner.next();
                 for (int j = 0; j < mapWidth; j++) {
@@ -78,12 +77,13 @@ public class IOAssistant {
                     }
                 }
             }
+            Map.getInstance().setMap(map);
 
             // reading heroes count
             nrCharacters = scanner.nextInt();
 
-            HeroFactory heroFactory = new HeroFactory();
             // reading heroes types
+            HeroFactory heroFactory = new HeroFactory();
             for (int i = 0; i < nrCharacters; i++) {
                 String line = scanner.next();
                 int initialLine = scanner.nextInt();
@@ -142,8 +142,18 @@ public class IOAssistant {
                 }
             }
 
-            for (int i = 0; i < nrRounds; i++) {
-                // TODO create angels for every round
+            // reading the angels
+            AngelFactory angelFactory = new AngelFactory();
+            for (int i = 0; i <= nrRounds; i++) {
+                String line = scanner.nextLine();
+                String[] arguments = line.split(" ");
+                List<Angel> singleRoundAngels = new ArrayList<>(arguments.length - 1);
+                for (int j = 1; j < arguments.length; j++) {
+                    String[] singleAngel = arguments[j].split(",");
+                    singleRoundAngels.add(angelFactory.createAngel(AngelType.valueOf(singleAngel[0]),
+                            Integer.parseInt(singleAngel[1]), Integer.parseInt(singleAngel[2])));
+                }
+                angels.put(i, singleRoundAngels);
             }
 
             // closing scanner
@@ -169,9 +179,15 @@ public class IOAssistant {
             // opening file writer
             FileWriter fileWriter = new FileWriter(outputFile);
 
+            GreatSorcerer.getInstance().startFinalResults();
             // writing information about each hero
             for (Hero character : characters) {
-                fileWriter.write(character.toString());
+                GreatSorcerer.getInstance().writeResult(character.toString());
+            }
+
+            for (String info : GreatSorcerer.getInstance().getInfo()) {
+                System.out.print(info);
+                fileWriter.write(info);
             }
 
             // flushing informations

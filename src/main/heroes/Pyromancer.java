@@ -16,7 +16,7 @@ public class Pyromancer extends Hero implements Visitable {
                       final int initLin,
                       final int index) {
         super(initCol, initLin, Constants.PYROMANCER_INITIAL_HEALTH, 0,
-                HeroType.PYROMANCER, "P", index);
+                HeroType.PYROMANCER, "P", "Pyromancer", index);
     }
 
     // returning maximum health for a PYROMANCER

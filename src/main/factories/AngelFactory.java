@@ -13,28 +13,28 @@ public class AngelFactory {
                                    final int spawnRow,
                                    final int spawnCol) {
         switch (angelType) {
-            case DRACULA:
+            case Dracula:
                 return new Dracula(spawnRow, spawnCol);
-            case SPAWNER:
+            case Spawner:
                 return new Spawner(spawnRow, spawnCol);
-            case GOOD_BOY:
+            case GoodBoy:
                 return new GoodBoy(spawnRow, spawnCol);
-            case DARK_ANGEL:
+            case DarkAngel:
                 return new DarkAngel(spawnRow, spawnCol);
-            case LIFE_GIVER:
+            case LifeGiver:
                 return new LifeGiver(spawnRow, spawnCol);
-            case THE_DOOMER:
+            case TheDoomer:
                 return new TheDoomer(spawnRow, spawnCol);
-            case SMALL_ANGEL:
+            case SmallAngel:
                 return new SmallAngel(spawnRow, spawnCol);
-            case DAMAGE_ANGEL:
+            case DamageAngel:
                 return new DamageAngel(spawnRow, spawnCol);
-            case LEVEL_UP_ANGEL:
+            case LevelUpAngel:
                 return new LevelUpAngel(spawnRow, spawnCol);
-            case EXPERIENCE_GIVER:
+            case XPAngel:
                 return new XPAngel(spawnRow, spawnCol);
             default:
-                System.out.println("Invalid hero type!");
+                System.out.println("Invalid angel type!");
                 return null;
         }
     }

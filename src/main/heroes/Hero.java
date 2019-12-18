@@ -1,25 +1,26 @@
 package main.heroes;
 
-import main.data.HeroType;
-import main.data.Constants;
-import main.data.LocationType;
-import main.data.MovementType;
+import main.data.*;
+import main.gameplay.GreatSorcerer;
 import main.gameplay.OverTimeAbility;
+import main.strategies.Strategy;
 
 /**
  * Abstract class for a hero.
  */
-public abstract class Hero {
+public abstract class Hero implements Visitable {
     private int colon;
     private int line;
     private int currentHealth;
     private int currentExperience;
     private int level;
     private String name;
+    private String fullName;
     private OverTimeAbility abilityAffectedBy;
     private boolean hasMadeAKillThisRound;
     private int initialRoundHealth;
     private int index;
+    private Strategy strategy;
 
     // Constructor
     Hero(final int initCol,
@@ -28,6 +29,7 @@ public abstract class Hero {
          final int currentExperience,
          final HeroType type,
          final String name,
+         final String fullName,
          final int index) {
         this.colon = initCol;
         this.line = initLin;
@@ -36,9 +38,11 @@ public abstract class Hero {
         this.currentExperience = currentExperience;
         this.level = 0;
         this.name = name;
+        this.fullName = fullName;
         this.abilityAffectedBy = null;
         this.hasMadeAKillThisRound = false;
         this.index = index;
+        this.strategy = null;
     }
 
     // if the hero has made a kill this round
@@ -67,12 +71,16 @@ public abstract class Hero {
     }
 
     // returning name
-    private String getName() {
+    public String getName() {
         return name;
     }
 
     public final int getIndex() {
         return index;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     // returning current level
@@ -81,8 +89,19 @@ public abstract class Hero {
     }
 
     // hero has died
-    final void hasDied() {
+    public final void hasDied(final boolean isAngelInteraction) {
         this.currentHealth = 0;
+        if (isAngelInteraction) {
+            GreatSorcerer.getInstance().writeAngelKill(this);
+        }
+    }
+
+    public final void increaseXP(final int XPAmount) {
+        this.currentExperience = this.currentExperience + XPAmount;
+    }
+
+    public final void revive(final int reviveHp) {
+        this.currentHealth = reviveHp;
     }
 
     // checking if the hero is dead
@@ -146,10 +165,11 @@ public abstract class Hero {
         this.currentHealth -= damage;
         if (this.currentHealth <= 0
                 && !isOverTimeAbility) {
-            this.hasDied();
+            this.hasDied(false);
+            // TODO add events for observer
             return true;
         } else if (this.currentHealth <= 0) {
-            this.hasDied();
+            this.hasDied(false);
         }
         return false;
     }

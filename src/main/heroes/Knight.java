@@ -16,7 +16,7 @@ public class Knight extends Hero implements Visitable {
                   final int initLin,
                   final int index) {
         super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0,
-                HeroType.KNIGHT, "K", index);
+                HeroType.KNIGHT, "K", "Knight", index);
     }
 
     // returning maximum health for KNIGHT
@@ -79,7 +79,7 @@ public class Knight extends Hero implements Visitable {
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
             if (!isForDeflectPurpose) {
                 this.fightWon(enemy.getLevel());
-                enemy.hasDied();
+                enemy.hasDied(false);
             }
             return enemy.getHealth();
         }
@@ -110,7 +110,7 @@ public class Knight extends Hero implements Visitable {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
             this.fightWon(enemy.getLevel());
-            enemy.hasDied();
+            enemy.hasDied(false);
             return;
         }
         float damage = computeInitialDamage(location);
@@ -139,7 +139,7 @@ public class Knight extends Hero implements Visitable {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
             this.fightWon(enemy.getLevel());
-            enemy.hasDied();
+            enemy.hasDied(false);
             return;
         }
         float damage = computeInitialDamage(location);
@@ -168,7 +168,7 @@ public class Knight extends Hero implements Visitable {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
             this.fightWon(enemy.getLevel());
-            enemy.hasDied();
+            enemy.hasDied(false);
             return;
         }
         float damage = computeInitialDamage(location);

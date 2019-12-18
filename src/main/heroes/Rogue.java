@@ -19,7 +19,7 @@ public class Rogue extends Hero implements Visitable {
                  final int initLin,
                  final int index) {
         super(initCol, initLin, Constants.ROGUE_INITIAL_HEALTH, 0,
-                HeroType.ROGUE, "R", index);
+                HeroType.ROGUE, "R", "Rogue", index);
         this.backStabCount = 0;
         this.appliedBackStabThisRound = false;
     }

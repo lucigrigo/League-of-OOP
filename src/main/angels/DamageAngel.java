@@ -1,16 +1,13 @@
 package main.angels;
 
 import main.data.Visitor;
-import main.heroes.Knight;
-import main.heroes.Pyromancer;
-import main.heroes.Rogue;
-import main.heroes.Wizard;
+import main.heroes.*;
 
 public class DamageAngel extends Angel implements Visitor {
 
     public DamageAngel(final int spawnRow,
                        final int spawnCol) {
-        super(spawnRow, spawnCol);
+        super(spawnRow, spawnCol, "DamageAngel");
     }
 
     @Override
@@ -31,5 +28,12 @@ public class DamageAngel extends Angel implements Visitor {
     @Override
     public void helpHero(final Knight knight) {
 
+    }
+
+    @Override
+    public void computeObservation(final Hero hero) {
+        String message = "DamageAngel helped " + hero.getName() + " " + hero.getIndex() + "\n";
+        setChanged();
+        notifyObservers(message);
     }
 }

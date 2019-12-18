@@ -15,7 +15,7 @@ public class Wizard extends Hero implements Visitable {
                   final int initLin,
                   final int index) {
         super(initCol, initLin, Constants.WIZARD_INITIAL_HEALTH, 0,
-                HeroType.WIZARD, "W", index);
+                HeroType.WIZARD, "W", "Wizard", index);
     }
 
     // returning maximum health as a WIZARD
