@@ -13,26 +13,38 @@ public class XPAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
+        if (wizard.isDead()) {
+            return;
+        }
         computeObservation(wizard);
-        wizard.increaseXP(Constants.XPANGEL_WIZARD_BONUS_XP);
+        wizard.increaseXP(Constants.XPANGEL_WIZARD_BONUS_XP, false);
     }
 
     @Override
     public void helpHero(final Rogue rogue) {
+        if (rogue.isDead()) {
+            return;
+        }
         computeObservation(rogue);
-        rogue.increaseXP(Constants.XPANGEL_ROGUE_BONUS_XP);
+        rogue.increaseXP(Constants.XPANGEL_ROGUE_BONUS_XP, false);
     }
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
+        if (pyromancer.isDead()) {
+            return;
+        }
         computeObservation(pyromancer);
-        pyromancer.increaseXP(Constants.XPANGEL_PYROMANCER_BONUS_XP);
+        pyromancer.increaseXP(Constants.XPANGEL_PYROMANCER_BONUS_XP, false);
     }
 
     @Override
     public void helpHero(final Knight knight) {
+        if (knight.isDead()) {
+            return;
+        }
         computeObservation(knight);
-        knight.increaseXP(Constants.XPANGEL_KNIGHT_BONUS_XP);
+        knight.increaseXP(Constants.XPANGEL_KNIGHT_BONUS_XP, false);
     }
 
     @Override

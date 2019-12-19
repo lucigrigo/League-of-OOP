@@ -13,6 +13,9 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
+        if(wizard.isDead()) {
+            return;
+        }
         wizard.addAngelBonus(Constants.SMALLANGEL_WIZARD_BONUS_DAMAGE);
         wizard.increaseHP(Constants.SMALLANGEL_WIZARD_BONUS_HP);
         computeObservation(wizard);
@@ -20,6 +23,9 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Rogue rogue) {
+        if(rogue.isDead()) {
+            return;
+        }
         rogue.addAngelBonus(Constants.SMALLANGEL_ROGUE_BONUS_DAMAGE);
         rogue.increaseHP(Constants.SMALLANGEL_ROGUE_BONUS_HP);
         computeObservation(rogue);
@@ -27,6 +33,9 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
+        if(pyromancer.isDead()) {
+            return;
+        }
         pyromancer.addAngelBonus(Constants.SMALLANGEL_PYROMANCER_BONUS_DAMAGE);
         pyromancer.increaseHP(Constants.SMALLANGEL_PYROMANCER_BONUS_HP);
         computeObservation(pyromancer);
@@ -34,6 +43,9 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Knight knight) {
+        if(knight.isDead()) {
+            return;
+        }
         knight.addAngelBonus(Constants.SMALLANGEL_KNIGHT_BONUS_DAMAGE);
         knight.increaseHP(Constants.SMALLANGEL_KNIGHT_BONUS_HP);
         computeObservation(knight);

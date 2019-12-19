@@ -13,6 +13,9 @@ public class LevelUpAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
+        if(wizard.isDead()) {
+            return;
+        }
         computeObservation(wizard);
         wizard.getToNextLevel();
         wizard.addAngelBonus(Constants.LEVELUPANGEL_WIZARD_BONUS);
@@ -20,6 +23,9 @@ public class LevelUpAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Rogue rogue) {
+        if(rogue.isDead()) {
+            return;
+        }
         computeObservation(rogue);
         rogue.getToNextLevel();
         rogue.addAngelBonus(Constants.LEVELUPANGEL_ROGUE_BONUS);
@@ -27,6 +33,9 @@ public class LevelUpAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
+        if(pyromancer.isDead()) {
+            return;
+        }
         computeObservation(pyromancer);
         pyromancer.getToNextLevel();
         pyromancer.addAngelBonus(Constants.LEVELUPANGEL_PYROMANCER_BONUS);
@@ -34,6 +43,9 @@ public class LevelUpAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Knight knight) {
+        if(knight.isDead()) {
+            return;
+        }
         computeObservation(knight);
         knight.getToNextLevel();
         knight.addAngelBonus(Constants.LEVELUPANGEL_KNIGHT_BONUS);
