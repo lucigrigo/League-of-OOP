@@ -134,7 +134,7 @@ public final class Constants {
 
     // GoodBoy
     public static final float GOODBOY_KNIGHT_BONUS_DAMAGE = 0.4f;
-    public static final int GOODBOY_KNIGHT_BONUS_HP = 30;
+    public static final int GOODBOY_KNIGHT_BONUS_HP = 20;
     public static final float GOODBOY_PYROMANCER_BONUS_DAMAGE = 0.5f;
     public static final int GOODBOY_PYROMANCER_BONUS_HP = 30;
     public static final float GOODBOY_ROGUE_BONUS_DAMAGE = 0.4f;

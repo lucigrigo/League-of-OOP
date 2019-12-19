@@ -136,16 +136,19 @@ public abstract class Hero extends Observable implements Visitable {
                 + (level)
                 * Constants.EXPERIENCE_SCALING;
         nextLevelXp -= currentExperience;
-        increaseXP(nextLevelXp);
+        increaseXP(nextLevelXp, true);
     }
 
     public final void increaseHP(final float hpAmount) {
         this.currentHealth += hpAmount;
     }
 
-    public final void increaseXP(final int xpAmount) {
+    public final void increaseXP(final int xpAmount,
+                                 final boolean getToNextLevel) {
         this.currentExperience = this.currentExperience + xpAmount;
+//        if (!getToNextLevel) {
         checkForLevelUp();
+//        }
     }
 
     public final void revive(final int reviveHp) {
@@ -231,13 +234,14 @@ public abstract class Hero extends Observable implements Visitable {
 
     // the hero won a fight
     final void fightWon(final int loserLevel) {
-        if (isDead()) {
-//            return;
-        }
-        this.initialRoundExperience = this.currentExperience
+//        if (isDead()) {
+////            return;
+//        }
+        this.initialRoundExperience = this.initialRoundExperience
                 + Math.max(0, Constants.WIN_MAGIC_200
                 - (this.getLevel() - loserLevel)
                 * Constants.WIN_MAGIC_40);
+//        System.out.println("aici nu?");
         this.setHasMadeAKillThisRound();
     }
 
@@ -263,6 +267,11 @@ public abstract class Hero extends Observable implements Visitable {
      * and refreshes round-starting health (for execute calculus done correctly).
      */
     public void doRoundEndingRoutine() {
+        if (!isDead()
+                && !revivedThisRound) {
+            this.initialRoundExperience = currentExperience;
+//            this.currentExperience = initialRoundExperience;
+        }
         if (this.hasMadeAKillThisRound
                 && !revivedThisRound) {
             this.checkForLevelUp();
@@ -270,13 +279,10 @@ public abstract class Hero extends Observable implements Visitable {
             this.hasMadeAKillThisRound = false;
         }
         this.initialRoundHealth = currentHealth;
-        if (!isDead()
-                && !revivedThisRound) {
-            this.initialRoundExperience = currentExperience;
-        }
+
         revivedThisRound = false;
-        this.strategyBonus = 0f;
-        this.strategy = null;
+//        this.strategyBonus = 0f;
+//        this.strategy = null;
     }
 
     // writing the hero to output

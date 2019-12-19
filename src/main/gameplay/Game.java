@@ -152,6 +152,7 @@ public final class Game {
         int currentRound = 0;
 //        angelSpawning(data, -1);
         while (currentRound < maxRounds) {
+//            System.out.println("RUNDA " + currentRound);
             GreatSorcerer.getInstance().newRound(currentRound + 1);
             // moving the heroes
             applyCurrentRoundMoves(data.getCharacters(),

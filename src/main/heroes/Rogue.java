@@ -6,6 +6,8 @@ import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
 import main.gameplay.OverTimeAbility;
+import main.strategies.RogueAttackStrategy;
+import main.strategies.RogueDefenceStrategy;
 
 /**
  * Class to implement ROGUE logic.
@@ -168,6 +170,10 @@ public class Rogue extends Hero implements Visitable {
                              final LocationType location,
                              final boolean addRaceModifier,
                              final boolean isForDeflectPurpose) {
+//        if (strategy != null) {
+////            System.out.println("aici?");
+////            strategy.applyStrategy();
+////        }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
@@ -302,6 +308,16 @@ public class Rogue extends Hero implements Visitable {
 
     @Override
     public void lookForStrategy() {
-
+        if (getHealth() < Constants.ROGUE_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()
+                && getHealth() > Constants.ROGUE_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()) {
+            strategy = new RogueAttackStrategy(this);
+//            System.out.println("atac");
+        } else if (getHealth() < Constants.ROGUE_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
+            strategy = new RogueDefenceStrategy(this);
+//            System.out.println("difens");
+        }
+        if (strategy != null) {
+            strategy.applyStrategy();
+        }
     }
 }
