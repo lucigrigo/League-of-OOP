@@ -90,7 +90,6 @@ public final class Game {
                 }
             }
         }
-        resetAngelBonuses(characters);
     }
 
     /**
@@ -134,7 +133,7 @@ public final class Game {
     private void angelSpawning(final InputData data,
                                final int currentRound) {
         List<Angel> currentRoundAngels = data.getAngels().get(currentRound + 1);
-        if (currentRoundAngels == null) {
+        if (currentRoundAngels.isEmpty()) {
             return;
         }
         for (Angel angel : currentRoundAngels) {
@@ -161,6 +160,7 @@ public final class Game {
             applyOverTimeDamage(data.getCharacters());
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
+            resetAngelBonuses(data.getCharacters());
 
             // todo angel interaction
             angelSpawning(data, currentRound);

@@ -6,6 +6,8 @@ import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
 import main.gameplay.OverTimeAbility;
+import main.strategies.KnightAttackStrategy;
+import main.strategies.KnightDefenceStrategy;
 
 /**
  * Class to implement Knight logic.
@@ -40,7 +42,7 @@ public class Knight extends Hero implements Visitable {
     }
 
     // looking to see if execute is possible
-    private boolean checkExecutePossibility(final int enemyCurrentHealth,
+    private boolean checkExecutePossibility(final float enemyCurrentHealth,
                                             final int enemyMaxHealth) {
         float damagePercent = Constants.KNIGHT_EXECUTE_HP_LIMIT_PERCENTAGE
                 + Constants.KNIGHT_EXECUTE_HP_LIMIT_LEVEL_SCALING_PERCENTAGE
@@ -86,7 +88,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -118,7 +121,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -149,7 +153,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -159,6 +164,7 @@ public class Knight extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
             }
+//            System.out.println(damage);
             return;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
@@ -179,8 +185,7 @@ public class Knight extends Hero implements Visitable {
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_KNIGHT;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -190,6 +195,7 @@ public class Knight extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
             }
+//            System.out.println(damage);
             return;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
@@ -212,7 +218,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -232,7 +239,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -252,7 +260,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -272,7 +281,8 @@ public class Knight extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -286,5 +296,18 @@ public class Knight extends Hero implements Visitable {
     @Override
     public final void getHelpedBy(final Angel angel) {
         angel.helpHero(this);
+    }
+
+    @Override
+    public void lookForStrategy() {
+        if (getHealth() > Constants.KNIGHT_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
+                && getHealth() < Constants.KNIGHT_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
+            strategy = new KnightAttackStrategy(this);
+        } else if (getHealth() < Constants.KNIGHT_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
+            strategy = new KnightDefenceStrategy(this);
+        }
+        if (strategy != null) {
+            strategy.applyStrategy();
+        }
     }
 }

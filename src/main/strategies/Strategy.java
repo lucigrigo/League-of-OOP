@@ -1,8 +1,25 @@
 package main.strategies;
 
-// TODO implement strategies
+import main.heroes.Hero;
 
-public interface Strategy {
+public abstract class Strategy {
 
+    private float modifier;
+    private float hpModifier;
+    private Hero owner;
+
+    Strategy(final float modifier,
+             final float hpModifier,
+             final Hero owner) {
+        this.modifier = modifier;
+        this.hpModifier = hpModifier;
+        this.owner = owner;
+    }
+
+    public void applyStrategy() {
+        owner.addStrategyBonus(modifier);
+        owner.increaseHP(owner.getHealth()
+                * hpModifier);
+    }
 }
 

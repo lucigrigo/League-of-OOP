@@ -13,17 +13,20 @@ import java.util.Observable;
 public abstract class Hero extends Observable implements Visitable {
     private int colon;
     private int line;
-    private int currentHealth;
+    private float currentHealth;
     private int currentExperience;
     private int level;
     private String name;
     private String fullName;
     private OverTimeAbility abilityAffectedBy;
     private boolean hasMadeAKillThisRound;
-    private int initialRoundHealth;
+    private float initialRoundHealth;
     private int index;
-    private Strategy strategy;
-    protected float angelBonus;
+    Strategy strategy;
+    float angelBonus;
+    float strategyBonus;
+    private boolean revivedThisRound;
+    private int initialRoundExperience;
 
     // Constructor
     Hero(final int initCol,
@@ -39,6 +42,7 @@ public abstract class Hero extends Observable implements Visitable {
         this.currentHealth = currentHealth;
         this.initialRoundHealth = currentHealth;
         this.currentExperience = currentExperience;
+        this.initialRoundExperience = currentExperience;
         this.level = 0;
         this.name = name;
         this.fullName = fullName;
@@ -47,16 +51,31 @@ public abstract class Hero extends Observable implements Visitable {
         this.index = index;
         this.strategy = null;
         this.angelBonus = 0f;
+        this.strategyBonus = 0f;
+        this.revivedThisRound = false;
         addObserver(GreatSorcerer.getInstance());
     }
 
     public void addAngelBonus(final float bonus) {
         this.angelBonus += bonus;
+//        System.out.println(angelBonus);
+    }
+
+    public void addStrategyBonus(final float bonus) {
+        this.strategyBonus += bonus;
     }
 
     public void resetAngelBonus() {
-        this.angelBonus = 0f;
+        angelBonus = 0f;
     }
+
+//    void setStrategy(Strategy strategy) {
+//        this.strategy = strategy;
+//    }
+
+    //    public float getCurrentHealth() {
+//        return currentHealth;
+//    }
 
     // if the hero has made a kill this round
     private void setHasMadeAKillThisRound() {
@@ -74,7 +93,7 @@ public abstract class Hero extends Observable implements Visitable {
     }
 
     // returning current health
-    final int getHealth() {
+    public final float getHealth() {
         return currentHealth;
     }
 
@@ -114,13 +133,13 @@ public abstract class Hero extends Observable implements Visitable {
 
     public void getToNextLevel() {
         int nextLevelXp = Constants.EXPERIENCE_BASE
-                + (level + 1)
+                + (level)
                 * Constants.EXPERIENCE_SCALING;
         nextLevelXp -= currentExperience;
         increaseXP(nextLevelXp);
     }
 
-    public final void increaseHP(final int hpAmount) {
+    public final void increaseHP(final float hpAmount) {
         this.currentHealth += hpAmount;
     }
 
@@ -131,6 +150,10 @@ public abstract class Hero extends Observable implements Visitable {
 
     public final void revive(final int reviveHp) {
         this.currentHealth = reviveHp;
+        this.revivedThisRound = true;
+        String message = "Player " + getFullName() + " " + getIndex() + " was brought to life by an angel\n";
+        setChanged();
+        notifyObservers(message);
     }
 
     // checking if the hero is dead
@@ -139,7 +162,7 @@ public abstract class Hero extends Observable implements Visitable {
     }
 
     // returning health at the start of the current round
-    final int getInitialRoundHealth() {
+    final float getInitialRoundHealth() {
         return initialRoundHealth;
     }
 
@@ -152,6 +175,9 @@ public abstract class Hero extends Observable implements Visitable {
 
     // moving the hero in a certain direction
     public final void applyMove(final MovementType move) {
+        if (!this.isDead()) {
+            lookForStrategy();
+        }
         if (!this.isDead()
                 && !this.isIncapacitated()) {
             switch (move) {
@@ -205,7 +231,10 @@ public abstract class Hero extends Observable implements Visitable {
 
     // the hero won a fight
     final void fightWon(final int loserLevel) {
-        this.currentExperience = this.currentExperience
+        if (isDead()) {
+//            return;
+        }
+        this.initialRoundExperience = this.currentExperience
                 + Math.max(0, Constants.WIN_MAGIC_200
                 - (this.getLevel() - loserLevel)
                 * Constants.WIN_MAGIC_40);
@@ -223,7 +252,7 @@ public abstract class Hero extends Observable implements Visitable {
                     - Constants.EXPERIENCE_BASE)
                     / Constants.EXPERIENCE_SCALING + 1;
             this.currentHealth = this.getMaxHealth();
-            String message = fullName + " " + index + " reached level " + level;
+            String message = fullName + " " + index + " reached level " + level + "\n";
             setChanged();
             notifyObservers(message);
         }
@@ -234,11 +263,20 @@ public abstract class Hero extends Observable implements Visitable {
      * and refreshes round-starting health (for execute calculus done correctly).
      */
     public void doRoundEndingRoutine() {
-        if (this.hasMadeAKillThisRound) {
+        if (this.hasMadeAKillThisRound
+                && !revivedThisRound) {
             this.checkForLevelUp();
+//            revivedThisRound = false;
             this.hasMadeAKillThisRound = false;
         }
         this.initialRoundHealth = currentHealth;
+        if (!isDead()
+                && !revivedThisRound) {
+            this.initialRoundExperience = currentExperience;
+        }
+        revivedThisRound = false;
+        this.strategyBonus = 0f;
+        this.strategy = null;
     }
 
     // writing the hero to output
@@ -246,7 +284,7 @@ public abstract class Hero extends Observable implements Visitable {
     public final String toString() {
         if (!this.isDead()) {
             return this.getName() + " " + this.getLevel() + " " + this.getExperience() + " "
-                    + this.getHealth() + " " + this.getRow() + " " + this.getColon() + "\n";
+                    + Math.round(this.getHealth()) + " " + this.getRow() + " " + this.getColon() + "\n";
         }
         return this.name + " dead\n";
     }
@@ -322,4 +360,6 @@ public abstract class Hero extends Observable implements Visitable {
         setChanged();
         notifyObservers(message);
     }
+
+    public abstract void lookForStrategy();
 }

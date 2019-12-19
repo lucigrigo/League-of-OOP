@@ -175,4 +175,48 @@ public final class Constants {
     public static final int XPANGEL_PYROMANCER_BONUS_XP = 50;
     public static final int XPANGEL_ROGUE_BONUS_XP = 40;
     public static final int XPANGEL_WIZARD_BONUS_XP = 60;
+
+    // Knight Strategies
+    // Attack Strategy
+    public static final float KNIGHT_ATTACK_STRATEGY_LOW_MARGIN = 1 / 3f;
+    public static final float KNIGHT_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 2f;
+    public static final float KNIGHT_ATTACK_STRATEGY_HP_MODIFIER = -1 / 5f;
+    public static final float KNIGHT_ATTACK_STRATEGY_DAMAGE_MODIFIER = 0.5f;
+    // Defence Strategy
+    public static final float KNIGHT_DEFENCE_STRATEGY_HIGH_MARGIN = 1 / 3f;
+    public static final float KNIGHT_DEFENCE_STRATEGY_HP_MODIFIER = 1 / 4f;
+    public static final float KNIGHT_DEFENCE_STRATEGY_DAMAGE_MODIFIER = -0.2f;
+
+    // Pyromancer Strategies
+    // Attack Strategy
+    public static final float PYROMANCER_ATTACK_STRATEGY_LOW_MARGIN = 1 / 4f;
+    public static final float PYROMANCER_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 2f;
+    public static final float PYROMANCER_ATTACK_STRATEGY_HP_MODIFIER = -1 / 4f;
+    public static final float PYROMANCER_ATTACK_STRATEGY_DAMAGE_MODIFIER = 0.7f;
+    // Defence Strategy
+    public static final float PYROMANCER_DEFENCE_STRATEGY_HIGH_MARGIN = 1 / 4f;
+    public static final float PYROMANCER_DEFENCE_STRATEGY_HP_MODIFIER = 1 / 3f;
+    public static final float PYROMANCER_DEFENCE_STRATEGY_DAMAGE_MODIFIER = -0.3f;
+
+    // Rogue Strategies
+    // Attack Strategy
+    public static final float ROGUE_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 5f;
+    public static final float ROGUE_ATTACK_STRATEGY_LOW_MARGIN = 1 / 7f;
+    public static final float ROGUE_ATTACK_STRATEGY_HP_MODIFIER = -1 / 7f;
+    public static final float ROGUE_ATTACK_STRATEGY_DAMAGE_MODIFIER = 0.4f;
+    // Defence Strategy
+    public static final float ROGUE_DEFENCE_STRATEGY_HIGH_MARGIN = 1 / 7f;
+    public static final float ROGUE_DEFENCE_STRATEGY_HP_MODIFIER = 1 / 2f;
+    public static final float ROGUE_DEFENCE_STRATEGY_DAMAGE_MODIFIER = -0.1f;
+
+    // Wizard Strategies
+    // Attack Strategy
+    public static final float WIZARD_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 2f;
+    public static final float WIZARD_ATTACK_STRATEGY_LOW_MARGIN = 1 / 4f;
+    public static final float WIZARD_ATTACK_STRATEGY_HP_MODIFIER = -1 / 10f;
+    public static final float WIZARD_ATTACK_STRATEGY_DAMAGE_MODIFIER = 0.6f;
+    // Defence Strategy
+    public static final float WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN = 1 / 4f;
+    public static final float WIZARD_DEFENCE_STRATEGY_HP_MODIFIER = 1 / 5f;
+    public static final float WIZARD_DEFENCE_STRATEGY_DAMAGE_MODIFIER = -0.2f;
 }

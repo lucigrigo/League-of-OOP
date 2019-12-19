@@ -212,4 +212,9 @@ public class Wizard extends Hero implements Visitable {
     public final void getHelpedBy(final Angel angel) {
         angel.helpHero(this);
     }
+
+    @Override
+    public void lookForStrategy() {
+
+    }
 }
