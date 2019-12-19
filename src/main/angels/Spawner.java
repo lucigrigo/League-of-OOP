@@ -13,26 +13,38 @@ public class Spawner extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
-        wizard.revive(Constants.SPAWNER_WIZARD_HP);
+        if (!wizard.isDead()) {
+            return;
+        }
         computeObservation(wizard);
+        wizard.revive(Constants.SPAWNER_WIZARD_HP);
     }
 
     @Override
     public void helpHero(final Rogue rogue) {
-        rogue.revive(Constants.SPAWNER_ROGUE_HP);
+        if (!rogue.isDead()) {
+            return;
+        }
         computeObservation(rogue);
+        rogue.revive(Constants.SPAWNER_ROGUE_HP);
     }
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
-        pyromancer.revive(Constants.SPAWNER_PYROMANCER_HP);
+        if (!pyromancer.isDead()) {
+            return;
+        }
         computeObservation(pyromancer);
+        pyromancer.revive(Constants.SPAWNER_PYROMANCER_HP);
     }
 
     @Override
     public void helpHero(final Knight knight) {
-        knight.revive(Constants.SPAWNER_KNIGHT_HP);
+        if (!knight.isDead()) {
+            return;
+        }
         computeObservation(knight);
+        knight.revive(Constants.SPAWNER_KNIGHT_HP);
     }
 
     @Override

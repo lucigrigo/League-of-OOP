@@ -37,7 +37,7 @@ public class XPAngel extends Angel implements Visitor {
 
     @Override
     public void computeObservation(Hero hero) {
-        if(hero.isDead()) {
+        if (hero.isDead()) {
             return;
         }
         String message = "XPAngel helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
