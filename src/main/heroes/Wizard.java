@@ -5,6 +5,8 @@ import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
+import main.strategies.WizardAttackStrategy;
+import main.strategies.WizardDefenceStrategy;
 
 /**
  * Class to implement WIZARD logic.
@@ -67,7 +69,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -88,7 +91,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -110,7 +114,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -132,7 +137,8 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -171,7 +177,8 @@ public class Wizard extends Hero implements Visitable {
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         return enemyDamage;
     }
@@ -187,7 +194,8 @@ public class Wizard extends Hero implements Visitable {
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         return enemyDamage;
     }
@@ -203,7 +211,8 @@ public class Wizard extends Hero implements Visitable {
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         return enemyDamage;
     }
@@ -215,6 +224,14 @@ public class Wizard extends Hero implements Visitable {
 
     @Override
     public void lookForStrategy() {
-
+        if (getHealth() > Constants.WIZARD_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
+                && getHealth() < Constants.WIZARD_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
+            strategy = new WizardAttackStrategy(this);
+        } else if (getHealth() < Constants.WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
+            strategy = new WizardDefenceStrategy(this);
+        }
+        if (strategy != null) {
+            strategy.applyStrategy();
+        }
     }
 }
