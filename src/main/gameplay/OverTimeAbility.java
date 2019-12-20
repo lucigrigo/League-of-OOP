@@ -53,7 +53,7 @@ public final class OverTimeAbility {
     }
 
     // returns overtime damage
-    int getOvertimeDamage() {
+    public int getOvertimeDamage() {
         return overtimeDamage;
     }
 
@@ -86,7 +86,7 @@ public final class OverTimeAbility {
     }
 
     // returning damage duration
-    int getDuration() {
+    public int getDuration() {
         return duration;
     }
 

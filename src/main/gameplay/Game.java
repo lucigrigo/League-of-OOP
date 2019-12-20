@@ -63,7 +63,9 @@ public final class Game {
 
     private void resetAngelBonuses(final List<Hero> characters) {
         for (Hero hero : characters) {
+            hero.sendMessages();
             hero.resetAngelBonus();
+            hero.checkForLevelUp();
         }
     }
 
@@ -84,6 +86,8 @@ public final class Game {
                         && (!checkedFights[character1.getRow()][character1.getColon()])
                         && ((!character1.isDead())
                         && (!character2.isDead()))) {
+//                    System.out.println(character1.getFullName() + " health is " + character1.getHealth());
+//                    System.out.println(character2.getFullName() + " health is " + character2.getHealth());
                     manageFight(character1, character2,
                             map[character1.getRow()][character1.getColon()]);
                     checkedFights[character1.getRow()][character1.getColon()] = true;

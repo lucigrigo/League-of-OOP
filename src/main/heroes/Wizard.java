@@ -153,6 +153,7 @@ public class Wizard extends Hero implements Visitable {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
         }
+//        System.out.println(damage + " de la wizard");
     }
 
     @Override
@@ -200,12 +201,16 @@ public class Wizard extends Hero implements Visitable {
                                       final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
         float percent = computeInitialOvertimeDamage(location);
+//        System.out.println(percent);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
+            System.out.println("before " + enemyDamage);
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
                     + angelBonus
                     + strategyBonus);
+            System.out.println("after " + enemyDamage);
         }
+//        System.out.println(enemyDamage);
         return enemyDamage;
     }
 

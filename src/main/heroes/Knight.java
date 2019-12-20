@@ -80,10 +80,11 @@ public class Knight extends Hero implements Visitable {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
             if (!isForDeflectPurpose) {
+                computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
                 enemy.hasDied(false);
             }
-            return enemy.getHealth();
+//            return enemy.getInitialRoundHealth();
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
@@ -95,11 +96,13 @@ public class Knight extends Hero implements Visitable {
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
             damage += Math.round(this.affectOvertime(enemy,
                     location, false, true));
-            if (enemy.takeDamage(Math.round(damage), false, false)) {
+            if (!enemy.isDead()
+                    && enemy.takeDamage(Math.round(damage), false, false)) {
+                System.out.println("nu aici?");
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
-            return 0f;
+//            return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
@@ -114,6 +117,7 @@ public class Knight extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            computeObservation(enemy);
             this.fightWon(enemy.getLevel());
             enemy.hasDied(false);
             return;
@@ -148,6 +152,7 @@ public class Knight extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            computeObservation(enemy);
             this.fightWon(enemy.getLevel());
             enemy.hasDied(false);
             return;
@@ -181,6 +186,7 @@ public class Knight extends Hero implements Visitable {
                              final boolean isForDeflectPurpose) {
         // looking for execute potential
         if (checkExecutePossibility(enemy.getInitialRoundHealth(), enemy.getMaxHealth())) {
+            computeObservation(enemy);
             this.fightWon(enemy.getLevel());
             enemy.hasDied(false);
             return;
