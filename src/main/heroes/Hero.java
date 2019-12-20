@@ -187,7 +187,6 @@ public abstract class Hero extends Observable implements Visitable {
         if (strategy != null) {
             strategy.applyStrategy();
         }
-
         if (!this.isDead()
                 && !this.isIncapacitated()) {
             switch (move) {
@@ -229,27 +228,25 @@ public abstract class Hero extends Observable implements Visitable {
                                     final boolean isOverTimeAbility,
                                     final boolean isAngelInteraction) {
         this.currentHealth -= damage;
+//        System.out.println(fullName + " " + index + " took damage " + damage + isAngelInteraction);
         if (this.currentHealth <= 0
                 && !isOverTimeAbility) {
             this.hasDied(isAngelInteraction);
             return true;
         } else if (this.currentHealth <= 0) {
-            this.hasDied(false);
+            this.hasDied(isAngelInteraction);
         }
         return false;
     }
 
     // the hero won a fight
     final void fightWon(final int loserLevel) {
-//        if (isDead()) {
-////            return;
-//        }
         this.currentExperience = this.currentExperience
                 + Math.max(0, Constants.WIN_MAGIC_200
                 - (this.getLevel() - loserLevel)
                 * Constants.WIN_MAGIC_40);
-//        System.out.println("aici nu?");
         this.setHasMadeAKillThisRound();
+        checkForLevelUp();
     }
 
     // checking for level up potential
@@ -260,13 +257,16 @@ public abstract class Hero extends Observable implements Visitable {
                 * Constants.EXPERIENCE_SCALING)
                 && !this.isDead()) {
 //            System.out.println("aici cu " + fullName);
+            int lastLevel = level + 1;
             this.level = (this.currentExperience
                     - Constants.EXPERIENCE_BASE)
                     / Constants.EXPERIENCE_SCALING + 1;
             this.currentHealth = this.getMaxHealth();
-            String message = fullName + " " + index + " reached level " + level + "\n";
-            setChanged();
-            notifyObservers(message);
+            for (; lastLevel <= level; ++lastLevel) {
+                String message = fullName + " " + index + " reached level " + lastLevel + "\n";
+                setChanged();
+                notifyObservers(message);
+            }
         }
     }
 

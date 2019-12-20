@@ -16,8 +16,8 @@ public class LifeGiver extends Angel implements Visitor {
         if (wizard.isDead()) {
             return;
         }
-        wizard.increaseHP(Constants.LIFEGIVER_WIZARD_BONUS);
         computeObservation(wizard);
+        wizard.increaseHP(Constants.LIFEGIVER_WIZARD_BONUS);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class LifeGiver extends Angel implements Visitor {
         if (rogue.isDead()) {
             return;
         }
-        rogue.increaseHP(Constants.LIFEGIVER_ROGUE_BONUS);
         computeObservation(rogue);
+        rogue.increaseHP(Constants.LIFEGIVER_ROGUE_BONUS);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class LifeGiver extends Angel implements Visitor {
         if (pyromancer.isDead()) {
             return;
         }
-        pyromancer.increaseHP(Constants.LIFEGIVER_PYROMANCER_BONUS);
         computeObservation(pyromancer);
+        pyromancer.increaseHP(Constants.LIFEGIVER_PYROMANCER_BONUS);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class LifeGiver extends Angel implements Visitor {
         if (knight.isDead()) {
             return;
         }
-        knight.increaseHP(Constants.LIFEGIVER_KNIGHT_BONUS);
         computeObservation(knight);
+        knight.increaseHP(Constants.LIFEGIVER_KNIGHT_BONUS);
     }
 
     @Override

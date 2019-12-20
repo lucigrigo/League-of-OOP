@@ -16,9 +16,9 @@ public class GoodBoy extends Angel implements Visitor {
         if(wizard.isDead()) {
             return;
         }
+        computeObservation(wizard);
         wizard.addAngelBonus(Constants.GOODBOY_WIZARD_BONUS_DAMAGE);
         wizard.increaseHP(Constants.GOODBOY_WIZARD_BONUS_HP);
-        computeObservation(wizard);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class GoodBoy extends Angel implements Visitor {
         if(rogue.isDead()) {
             return;
         }
+        computeObservation(rogue);
         rogue.addAngelBonus(Constants.GOODBOY_ROGUE_BONUS_DAMAGE);
         rogue.increaseHP(Constants.GOODBOY_ROGUE_BONUS_HP);
-        computeObservation(rogue);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class GoodBoy extends Angel implements Visitor {
         if(pyromancer.isDead()) {
             return;
         }
+        computeObservation(pyromancer);
         pyromancer.addAngelBonus(Constants.GOODBOY_PYROMANCER_BONUS_DAMAGE);
         pyromancer.increaseHP(Constants.GOODBOY_PYROMANCER_BONUS_HP);
-        computeObservation(pyromancer);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class GoodBoy extends Angel implements Visitor {
         if(knight.isDead()) {
             return;
         }
+        computeObservation(knight);
         knight.addAngelBonus(Constants.GOODBOY_KNIGHT_BONUS_DAMAGE);
         knight.increaseHP(Constants.GOODBOY_KNIGHT_BONUS_HP);
-        computeObservation(knight);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class DamageAngel extends Angel implements Visitor {
         if(wizard.isDead()) {
             return;
         }
-        wizard.addAngelBonus(Constants.DAMAGEANGEL_WIZARD_BONUS);
         computeObservation(wizard);
+        wizard.addAngelBonus(Constants.DAMAGEANGEL_WIZARD_BONUS);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class DamageAngel extends Angel implements Visitor {
         if(rogue.isDead()) {
             return;
         }
-        rogue.addAngelBonus(Constants.DAMAGEANGEL_ROGUE_BONUS);
         computeObservation(rogue);
+        rogue.addAngelBonus(Constants.DAMAGEANGEL_ROGUE_BONUS);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class DamageAngel extends Angel implements Visitor {
         if(pyromancer.isDead()) {
             return;
         }
-        pyromancer.addAngelBonus(Constants.DAMAGEANGEL_PYROMANCER_BONUS);
         computeObservation(pyromancer);
+        pyromancer.addAngelBonus(Constants.DAMAGEANGEL_PYROMANCER_BONUS);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class DamageAngel extends Angel implements Visitor {
         if(knight.isDead()) {
             return;
         }
-        knight.addAngelBonus(Constants.DAMAGEANGEL_KNIGHT_BONUS);
         computeObservation(knight);
+        knight.addAngelBonus(Constants.DAMAGEANGEL_KNIGHT_BONUS);
     }
 
     @Override

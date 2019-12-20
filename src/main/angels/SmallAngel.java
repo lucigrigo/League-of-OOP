@@ -16,9 +16,9 @@ public class SmallAngel extends Angel implements Visitor {
         if(wizard.isDead()) {
             return;
         }
+        computeObservation(wizard);
         wizard.addAngelBonus(Constants.SMALLANGEL_WIZARD_BONUS_DAMAGE);
         wizard.increaseHP(Constants.SMALLANGEL_WIZARD_BONUS_HP);
-        computeObservation(wizard);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class SmallAngel extends Angel implements Visitor {
         if(rogue.isDead()) {
             return;
         }
+        computeObservation(rogue);
         rogue.addAngelBonus(Constants.SMALLANGEL_ROGUE_BONUS_DAMAGE);
         rogue.increaseHP(Constants.SMALLANGEL_ROGUE_BONUS_HP);
-        computeObservation(rogue);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class SmallAngel extends Angel implements Visitor {
         if(pyromancer.isDead()) {
             return;
         }
+        computeObservation(pyromancer);
         pyromancer.addAngelBonus(Constants.SMALLANGEL_PYROMANCER_BONUS_DAMAGE);
         pyromancer.increaseHP(Constants.SMALLANGEL_PYROMANCER_BONUS_HP);
-        computeObservation(pyromancer);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class SmallAngel extends Angel implements Visitor {
         if(knight.isDead()) {
             return;
         }
+        computeObservation(knight);
         knight.addAngelBonus(Constants.SMALLANGEL_KNIGHT_BONUS_DAMAGE);
         knight.increaseHP(Constants.SMALLANGEL_KNIGHT_BONUS_HP);
-        computeObservation(knight);
     }
 
     @Override

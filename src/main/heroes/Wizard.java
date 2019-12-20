@@ -76,8 +76,8 @@ public class Wizard extends Hero implements Visitable {
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         if (enemy.takeDamage(Math.round(damage), false, false)) {
-            this.fightWon(enemy.getLevel());
             computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
         }
         return 0f;
     }
@@ -98,10 +98,14 @@ public class Wizard extends Hero implements Visitable {
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
+//        System.out.println(damage);
+
         damage += Math.round(affectOvertime(enemy, location, false, true));
+//        System.out.println(damage);
+
         if (enemy.takeDamage(Math.round(damage), false, false)) {
-            this.fightWon(enemy.getLevel());
             computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
         }
     }
 
@@ -123,8 +127,8 @@ public class Wizard extends Hero implements Visitable {
         damage = Math.round(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
         if (enemy.takeDamage(Math.round(damage), false, false)) {
-            this.fightWon(enemy.getLevel());
             computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
         }
     }
 
@@ -146,8 +150,8 @@ public class Wizard extends Hero implements Visitable {
         damage = Math.round(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
         if (enemy.takeDamage(Math.round(damage), false, false)) {
-            this.fightWon(enemy.getLevel());
             computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
         }
     }
 
@@ -173,13 +177,18 @@ public class Wizard extends Hero implements Visitable {
                                       final boolean startNow,
                                       final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
+//        System.out.println(enemyDamage);
         float percent = computeInitialOvertimeDamage(location);
+//        System.out.println(percent);
         enemyDamage *= percent;
+//        System.out.println(enemyDamage);
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
                     + angelBonus
                     + strategyBonus);
+//            System.out.println(strategyBonus);
         }
+//        System.out.println(enemyDamage);
         return enemyDamage;
     }
 

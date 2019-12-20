@@ -16,9 +16,9 @@ public class Dracula extends Angel implements Visitor {
         if (wizard.isDead()) {
             return;
         }
+        computeObservation(wizard);
         wizard.addAngelBonus(Constants.DRACULA_WIZARD_BONUS_DAMAGE);
         wizard.takeDamage(Constants.DRACULA_WIZARD_BONUS_HP, false, true);
-        computeObservation(wizard);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class Dracula extends Angel implements Visitor {
         if (rogue.isDead()) {
             return;
         }
+        computeObservation(rogue);
         rogue.addAngelBonus(Constants.DRACULA_ROGUE_BONUS_DAMAGE);
         rogue.takeDamage(Constants.DRACULA_ROGUE_BONUS_HP, false, true);
-        computeObservation(rogue);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class Dracula extends Angel implements Visitor {
         if (pyromancer.isDead()) {
             return;
         }
+        computeObservation(pyromancer);
         pyromancer.addAngelBonus(Constants.DRACULA_PYROMANCER_BONUS_DAMAGE);
         pyromancer.takeDamage(Constants.DRACULA_PYROMANCER_BONUS_HP, false, true);
-        computeObservation(pyromancer);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class Dracula extends Angel implements Visitor {
         if (knight.isDead()) {
             return;
         }
+        computeObservation(knight);
         knight.addAngelBonus(Constants.DRACULA_KNIGHT_BONUS_DAMAGE);
         knight.takeDamage(Constants.DRACULA_KNIGHT_BONUS_HP, false, true);
-        computeObservation(knight);
     }
 
     @Override

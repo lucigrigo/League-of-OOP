@@ -101,8 +101,8 @@ public class Rogue extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
             return 0f;
@@ -130,8 +130,8 @@ public class Rogue extends Hero implements Visitable {
                     false, true));
 //            System.out.println(damage);
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
             return;
@@ -157,8 +157,8 @@ public class Rogue extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
             return;
@@ -184,8 +184,8 @@ public class Rogue extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
             return;

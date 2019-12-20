@@ -13,38 +13,38 @@ public class DarkAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
-        if(wizard.isDead()) {
+        if (wizard.isDead()) {
             return;
         }
-        wizard.addAngelBonus(Constants.DARKANGEL_WIZARD_BONUS);
         computeObservation(wizard);
+        wizard.takeDamage(Constants.DARKANGEL_WIZARD_BONUS, false, true);
     }
 
     @Override
     public void helpHero(final Rogue rogue) {
-        if(rogue.isDead()) {
+        if (rogue.isDead()) {
             return;
         }
-        rogue.addAngelBonus(Constants.DARKANGEL_ROGUE_BONUS);
         computeObservation(rogue);
+        rogue.takeDamage(Constants.DARKANGEL_ROGUE_BONUS, false, true);
     }
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
-        if(pyromancer.isDead()) {
+        if (pyromancer.isDead()) {
             return;
         }
-        pyromancer.addAngelBonus(Constants.DARKANGEL_PYROMANCER_BONUS);
         computeObservation(pyromancer);
+        pyromancer.takeDamage(Constants.DARKANGEL_PYROMANCER_BONUS, false, true);
     }
 
     @Override
     public void helpHero(final Knight knight) {
-        if(knight.isDead()) {
+        if (knight.isDead()) {
             return;
         }
-        knight.addAngelBonus(Constants.DARKANGEL_KNIGHT_BONUS);
         computeObservation(knight);
+        knight.takeDamage(Constants.DARKANGEL_KNIGHT_BONUS, false, true);
     }
 
     @Override

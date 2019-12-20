@@ -96,8 +96,8 @@ public class Knight extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy,
                     location, false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
             return 0f;
         }
@@ -130,8 +130,8 @@ public class Knight extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy,
                     location, false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
 //            System.out.println(damage);
             return;
@@ -163,8 +163,8 @@ public class Knight extends Hero implements Visitable {
             damage += Math.round(this.affectOvertime(enemy,
                     location, false, true));
             if (enemy.takeDamage(Math.round(damage), false, false)) {
-                this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
+                this.fightWon(enemy.getLevel());
             }
 //            System.out.println(damage);
             return;
