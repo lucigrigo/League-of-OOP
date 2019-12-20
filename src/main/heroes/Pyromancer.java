@@ -302,8 +302,8 @@ public class Pyromancer extends Hero implements Visitable {
         } else if (getHealth() < Constants.PYROMANCER_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new PyromancerDefenceStrategy(this);
         }
-        if (strategy != null) {
-            strategy.applyStrategy();
-        }
+//        if (strategy != null) {
+//            strategy.applyStrategy();
+//        }
     }
 }

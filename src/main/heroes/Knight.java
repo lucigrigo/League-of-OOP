@@ -310,8 +310,8 @@ public class Knight extends Hero implements Visitable {
             strategy = new KnightDefenceStrategy(this);
             System.out.println("defence");
         }
-        if (strategy != null) {
-            strategy.applyStrategy();
-        }
+//        if (strategy != null) {
+//            strategy.applyStrategy();
+//        }
     }
 }

@@ -63,7 +63,7 @@ public class Rogue extends Hero implements Visitable {
             }
             damage *= Constants.ROGUE_WOODS_BONUS;
         }
-        return damage;
+        return Math.round(damage);
     }
 
     // computing initial overtime damage as a ROGUE
@@ -75,7 +75,7 @@ public class Rogue extends Hero implements Visitable {
         if (location == LocationType.WOODS) { // adding location bonus
             damage *= Constants.ROGUE_WOODS_BONUS;
         }
-        return damage;
+        return Math.round(damage);
     }
 
     // getting attacked as a ROGUE
@@ -121,12 +121,14 @@ public class Rogue extends Hero implements Visitable {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
+//            System.out.println(damage);
             if (enemy.takeDamage(Math.round(damage), false, false)) {
                 this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
@@ -147,7 +149,8 @@ public class Rogue extends Hero implements Visitable {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -170,14 +173,11 @@ public class Rogue extends Hero implements Visitable {
                              final LocationType location,
                              final boolean addRaceModifier,
                              final boolean isForDeflectPurpose) {
-//        if (strategy != null) {
-////            System.out.println("aici?");
-////            strategy.applyStrategy();
-////        }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -210,7 +210,8 @@ public class Rogue extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -234,9 +235,15 @@ public class Rogue extends Hero implements Visitable {
                                       final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE
-                    + angelBonus);
+            // TODO solve aproximation issue
+            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE
+                    + angelBonus
+                    + strategyBonus;
+            damage = Math.round(percent * damage);
+//                    * damage);
         }
+//        System.out.println(damage);
+        damage = Math.round(damage);
         if (startNow) { // starting the ability now
             int duration;
             if (location == LocationType.WOODS) { // increasing duration
@@ -260,7 +267,8 @@ public class Rogue extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -285,7 +293,8 @@ public class Rogue extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
-                    + angelBonus);
+                    + angelBonus
+                    + strategyBonus);
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -316,8 +325,8 @@ public class Rogue extends Hero implements Visitable {
             strategy = new RogueDefenceStrategy(this);
 //            System.out.println("difens");
         }
-        if (strategy != null) {
-            strategy.applyStrategy();
-        }
+//        if (strategy != null) {
+//            strategy.applyStrategy();
+//        }
     }
 }

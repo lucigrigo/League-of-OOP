@@ -141,6 +141,9 @@ public abstract class Hero extends Observable implements Visitable {
 
     public final void increaseHP(final float hpAmount) {
         this.currentHealth += hpAmount;
+        if (this.currentHealth > getMaxHealth()) {
+            this.currentHealth = getMaxHealth();
+        }
     }
 
     public final void increaseXP(final int xpAmount,
@@ -181,6 +184,10 @@ public abstract class Hero extends Observable implements Visitable {
         if (!this.isDead()) {
             lookForStrategy();
         }
+        if (strategy != null) {
+            strategy.applyStrategy();
+        }
+
         if (!this.isDead()
                 && !this.isIncapacitated()) {
             switch (move) {
@@ -237,7 +244,7 @@ public abstract class Hero extends Observable implements Visitable {
 //        if (isDead()) {
 ////            return;
 //        }
-        this.initialRoundExperience = this.initialRoundExperience
+        this.currentExperience = this.currentExperience
                 + Math.max(0, Constants.WIN_MAGIC_200
                 - (this.getLevel() - loserLevel)
                 * Constants.WIN_MAGIC_40);
@@ -252,6 +259,7 @@ public abstract class Hero extends Observable implements Visitable {
                 + this.getLevel()
                 * Constants.EXPERIENCE_SCALING)
                 && !this.isDead()) {
+//            System.out.println("aici cu " + fullName);
             this.level = (this.currentExperience
                     - Constants.EXPERIENCE_BASE)
                     / Constants.EXPERIENCE_SCALING + 1;
@@ -269,10 +277,11 @@ public abstract class Hero extends Observable implements Visitable {
     public void doRoundEndingRoutine() {
         if (!isDead()
                 && !revivedThisRound) {
+            // TODO fix this exp bug
             this.initialRoundExperience = currentExperience;
 //            this.currentExperience = initialRoundExperience;
         }
-        if (this.hasMadeAKillThisRound
+        if (hasMadeAKillThisRound
                 && !revivedThisRound) {
             this.checkForLevelUp();
 //            revivedThisRound = false;

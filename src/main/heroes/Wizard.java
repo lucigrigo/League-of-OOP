@@ -230,8 +230,8 @@ public class Wizard extends Hero implements Visitable {
         } else if (getHealth() < Constants.WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new WizardDefenceStrategy(this);
         }
-        if (strategy != null) {
-            strategy.applyStrategy();
-        }
+//        if (strategy != null) {
+//            strategy.applyStrategy();
+//        }
     }
 }

@@ -20,7 +20,6 @@ public abstract class Strategy {
         owner.addStrategyBonus(modifier);
         owner.increaseHP(owner.getHealth()
                 * hpModifier);
-//        System.out.println(owner.getHealth() * hpModifier);
     }
 }
 
