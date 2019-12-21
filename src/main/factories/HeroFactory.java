@@ -1,7 +1,11 @@
 package main.factories;
 
 import main.data.HeroType;
-import main.heroes.*;
+import main.heroes.Hero;
+import main.heroes.Knight;
+import main.heroes.Pyromancer;
+import main.heroes.Rogue;
+import main.heroes.Wizard;
 
 public class HeroFactory {
 

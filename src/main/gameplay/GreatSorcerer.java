@@ -48,7 +48,8 @@ public final class GreatSorcerer implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        info.add((String) arg);
+    public void update(final Observable object,
+                       final  Object message) {
+        info.add((String) message);
     }
 }

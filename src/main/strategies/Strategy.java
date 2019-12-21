@@ -16,7 +16,7 @@ public abstract class Strategy {
         this.owner = owner;
     }
 
-    public void applyStrategy() {
+    public final void applyStrategy() {
         owner.addStrategyBonus(modifier);
         owner.increaseHP(owner.getHealth()
                 * hpModifier);

@@ -2,9 +2,13 @@ package main.angels;
 
 import main.data.Constants;
 import main.data.Visitor;
-import main.heroes.*;
+import main.heroes.Hero;
+import main.heroes.Knight;
+import main.heroes.Pyromancer;
+import main.heroes.Rogue;
+import main.heroes.Wizard;
 
-public class LevelUpAngel extends Angel implements Visitor {
+public final class LevelUpAngel extends Angel implements Visitor {
 
     public LevelUpAngel(final int spawnRow,
                         final int spawnCol) {
@@ -52,7 +56,7 @@ public class LevelUpAngel extends Angel implements Visitor {
     }
 
     @Override
-    public void computeObservation(Hero hero) {
+    public void computeObservation(final Hero hero) {
         if (hero.isDead()) {
             return;
         }

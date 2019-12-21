@@ -1,9 +1,13 @@
 package main.angels;
 
 import main.data.Visitor;
-import main.heroes.*;
+import main.heroes.Hero;
+import main.heroes.Knight;
+import main.heroes.Pyromancer;
+import main.heroes.Rogue;
+import main.heroes.Wizard;
 
-public class TheDoomer extends Angel implements Visitor {
+public final class TheDoomer extends Angel implements Visitor {
 
     public TheDoomer(final int spawnRow,
                      final int spawnCol) {
@@ -47,7 +51,7 @@ public class TheDoomer extends Angel implements Visitor {
     }
 
     @Override
-    public void computeObservation(Hero hero) {
+    public void computeObservation(final Hero hero) {
         String message = "TheDoomer hit " + hero.getFullName() + " " + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);

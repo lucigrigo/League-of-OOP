@@ -1,7 +1,11 @@
 package main.gameplay;
 
 import main.angels.Angel;
-import main.data.*;
+import main.data.AngelType;
+import main.data.HeroType;
+import main.data.InputData;
+import main.data.LocationType;
+import main.data.MovementType;
 import main.factories.AngelFactory;
 import main.factories.HeroFactory;
 import main.heroes.Hero;
@@ -150,8 +154,10 @@ public class IOAssistant {
                 List<Angel> singleRoundAngels = new ArrayList<>(arguments.length - 1);
                 for (int j = 1; j < arguments.length; j++) {
                     String[] singleAngel = arguments[j].split(",");
-                    singleRoundAngels.add(angelFactory.createAngel(AngelType.valueOf(singleAngel[0]),
-                            Integer.parseInt(singleAngel[1]), Integer.parseInt(singleAngel[2])));
+                    singleRoundAngels.add(angelFactory
+                            .createAngel(AngelType.valueOf(singleAngel[0]),
+                                    Integer.parseInt(singleAngel[1]),
+                                    Integer.parseInt(singleAngel[2])));
                 }
                 angels.put(i, singleRoundAngels);
 //                System.out.println("pentru runda " + i);

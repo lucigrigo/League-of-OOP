@@ -2,7 +2,11 @@ package main.angels;
 
 import main.data.Visitor;
 import main.gameplay.GreatSorcerer;
-import main.heroes.*;
+import main.heroes.Hero;
+import main.heroes.Knight;
+import main.heroes.Pyromancer;
+import main.heroes.Rogue;
+import main.heroes.Wizard;
 
 import java.util.Observable;
 
@@ -35,19 +39,19 @@ public abstract class Angel extends Observable implements Visitor {
 
     public abstract void computeObservation(Hero hero);
 
-    public int getRow() {
+    public final int getRow() {
         return spawnRow;
     }
 
-    public int getCol() {
+    public final int getCol() {
         return spawnCol;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void spawn() {
+    public final void spawn() {
         String message = "Angel " + name + " was spawned at "
                 + spawnRow + " " + spawnCol + "\n";
         setChanged();

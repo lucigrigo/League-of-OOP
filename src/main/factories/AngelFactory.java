@@ -1,6 +1,16 @@
 package main.factories;
 
-import main.angels.*;
+import main.angels.Angel;
+import main.angels.DamageAngel;
+import main.angels.DarkAngel;
+import main.angels.Dracula;
+import main.angels.GoodBoy;
+import main.angels.LevelUpAngel;
+import main.angels.LifeGiver;
+import main.angels.SmallAngel;
+import main.angels.Spawner;
+import main.angels.TheDoomer;
+import main.angels.XPAngel;
 import main.data.AngelType;
 
 public class AngelFactory {
