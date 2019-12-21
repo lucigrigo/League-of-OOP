@@ -164,11 +164,12 @@ public final class Game {
         while (currentRound < maxRounds) {
 //            System.out.println("RUNDA " + currentRound);
             GreatSorcerer.getInstance().newRound(currentRound + 1);
+            // applying overtime damage
+            applyOverTimeDamage(data.getCharacters());
             // moving the heroes
             applyCurrentRoundMoves(data.getCharacters(),
                     data.getCurrentRoundMoves(currentRound));
-            // applying overtime damage
-            applyOverTimeDamage(data.getCharacters());
+
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
             resetAngelBonuses(data.getCharacters());
