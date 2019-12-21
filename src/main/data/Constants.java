@@ -190,7 +190,7 @@ public final class Constants {
     // Pyromancer Strategies
     // Attack Strategy
     public static final float PYROMANCER_ATTACK_STRATEGY_LOW_MARGIN = 1 / 4f;
-    public static final float PYROMANCER_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 2f;
+    public static final float PYROMANCER_ATTACK_STRATEGY_HIGH_MARGIN = 1 / 3f;
     public static final float PYROMANCER_ATTACK_STRATEGY_HP_MODIFIER = -1 / 4f;
     public static final float PYROMANCER_ATTACK_STRATEGY_DAMAGE_MODIFIER = 0.7f;
     // Defence Strategy
