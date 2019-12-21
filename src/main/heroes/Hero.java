@@ -164,6 +164,7 @@ public abstract class Hero extends Observable implements Visitable {
 
     public final void revive(final int reviveHp) {
         this.currentExperience = initialRoundExperience;
+//        setAbilityAffectedBy(null);
         this.currentHealth = reviveHp;
         this.revivedThisRound = true;
         String message = "Player " + getFullName() + " " + getIndex() + " was brought to life by an angel\n";
@@ -190,12 +191,18 @@ public abstract class Hero extends Observable implements Visitable {
 
     // moving the hero in a certain direction
     public final void applyMove(final MovementType move) {
+
         if (!this.isDead()) {
+//                && !revivedThisRound) {
             lookForStrategy();
         }
         if (strategy != null) {
+//            System.out.println(fullName + getHealth());
+
             strategy.applyStrategy();
         }
+
+        revivedThisRound = false;
         if (!this.isDead()
                 && !this.isIncapacitated()) {
             switch (move) {
@@ -312,7 +319,7 @@ public abstract class Hero extends Observable implements Visitable {
         if (leveledUp) {
             if (!revivedThisRound) {
 //                this.currentHealth = getMaxHealth();
-                revivedThisRound = false;
+//                revivedThisRound = false;
             }
 //            if(!isDead()) {
 //                this.currentHealth = getMaxHealth();

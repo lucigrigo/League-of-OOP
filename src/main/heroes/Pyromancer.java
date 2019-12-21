@@ -38,7 +38,7 @@ public class Pyromancer extends Hero implements Visitable {
         if (location == LocationType.VOLCANIC) { // adding location bonus
             damage *= Constants.PYROMANCER_VOLCANIC_BONUS;
         }
-        return damage;
+        return Math.round(damage);
     }
 
     // computing initial overtime damage as a PYROMANCER
@@ -50,7 +50,7 @@ public class Pyromancer extends Hero implements Visitable {
         if (location == LocationType.VOLCANIC) { // adding location bonus
             damage *= Constants.PYROMANCER_VOLCANIC_BONUS;
         }
-        return damage;
+        return Math.round(damage);
     }
 
     // getting attacked as a PYROMANCER
@@ -66,13 +66,16 @@ public class Pyromancer extends Hero implements Visitable {
                               final LocationType location,
                               final boolean addRaceModifier,
                               final boolean isForDeflectPurpose) {
-        float damage = Math.round(computeInitialDamage(location));
+        float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_WIZARD
                     + angelBonus
                     + strategyBonus);
         }
+//        System.out.println(damage);
         damage = Math.round(damage);
+//        System.out.println(damage);
+
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location, false, true));
 //            System.out.println(damage);
@@ -80,10 +83,12 @@ public class Pyromancer extends Hero implements Visitable {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
+//            System.out.println(damage);
             return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
+//        System.out.println(damage);
         return damage;
     }
 
@@ -184,14 +189,23 @@ public class Pyromancer extends Hero implements Visitable {
             if (location == LocationType.VOLCANIC) {
                 damage *= Constants.PYROMANCER_VOLCANIC_BONUS;
             }
+            damage = Math.round(damage);
         } else { // subsequent damage
             damage = computeInitialOvertimeDamage(location);
         }
         if (addRaceModifier) { // adding race modifier
+//            float percent = Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD
+//                    + angelBonus
+//                    + strategyBonus;
             damage *= (Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD
                     + angelBonus
                     + strategyBonus);
+//            damage *= Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD;
+//            float percent = 1f + angelBonus + strategyBonus;
+//            damage *= percent;
+            damage = Math.round(damage);
         }
+//        System.out.println(damage);
         if (startNow) { // starting the ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Ignite",
                     location, Math.round(damage), Constants.PYROMANCER_IGNITE_DURATION));

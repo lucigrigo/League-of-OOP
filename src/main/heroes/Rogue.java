@@ -52,14 +52,15 @@ public class Rogue extends Hero implements Visitable {
     // computing initial damage as a ROGUE
     @Override
     public final float computeInitialDamage(final LocationType location) {
-        float damage = Constants.ROGUE_BACKSTAB_BASE_DAMAGE
+        float damage = Math.round(Constants.ROGUE_BACKSTAB_BASE_DAMAGE
                 + Constants.ROGUE_BACKSTAB_LEVEL_SCALING_BASE_DAMAGE
-                * this.getLevel();
+                * this.getLevel());
         if (location == LocationType.WOODS) { // adding location bonus
             if (this.backStabCount
                     % Constants.ROGUE_BACKSTAB_CRITICAL_HIT_OCCURENCE == 0) {
                 // adding critical hit
                 damage *= Constants.ROGUE_BACKSTAB_CRITICAL_HIT_RATIO;
+                damage = Math.round(damage);
             }
             damage *= Constants.ROGUE_WOODS_BONUS;
         }
@@ -69,9 +70,9 @@ public class Rogue extends Hero implements Visitable {
     // computing initial overtime damage as a ROGUE
     @Override
     public final float computeInitialOvertimeDamage(final LocationType location) {
-        float damage = Constants.ROGUE_PARALYSIS_BASE_DAMAGE
+        float damage = Math.round(Constants.ROGUE_PARALYSIS_BASE_DAMAGE
                 + Constants.ROGUE_PARALYSIS_LEVEL_SCALING_BASE_DAMAGE
-                * this.getLevel();
+                * this.getLevel());
         if (location == LocationType.WOODS) { // adding location bonus
             damage *= Constants.ROGUE_WOODS_BONUS;
         }
@@ -135,10 +136,10 @@ public class Rogue extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
-            return;
+//            return;
         }
-        damage += Math.round(this.affectOvertime(enemy, location,
-                false, false));
+//        damage += Math.round(this.affectOvertime(enemy, location,
+//                false, false));
     }
 
     // attacking a PYROMANCER as a ROGUE
@@ -178,7 +179,8 @@ public class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
                     + angelBonus
-                    + strategyBonus);
+                    + strategyBonus
+                    - 0.0001f);
         }
         damage = Math.round(damage);
         // TODO solve fightRKD aproximation issue
@@ -237,14 +239,14 @@ public class Rogue extends Hero implements Visitable {
                                       final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            // TODO solve aproximation issue
+            // TODO fightRRD solve aproximation issue
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE
                     + angelBonus
                     + strategyBonus;
-            damage = Math.round(percent * damage);
+            damage = Math.round((percent - 0.0001f) * damage);
 //                    * damage);
         }
-//        System.out.println(damage);
+        System.out.println(damage);
         damage = Math.round(damage);
         if (startNow) { // starting the ability now
             int duration;
@@ -270,7 +272,8 @@ public class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
                     + angelBonus
-                    + strategyBonus);
+                    + strategyBonus
+                    - 0.0001f);
         }
         if (startNow) { // starting the ability now
             int duration;

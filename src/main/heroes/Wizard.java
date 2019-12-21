@@ -126,13 +126,14 @@ public class Wizard extends Hero implements Visitable {
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
-//        System.out.println(damage);
         damage += Math.round(affectOvertime(enemy, location, false, true));
         if (enemy.takeDamage(Math.round(damage), false, false)) {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
         }
+//        System.out.println(damage);
     }
+
 
     // attacking a KNIGHT as a WIZARD
     @Override
@@ -226,13 +227,13 @@ public class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
 //        System.out.println(enemyDamage);
         enemyDamage *= percent;
-        // TODO fightPWV fightPWW wizard damage problems
+//        System.out.println(percent);
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
                     + angelBonus
                     + strategyBonus);
         }
-//        System.out.println(strategyBonus);
+//        System.out.println(enemyDamage);
         return enemyDamage;
     }
 
@@ -246,8 +247,10 @@ public class Wizard extends Hero implements Visitable {
         if (getHealth() > Constants.WIZARD_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
                 && getHealth() < Constants.WIZARD_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new WizardAttackStrategy(this);
+//            System.out.println("acilisha");
         } else if (getHealth() < Constants.WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new WizardDefenceStrategy(this);
+//            System.out.println("ddddddd");
         }
 //        if (strategy != null) {
 //            strategy.applyStrategy();

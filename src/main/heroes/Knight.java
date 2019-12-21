@@ -311,10 +311,10 @@ public class Knight extends Hero implements Visitable {
         if (getHealth() > Constants.KNIGHT_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
                 && getHealth() < Constants.KNIGHT_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new KnightAttackStrategy(this);
-            System.out.println("attack");
+//            System.out.println("attack");
         } else if (getHealth() < Constants.KNIGHT_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             strategy = new KnightDefenceStrategy(this);
-            System.out.println("defence");
+//            System.out.println("defence");
         }
 //        if (strategy != null) {
 //            strategy.applyStrategy();
