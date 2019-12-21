@@ -105,7 +105,7 @@ public class Rogue extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
-            return 0f;
+//            return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
@@ -124,6 +124,7 @@ public class Rogue extends Hero implements Visitable {
                     + angelBonus
                     + strategyBonus);
         }
+        // TODO solve fightRRD aproximation issue
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
@@ -180,6 +181,7 @@ public class Rogue extends Hero implements Visitable {
                     + strategyBonus);
         }
         damage = Math.round(damage);
+        // TODO solve fightRKD aproximation issue
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));

@@ -311,7 +311,7 @@ public abstract class Hero extends Observable implements Visitable {
         }
         if (leveledUp) {
             if (!revivedThisRound) {
-                this.currentHealth = getMaxHealth();
+//                this.currentHealth = getMaxHealth();
                 revivedThisRound = false;
             }
 //            if(!isDead()) {

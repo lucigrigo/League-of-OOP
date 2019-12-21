@@ -13,7 +13,7 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Wizard wizard) {
-        if(wizard.isDead()) {
+        if (wizard.isDead()) {
             return;
         }
         computeObservation(wizard);
@@ -23,7 +23,7 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Rogue rogue) {
-        if(rogue.isDead()) {
+        if (rogue.isDead()) {
             return;
         }
         computeObservation(rogue);
@@ -33,7 +33,7 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Pyromancer pyromancer) {
-        if(pyromancer.isDead()) {
+        if (pyromancer.isDead()) {
             return;
         }
         computeObservation(pyromancer);
@@ -43,7 +43,7 @@ public class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void helpHero(final Knight knight) {
-        if(knight.isDead()) {
+        if (knight.isDead()) {
             return;
         }
         computeObservation(knight);

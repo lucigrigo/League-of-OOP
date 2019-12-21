@@ -66,7 +66,7 @@ public class Pyromancer extends Hero implements Visitable {
                               final LocationType location,
                               final boolean addRaceModifier,
                               final boolean isForDeflectPurpose) {
-        float damage = computeInitialDamage(location);
+        float damage = Math.round(computeInitialDamage(location));
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_WIZARD
                     + angelBonus
@@ -75,6 +75,7 @@ public class Pyromancer extends Hero implements Visitable {
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location, false, true));
+//            System.out.println(damage);
             if (enemy.takeDamage(Math.round(damage), false, false)) {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());

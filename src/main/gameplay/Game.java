@@ -61,11 +61,17 @@ public final class Game {
         }
     }
 
+    private void checkLeveUp(final List<Hero> characters) {
+        for(Hero hero : characters){
+            hero.checkForLevelUp();
+        }
+    }
+
     private void resetAngelBonuses(final List<Hero> characters) {
         for (Hero hero : characters) {
             hero.sendMessages();
-            hero.resetAngelBonus();
-            hero.checkForLevelUp();
+//            hero.resetAngelBonus();
+//            hero.checkForLevelUp();
         }
     }
 
@@ -166,6 +172,7 @@ public final class Game {
             // looking for fights
             searchForFights(data.getCharacters(), data.getMap());
             resetAngelBonuses(data.getCharacters());
+            checkLeveUp(data.getCharacters());
 
             // todo angel interaction
             angelSpawning(data, currentRound);
