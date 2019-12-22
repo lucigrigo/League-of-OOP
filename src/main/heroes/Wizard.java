@@ -1,8 +1,8 @@
 package main.heroes;
 
 import main.angels.Angel;
-import main.data.HeroType;
 import main.data.Constants;
+import main.data.HeroType;
 import main.data.LocationType;
 import main.data.Visitable;
 import main.strategies.WizardAttackStrategy;
@@ -56,21 +56,22 @@ public final class Wizard extends Hero implements Visitable {
     // getting attacked as a WIZARD
     @Override
     public void getAttackedBy(final Hero enemy,
-                                    final LocationType location) {
+                              final LocationType location) {
         enemy.attack(this, location, true, false);
     }
 
     // attacking a WIZARD as a WIZARD
     @Override
     public float attack(final Wizard enemy,
-                              final LocationType location,
-                              final boolean addRaceModifier,
-                              final boolean isForDeflectPurpose) {
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -85,14 +86,15 @@ public final class Wizard extends Hero implements Visitable {
     // attacking a ROGUE as a WIZARD
     @Override
     public void attack(final Rogue enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -112,14 +114,15 @@ public final class Wizard extends Hero implements Visitable {
     // attacking a PYROMANCER as a WIZARD
     @Override
     public void attack(final Pyromancer enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
 //        System.out.println(percent);
         float damage = percent
@@ -138,14 +141,15 @@ public final class Wizard extends Hero implements Visitable {
     // attacking a KNIGHT as a WIZARD
     @Override
     public void attack(final Knight enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -161,25 +165,25 @@ public final class Wizard extends Hero implements Visitable {
 
     @Override
     public void getAffectedBy(final Hero enemy,
-                                    final LocationType location) {
+                              final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }
 
     // WIZARD does not have a deflect ability against WIZARD
     @Override
     public float affectOvertime(final Wizard enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         return 0f;
     }
 
     // computing DEFLECT damage versus a ROGUE
     @Override
     public float affectOvertime(final Rogue enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
 //        System.out.println(enemyDamage);
         float percent = computeInitialOvertimeDamage(location);
@@ -189,7 +193,8 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
 //            System.out.println(strategyBonus);
         }
 //        System.out.println(enemyDamage);
@@ -199,9 +204,9 @@ public final class Wizard extends Hero implements Visitable {
     // computing DEFLECT damage versus a KNIGHT
     @Override
     public float affectOvertime(final Knight enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
         float percent = computeInitialOvertimeDamage(location);
 //        System.out.println(percent);
@@ -210,7 +215,8 @@ public final class Wizard extends Hero implements Visitable {
 //            System.out.println("before " + enemyDamage);
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
 //            System.out.println("after " + enemyDamage);
         }
 //        System.out.println(enemyDamage);
@@ -220,9 +226,9 @@ public final class Wizard extends Hero implements Visitable {
     // computing DEFLECT damage versus a PYROMANCER
     @Override
     public float affectOvertime(final Pyromancer enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
         float percent = computeInitialOvertimeDamage(location);
 //        System.out.println(enemyDamage);
@@ -231,7 +237,8 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
 //        System.out.println(enemyDamage);
         return enemyDamage;

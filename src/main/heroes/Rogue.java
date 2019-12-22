@@ -96,7 +96,8 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -124,7 +125,8 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         // TODO solve fightRRD aproximation issue
         damage = Math.round(damage);
@@ -153,7 +155,8 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -216,7 +219,8 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -245,6 +249,7 @@ public final class Rogue extends Hero implements Visitable {
                     + getAngelBonus()
                     + getStrategyBonus();
             damage = Math.round((percent - 0.0001f) * damage);
+//            damage = Math.round(percent * damage);
 //                    * damage);
         }
         System.out.println(damage);
@@ -300,7 +305,8 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus());
+                    + getStrategyBonus()
+                    - 0.0001f);
         }
         if (startNow) { // starting the ability now
             int duration;

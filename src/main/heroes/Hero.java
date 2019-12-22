@@ -226,17 +226,15 @@ public abstract class Hero extends Observable implements Visitable {
 
     // moving the hero in a certain direction
     public final void applyMove(final MovementType move) {
-
+        strategy = null;
         if (!this.isDead()) {
 //                && !revivedThisRound) {
             lookForStrategy();
         }
         if (strategy != null) {
 //            System.out.println(fullName + getHealth());
-
             strategy.applyStrategy();
         }
-
         revivedThisRound = false;
         if (!this.isDead()
                 && !this.isIncapacitated()) {
@@ -280,8 +278,8 @@ public abstract class Hero extends Observable implements Visitable {
                                     final boolean isAngelInteraction) {
         this.currentHealth -= damage;
 //        System.out.println(fullName + " " + index
-//        + " took damage " + damage + " " + isAngelInteraction);
-//        System.out.println("new hp " + currentHealth);
+//                + " took damage " + damage + " " + isAngelInteraction);
+//        System.out.println("\tnew hp " + currentHealth);
         if (this.currentHealth <= 0
                 && !isOverTimeAbility) {
             this.hasDied(isAngelInteraction);
@@ -319,7 +317,6 @@ public abstract class Hero extends Observable implements Visitable {
                     / Constants.EXPERIENCE_SCALING + 1;
             this.currentHealth = this.getMaxHealth();
             for (int i = lastLevel; i <= level; ++i) {
-                // TODO fightRPW leveling up while being attacked
                 String message = fullName + " " + index + " reached level " + i + "\n";
 //                this.messages.add(message);
                 setChanged();
