@@ -173,7 +173,7 @@ public final class Game {
             resetAngelBonuses(data.getCharacters());
             checkLeveUp(data.getCharacters());
 
-            // todo angel interaction
+            // angel interaction
             angelSpawning(data, currentRound);
 
             // doing round ending routines

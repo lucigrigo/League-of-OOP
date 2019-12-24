@@ -18,8 +18,8 @@ public abstract class Strategy {
 
     public final void applyStrategy() {
         owner.addStrategyBonus(modifier);
-        owner.increaseHP(owner.getHealth()
-                * hpModifier);
+        owner.increaseHP((int) Math.floor(owner.getHealth()
+                * hpModifier));
     }
 }
 

@@ -4,6 +4,7 @@ import main.data.LocationType;
 
 public final class Map {
 
+    // TODO implement Singleton logic more usefully
     private static Map instance = null;
     private LocationType[][] map;
 

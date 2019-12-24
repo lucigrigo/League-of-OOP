@@ -2,7 +2,6 @@ package main.heroes;
 
 import main.angels.Angel;
 import main.data.Constants;
-import main.data.HeroType;
 import main.data.LocationType;
 import main.data.Visitable;
 import main.strategies.WizardAttackStrategy;
@@ -17,7 +16,7 @@ public final class Wizard extends Hero implements Visitable {
                   final int initLin,
                   final int index) {
         super(initCol, initLin, Constants.WIZARD_INITIAL_HEALTH, 0,
-                HeroType.WIZARD, "W", "Wizard", index);
+                "W", "Wizard", index);
     }
 
     // returning maximum health as a WIZARD
@@ -72,6 +71,7 @@ public final class Wizard extends Hero implements Visitable {
                     + getAngelBonus()
                     + getStrategyBonus()
                     - 0.0001f);
+//            System.out.println(percent);
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -151,11 +151,18 @@ public final class Wizard extends Hero implements Visitable {
                     + getStrategyBonus()
                     - 0.0001f);
         }
+
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
+//        if (getIndex() == 5 || getIndex() == 6) {
+//            System.out.println(getIndex() + " are drain damage = " + damage);
+//        }
         damage += Math.round(affectOvertime(enemy, location, false, true));
+//        if (getIndex() == 5 || getIndex() == 6) {
+//            System.out.println(getIndex() + " are drain + deflect damage = " + damage);
+//        }
         if (enemy.takeDamage(Math.round(damage), false, false)) {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
@@ -195,7 +202,6 @@ public final class Wizard extends Hero implements Visitable {
                     + getAngelBonus()
                     + getStrategyBonus()
                     - 0.0001f);
-//            System.out.println(strategyBonus);
         }
 //        System.out.println(enemyDamage);
         return enemyDamage;
@@ -208,6 +214,7 @@ public final class Wizard extends Hero implements Visitable {
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
+//        System.out.println("damage de la inamic " + enemyDamage);
         float percent = computeInitialOvertimeDamage(location);
 //        System.out.println(percent);
         enemyDamage *= percent;
@@ -217,6 +224,13 @@ public final class Wizard extends Hero implements Visitable {
                     + getAngelBonus()
                     + getStrategyBonus()
                     - 0.0001f);
+//            System.out.println(Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+//            if(getIndex() == 5) {
+//                System.out.println("Strat bonus " + getStrategyBonus());
+//                System.out.println("Angel bonus " + getAngelBonus());
+//            }
 //            System.out.println("after " + enemyDamage);
         }
 //        System.out.println(enemyDamage);
@@ -251,13 +265,14 @@ public final class Wizard extends Hero implements Visitable {
 
     @Override
     public void lookForStrategy() {
+//        System.out.println(getHealth());
         if (getHealth() > Constants.WIZARD_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
                 && getHealth() < Constants.WIZARD_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new WizardAttackStrategy(this));
-//            System.out.println("acilisha");
+//            System.out.println(getIndex() + " alege strategia attack si are hp " + getHealth());
         } else if (getHealth() < Constants.WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new WizardDefenceStrategy(this));
-//            System.out.println("ddddddd");
+//            System.out.println(getIndex() + " alege strategia defense si are hp " + getHealth());
         }
 //        if (strategy != null) {
 //            strategy.applyStrategy();

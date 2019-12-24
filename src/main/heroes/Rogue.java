@@ -1,7 +1,6 @@
 package main.heroes;
 
 import main.angels.Angel;
-import main.data.HeroType;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
@@ -21,7 +20,7 @@ public final class Rogue extends Hero implements Visitable {
                  final int initLin,
                  final int index) {
         super(initCol, initLin, Constants.ROGUE_INITIAL_HEALTH, 0,
-                HeroType.ROGUE, "R", "Rogue", index);
+                "R", "Rogue", index);
         this.backStabCount = 0;
         this.appliedBackStabThisRound = false;
     }
@@ -82,16 +81,16 @@ public final class Rogue extends Hero implements Visitable {
     // getting attacked as a ROGUE
     @Override
     public void getAttackedBy(final Hero enemy,
-                                    final LocationType location) {
+                              final LocationType location) {
         enemy.attack(this, location, true, false);
     }
 
     // attacking a WIZARD as a ROGUE
     @Override
     public float attack(final Wizard enemy,
-                              final LocationType location,
-                              final boolean addRaceModifier,
-                              final boolean isForDeflectPurpose) {
+                        final LocationType location,
+                        final boolean addRaceModifier,
+                        final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
@@ -118,15 +117,15 @@ public final class Rogue extends Hero implements Visitable {
     // attacking a ROGUE as a ROGUE
     @Override
     public void attack(final Rogue enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
+//                    - 0.0001f);
         }
         // TODO solve fightRRD aproximation issue
         damage = Math.round(damage);
@@ -148,15 +147,21 @@ public final class Rogue extends Hero implements Visitable {
     // attacking a PYROMANCER as a ROGUE
     @Override
     public void attack(final Pyromancer enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
                     + getStrategyBonus()
                     - 0.0001f);
+//            if(getIndex() == 32) {
+//                System.out.println(getFullName() + " " + getIndex() + " se bate cu "
+//                + enemy.getFullName() + " " + enemy.getIndex() + " si are strat bonus de "
+//                + getStrategyBonus() + " si angel bonus de " + getAngelBonus()
+//                + " si hp = " + getHealth());
+//            }
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -176,18 +181,16 @@ public final class Rogue extends Hero implements Visitable {
     // attacking a KNIGHT as a ROGUE
     @Override
     public void attack(final Knight enemy,
-                             final LocationType location,
-                             final boolean addRaceModifier,
-                             final boolean isForDeflectPurpose) {
+                       final LocationType location,
+                       final boolean addRaceModifier,
+                       final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
-        // TODO solve fightRKD aproximation issue
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
@@ -205,22 +208,21 @@ public final class Rogue extends Hero implements Visitable {
     // getting affected as a ROGUE
     @Override
     public void getAffectedBy(final Hero enemy,
-                                    final LocationType location) {
+                              final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }
 
     // affecting overtime a WIZARD as a ROGUE
     @Override
     public float affectOvertime(final Wizard enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -239,9 +241,9 @@ public final class Rogue extends Hero implements Visitable {
     // affecting overtime a ROGUE as a ROGUE
     @Override
     public float affectOvertime(final Rogue enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             // TODO fightRRD solve aproximation issue
@@ -271,11 +273,12 @@ public final class Rogue extends Hero implements Visitable {
     // affecting overtime a KNIGHT as a ROGUE
     @Override
     public float affectOvertime(final Knight enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
+            // TODO solve fightRKD aproximation issue
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
                     + getStrategyBonus()
@@ -298,15 +301,14 @@ public final class Rogue extends Hero implements Visitable {
     // affecting overtime a PYROMANCER as a ROGUE
     @Override
     public float affectOvertime(final Pyromancer enemy,
-                                      final LocationType location,
-                                      final boolean startNow,
-                                      final boolean addRaceModifier) {
+                                final LocationType location,
+                                final boolean startNow,
+                                final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting the ability now
             int duration;

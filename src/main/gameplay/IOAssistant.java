@@ -160,10 +160,6 @@ public class IOAssistant {
                                     Integer.parseInt(singleAngel[2])));
                 }
                 angels.put(i, singleRoundAngels);
-//                System.out.println("pentru runda " + i);
-//                for(Angel angel : singleRoundAngels) {
-//                    System.out.println(angel.getName());
-//                }
             }
 
             // closing scanner
@@ -173,7 +169,7 @@ public class IOAssistant {
             return null;
         }
         // returning data
-        return new InputData(mapHeight, mapWidth, map, nrCharacters, characters,
+        return new InputData(map, characters,
                 nrRounds, instructions, angels);
     }
 
@@ -193,6 +189,7 @@ public class IOAssistant {
             // writing information about each hero
             for (Hero character : characters) {
                 GreatSorcerer.getInstance().writeResult(character.toString());
+//                GreatSorcerer.getInstance().writeResult(character.getIndex() + "\n");
             }
 
             for (String info : GreatSorcerer.getInstance().getInfo()) {

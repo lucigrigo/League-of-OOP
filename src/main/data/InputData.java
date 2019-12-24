@@ -17,10 +17,7 @@ public class InputData {
     private HashMap<Integer, List<Angel>> angels;
 
     // Constructor
-    public InputData(final int mapHeight,
-                     final int mapWidth,
-                     final LocationType[][] map,
-                     final int nrCharacters,
+    public InputData(final LocationType[][] map,
                      final List<Hero> characters,
                      final int nrRounds,
                      final MovementType[][] instructions,

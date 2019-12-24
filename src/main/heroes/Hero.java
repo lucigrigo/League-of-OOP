@@ -1,7 +1,6 @@
 package main.heroes;
 
 import main.data.Constants;
-import main.data.HeroType;
 import main.data.LocationType;
 import main.data.MovementType;
 import main.data.Visitable;
@@ -41,7 +40,6 @@ public abstract class Hero extends Observable implements Visitable {
          final int initLin,
          final int currentHealth,
          final int currentExperience,
-         final HeroType type,
          final String name,
          final String fullName,
          final int index) {
@@ -76,7 +74,6 @@ public abstract class Hero extends Observable implements Visitable {
     public final void addStrategyBonus(final float bonus) {
         this.strategyBonus = Math.max(-1f, strategyBonus + bonus);
 //        this.strategyBonus += bonus;
-
     }
 
     public final Strategy getStrategy() {
@@ -180,6 +177,9 @@ public abstract class Hero extends Observable implements Visitable {
     }
 
     public final void increaseHP(final float hpAmount) {
+//        if (revivedThisRound) {
+//            return;
+//        }
         this.currentHealth = Math.min(getMaxHealth(),
                 currentHealth + hpAmount);
 //        this.currentHealth += hpAmount;
@@ -227,7 +227,11 @@ public abstract class Hero extends Observable implements Visitable {
     // moving the hero in a certain direction
     public final void applyMove(final MovementType move) {
         strategy = null;
+//        strategyBonus = 0f;
         if (!this.isDead()) {
+//                && !isIncapacitated()) {
+
+//                && move != MovementType.NONE) {
 //                && !revivedThisRound) {
             lookForStrategy();
         }
@@ -235,7 +239,9 @@ public abstract class Hero extends Observable implements Visitable {
 //            System.out.println(fullName + getHealth());
             strategy.applyStrategy();
         }
-        revivedThisRound = false;
+//        if (index == 31 && strategy != null) {
+//            System.out.println("dupa strat, hp-ul nou este " + getHealth());
+//        }
         if (!this.isDead()
                 && !this.isIncapacitated()) {
             switch (move) {
@@ -277,9 +283,13 @@ public abstract class Hero extends Observable implements Visitable {
                                     final boolean isOverTimeAbility,
                                     final boolean isAngelInteraction) {
         this.currentHealth -= damage;
-//        System.out.println(fullName + " " + index
-//                + " took damage " + damage + " " + isAngelInteraction);
-//        System.out.println("\tnew hp " + currentHealth);
+//        if (index == 31) {
+//            System.out.println(fullName + " " + index
+//                    + " took damage " + damage + " from angel? " + isAngelInteraction);
+//            System.out.println("\tnew hp is " + currentHealth);
+//        }
+//        currentHealth = Math.round(currentHealth);
+//        System.out.println(currentHealth);
         if (this.currentHealth <= 0
                 && !isOverTimeAbility) {
             this.hasDied(isAngelInteraction);
@@ -337,7 +347,6 @@ public abstract class Hero extends Observable implements Visitable {
 //        if (!isDead()
 //                && !revivedThisRound) {
         if (!revivedThisRound) {
-            // TODO fix this exp bug
             this.initialRoundExperience = currentExperience;
         }
 
@@ -363,6 +372,8 @@ public abstract class Hero extends Observable implements Visitable {
 //        revivedThisRound = false;
 //        this.strategyBonus = 0f;
 //        this.strategy = null;
+        revivedThisRound = false;
+
     }
 
     // writing the hero to output
