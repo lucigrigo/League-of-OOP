@@ -60,7 +60,8 @@ public final class LevelUpAngel extends Angel implements Visitor {
         if (hero.isDead()) {
             return;
         }
-        String message = "LevelUpAngel helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "LevelUpAngel helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

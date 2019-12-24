@@ -57,7 +57,8 @@ public final class Dracula extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "Dracula hit " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "Dracula hit " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

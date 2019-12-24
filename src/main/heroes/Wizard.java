@@ -69,9 +69,7 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
-//            System.out.println(percent);
+                    + getStrategyBonus());
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -93,18 +91,13 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth());
         damage = Math.round(damage);
-//        System.out.println(damage);
-
         damage += Math.round(affectOvertime(enemy, location, false, true));
-//        System.out.println(damage);
-
         if (enemy.takeDamage(Math.round(damage), false, false)) {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
@@ -121,20 +114,16 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
-//        System.out.println(percent);
-        float damage = percent
+        float damage = Math.round(percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
-                * enemy.getMaxHealth(), enemy.getHealth());
-        damage = Math.round(damage);
+                * enemy.getMaxHealth(), enemy.getHealth()));
         damage += Math.round(affectOvertime(enemy, location, false, true));
         if (enemy.takeDamage(Math.round(damage), false, false)) {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
         }
-//        System.out.println(damage);
     }
 
 
@@ -148,26 +137,17 @@ public final class Wizard extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
 
-        float damage = percent
+        float damage = Math.round(percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
-                * enemy.getMaxHealth(), enemy.getHealth());
-        damage = Math.round(damage);
-//        if (getIndex() == 5 || getIndex() == 6) {
-//            System.out.println(getIndex() + " are drain damage = " + damage);
-//        }
+                * enemy.getMaxHealth(), enemy.getHealth()));
         damage += Math.round(affectOvertime(enemy, location, false, true));
-//        if (getIndex() == 5 || getIndex() == 6) {
-//            System.out.println(getIndex() + " are drain + deflect damage = " + damage);
-//        }
         if (enemy.takeDamage(Math.round(damage), false, false)) {
             computeObservation(enemy);
             this.fightWon(enemy.getLevel());
         }
-//        System.out.println(damage + " de la wizard");
     }
 
     @Override
@@ -192,19 +172,14 @@ public final class Wizard extends Hero implements Visitable {
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
-//        System.out.println(enemyDamage);
         float percent = computeInitialOvertimeDamage(location);
-//        System.out.println(percent);
         enemyDamage *= percent;
-//        System.out.println(enemyDamage);
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
-//        System.out.println(enemyDamage);
-        return enemyDamage;
+        return Math.round(enemyDamage);
     }
 
     // computing DEFLECT damage versus a KNIGHT
@@ -214,27 +189,14 @@ public final class Wizard extends Hero implements Visitable {
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
-//        System.out.println("damage de la inamic " + enemyDamage);
         float percent = computeInitialOvertimeDamage(location);
-//        System.out.println(percent);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-//            System.out.println("before " + enemyDamage);
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
-//            System.out.println(Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
-//            if(getIndex() == 5) {
-//                System.out.println("Strat bonus " + getStrategyBonus());
-//                System.out.println("Angel bonus " + getAngelBonus());
-//            }
-//            System.out.println("after " + enemyDamage);
+                    + getStrategyBonus());
         }
-//        System.out.println(enemyDamage);
-        return enemyDamage;
+        return Math.round(enemyDamage);
     }
 
     // computing DEFLECT damage versus a PYROMANCER
@@ -245,17 +207,13 @@ public final class Wizard extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float enemyDamage = enemy.attack(this, location, false, true);
         float percent = computeInitialOvertimeDamage(location);
-//        System.out.println(enemyDamage);
         enemyDamage *= percent;
-//        System.out.println(percent);
         if (addRaceModifier) { // adding race modifier
             enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
-//        System.out.println(enemyDamage);
-        return enemyDamage;
+        return Math.round(enemyDamage);
     }
 
     @Override
@@ -265,17 +223,11 @@ public final class Wizard extends Hero implements Visitable {
 
     @Override
     public void lookForStrategy() {
-//        System.out.println(getHealth());
         if (getHealth() > Constants.WIZARD_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
                 && getHealth() < Constants.WIZARD_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new WizardAttackStrategy(this));
-//            System.out.println(getIndex() + " alege strategia attack si are hp " + getHealth());
         } else if (getHealth() < Constants.WIZARD_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new WizardDefenceStrategy(this));
-//            System.out.println(getIndex() + " alege strategia defense si are hp " + getHealth());
         }
-//        if (strategy != null) {
-//            strategy.applyStrategy();
-//        }
     }
 }

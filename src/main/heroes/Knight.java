@@ -16,8 +16,8 @@ public final class Knight extends Hero implements Visitable {
     public Knight(final int initCol,
                   final int initLin,
                   final int index) {
-        super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0
-                , "K", "Knight", index);
+        super(initCol, initLin, Constants.KNIGHT_INITIAL_HEALTH, 0,
+                "K", "Knight", index);
     }
 
     // returning maximum health for KNIGHT
@@ -83,14 +83,12 @@ public final class Knight extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
                 enemy.hasDied(false);
             }
-//            return enemy.getInitialRoundHealth();
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -98,11 +96,9 @@ public final class Knight extends Hero implements Visitable {
                     location, false, true));
             if (!enemy.isDead()
                     && enemy.takeDamage(Math.round(damage), false, false)) {
-//                System.out.println("nu aici?");
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
-//            return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
@@ -127,7 +123,6 @@ public final class Knight extends Hero implements Visitable {
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
                     + getStrategyBonus());
-//            System.out.println(angelBonus);
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -137,7 +132,6 @@ public final class Knight extends Hero implements Visitable {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
-//            System.out.println(damage);
             return;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
@@ -161,8 +155,7 @@ public final class Knight extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -172,7 +165,6 @@ public final class Knight extends Hero implements Visitable {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
-//            System.out.println(damage);
             return;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
@@ -205,7 +197,6 @@ public final class Knight extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
                 computeObservation(enemy);
             }
-//            System.out.println(damage);
             return;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
@@ -229,8 +220,7 @@ public final class Knight extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -272,8 +262,7 @@ public final class Knight extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -294,8 +283,7 @@ public final class Knight extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -316,13 +304,8 @@ public final class Knight extends Hero implements Visitable {
         if (getHealth() > Constants.KNIGHT_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()
                 && getHealth() < Constants.KNIGHT_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new KnightAttackStrategy(this));
-//            System.out.println("attack");
         } else if (getHealth() < Constants.KNIGHT_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new KnightDefenceStrategy(this));
-//            System.out.println("defence");
         }
-//        if (strategy != null) {
-//            strategy.applyStrategy();
-//        }
     }
 }

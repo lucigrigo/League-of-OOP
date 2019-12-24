@@ -53,7 +53,8 @@ public final class LifeGiver extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "LifeGiver helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "LifeGiver helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

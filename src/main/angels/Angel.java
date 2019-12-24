@@ -47,10 +47,6 @@ public abstract class Angel extends Observable implements Visitor {
         return spawnCol;
     }
 
-    public final String getName() {
-        return name;
-    }
-
     public final void spawn() {
         String message = "Angel " + name + " was spawned at "
                 + spawnRow + " " + spawnCol + "\n";

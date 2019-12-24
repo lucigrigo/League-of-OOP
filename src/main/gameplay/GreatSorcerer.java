@@ -8,10 +8,10 @@ import java.util.Observer;
 public final class GreatSorcerer implements Observer {
 
     private static GreatSorcerer instance = null;
-    private List<String> info;
+    private List<String> gameInfo;
 
     private GreatSorcerer() {
-        info = new ArrayList<>();
+        gameInfo = new ArrayList<>();
     }
 
     public static GreatSorcerer getInstance() {
@@ -22,27 +22,27 @@ public final class GreatSorcerer implements Observer {
     }
 
     List<String> getInfo() {
-        return info;
+        return gameInfo;
     }
 
     void newRound(final int roundNumber) {
         if (roundNumber != 1) {
-            this.info.add("\n");
+            this.gameInfo.add("\n");
         }
-        this.info.add("~~ Round " + roundNumber + " ~~\n");
+        this.gameInfo.add("~~ Round " + roundNumber + " ~~\n");
     }
 
     void startFinalResults() {
-        this.info.add("\n~~ Results ~~\n");
+        this.gameInfo.add("\n~~ Results ~~\n");
     }
 
     void writeResult(final String heroInfo) {
-        this.info.add(heroInfo);
+        this.gameInfo.add(heroInfo);
     }
 
     @Override
     public void update(final Observable object,
                        final Object message) {
-        info.add((String) message);
+        gameInfo.add((String) message);
     }
 }

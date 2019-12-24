@@ -52,7 +52,8 @@ public final class TheDoomer extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "TheDoomer hit " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "TheDoomer hit " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

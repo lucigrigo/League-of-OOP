@@ -44,11 +44,6 @@ public class InputData {
         return this.instructions[roundNumber];
     }
 
-    // returning the map
-    public final LocationType[][] getMap() {
-        return map;
-    }
-
     public final HashMap<Integer, List<Angel>> getAngels() {
         return angels;
     }

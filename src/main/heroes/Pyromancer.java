@@ -69,26 +69,19 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
-//        System.out.println(damage);
         damage = Math.round(damage);
-//        System.out.println(damage);
-
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location, false, true));
-//            System.out.println(damage);
             if (enemy.takeDamage(Math.round(damage), false, false)) {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
-//            System.out.println(damage);
             return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
-//        System.out.println(damage);
         return damage;
     }
 
@@ -102,8 +95,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
@@ -128,8 +120,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
@@ -155,8 +146,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_FIREBLAST_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a WIZARD
@@ -198,19 +188,11 @@ public final class Pyromancer extends Hero implements Visitable {
         }
         damage = Math.round(damage);
         if (addRaceModifier) { // adding race modifier
-//            float percent = Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD
-//                    + angelBonus
-//                    + strategyBonus;
             damage *= (Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
-//            damage *= Constants.PYROMANCER_IGNITE_BONUS_VERSUS_WIZARD;
-//            float percent = 1f + angelBonus + strategyBonus;
-//            damage *= percent;
+                    + getStrategyBonus());
             damage = Math.round(damage);
         }
-//        System.out.println(damage);
         if (startNow) { // starting the ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Ignite",
                     location, Math.round(damage), Constants.PYROMANCER_IGNITE_DURATION));
@@ -240,8 +222,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_IGNITE_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting the ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Ignite",
@@ -272,8 +253,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_IGNITE_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting the ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Ignite",
@@ -304,8 +284,7 @@ public final class Pyromancer extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.PYROMANCER_IGNITE_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         if (startNow) { // starting the ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Ignite",
@@ -330,8 +309,5 @@ public final class Pyromancer extends Hero implements Visitable {
                 * getMaxHealth()) {
             setStrategy(new PyromancerDefenceStrategy(this));
         }
-//        if (strategy != null) {
-//            strategy.applyStrategy();
-//        }
     }
 }

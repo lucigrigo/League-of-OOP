@@ -53,7 +53,8 @@ public final class DarkAngel extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "DarkAngel hit " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "DarkAngel hit " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

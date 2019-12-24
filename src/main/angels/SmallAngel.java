@@ -57,7 +57,8 @@ public final class SmallAngel extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "SmallAngel helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "SmallAngel helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

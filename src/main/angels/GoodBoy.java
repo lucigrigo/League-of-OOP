@@ -57,7 +57,8 @@ public final class GoodBoy extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "GoodBoy helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "GoodBoy helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

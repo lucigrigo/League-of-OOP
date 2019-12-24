@@ -53,7 +53,8 @@ public final class DamageAngel extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "DamageAngel helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "DamageAngel helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

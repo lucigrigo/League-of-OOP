@@ -95,8 +95,7 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -107,7 +106,6 @@ public final class Rogue extends Hero implements Visitable {
                 this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
-//            return 0f;
         }
         damage += Math.round(this.affectOvertime(enemy, location,
                 false, false));
@@ -125,23 +123,18 @@ public final class Rogue extends Hero implements Visitable {
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
                     + getStrategyBonus());
-//                    - 0.0001f);
         }
         // TODO solve fightRRD aproximation issue
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
                     false, true));
-//            System.out.println(damage);
             if (enemy.takeDamage(Math.round(damage), false, false)) {
                 computeObservation(enemy);
                 this.fightWon(enemy.getLevel());
             }
             this.hasAppliedBackStab();
-//            return;
         }
-//        damage += Math.round(this.affectOvertime(enemy, location,
-//                false, false));
     }
 
     // attacking a PYROMANCER as a ROGUE
@@ -154,14 +147,7 @@ public final class Rogue extends Hero implements Visitable {
         if (addRaceModifier) { // adding race modifier
             damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
                     + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
-//            if(getIndex() == 32) {
-//                System.out.println(getFullName() + " " + getIndex() + " se bate cu "
-//                + enemy.getFullName() + " " + enemy.getIndex() + " si are strat bonus de "
-//                + getStrategyBonus() + " si angel bonus de " + getAngelBonus()
-//                + " si hp = " + getHealth());
-//            }
+                    + getStrategyBonus());
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -251,10 +237,7 @@ public final class Rogue extends Hero implements Visitable {
                     + getAngelBonus()
                     + getStrategyBonus();
             damage = Math.round((percent - 0.0001f) * damage);
-//            damage = Math.round(percent * damage);
-//                    * damage);
         }
-        System.out.println(damage);
         damage = Math.round(damage);
         if (startNow) { // starting the ability now
             int duration;
@@ -284,6 +267,7 @@ public final class Rogue extends Hero implements Visitable {
                     + getStrategyBonus()
                     - 0.0001f);
         }
+        damage = Math.round(damage);
         if (startNow) { // starting the ability now
             int duration;
             if (location == LocationType.WOODS) { // increasing duration
@@ -334,13 +318,8 @@ public final class Rogue extends Hero implements Visitable {
         if (getHealth() < Constants.ROGUE_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()
                 && getHealth() > Constants.ROGUE_ATTACK_STRATEGY_LOW_MARGIN * getMaxHealth()) {
             setStrategy(new RogueAttackStrategy(this));
-//            System.out.println("atac");
         } else if (getHealth() < Constants.ROGUE_DEFENCE_STRATEGY_HIGH_MARGIN * getMaxHealth()) {
             setStrategy(new RogueDefenceStrategy(this));
-//            System.out.println("difens");
         }
-//        if (strategy != null) {
-//            strategy.applyStrategy();
-//        }
     }
 }

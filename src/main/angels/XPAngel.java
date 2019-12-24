@@ -21,7 +21,7 @@ public final class XPAngel extends Angel implements Visitor {
             return;
         }
         computeObservation(wizard);
-        wizard.increaseXP(Constants.XPANGEL_WIZARD_BONUS_XP, false);
+        wizard.increaseXP(Constants.XPANGEL_WIZARD_BONUS_XP);
     }
 
     @Override
@@ -30,7 +30,7 @@ public final class XPAngel extends Angel implements Visitor {
             return;
         }
         computeObservation(rogue);
-        rogue.increaseXP(Constants.XPANGEL_ROGUE_BONUS_XP, false);
+        rogue.increaseXP(Constants.XPANGEL_ROGUE_BONUS_XP);
     }
 
     @Override
@@ -39,7 +39,7 @@ public final class XPAngel extends Angel implements Visitor {
             return;
         }
         computeObservation(pyromancer);
-        pyromancer.increaseXP(Constants.XPANGEL_PYROMANCER_BONUS_XP, false);
+        pyromancer.increaseXP(Constants.XPANGEL_PYROMANCER_BONUS_XP);
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class XPAngel extends Angel implements Visitor {
             return;
         }
         computeObservation(knight);
-        knight.increaseXP(Constants.XPANGEL_KNIGHT_BONUS_XP, false);
+        knight.increaseXP(Constants.XPANGEL_KNIGHT_BONUS_XP);
     }
 
     @Override
@@ -56,7 +56,8 @@ public final class XPAngel extends Angel implements Visitor {
         if (hero.isDead()) {
             return;
         }
-        String message = "XPAngel helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "XPAngel helped " + hero.getFullName()
+                + " " + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

@@ -189,11 +189,9 @@ public class IOAssistant {
             // writing information about each hero
             for (Hero character : characters) {
                 GreatSorcerer.getInstance().writeResult(character.toString());
-//                GreatSorcerer.getInstance().writeResult(character.getIndex() + "\n");
             }
 
             for (String info : GreatSorcerer.getInstance().getInfo()) {
-                System.out.print(info);
                 fileWriter.write(info);
             }
 

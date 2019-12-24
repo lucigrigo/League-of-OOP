@@ -53,7 +53,8 @@ public final class Spawner extends Angel implements Visitor {
 
     @Override
     public void computeObservation(final Hero hero) {
-        String message = "Spawner helped " + hero.getFullName() + " " + hero.getIndex() + "\n";
+        String message = "Spawner helped " + hero.getFullName() + " "
+                + hero.getIndex() + "\n";
         setChanged();
         notifyObservers(message);
     }

@@ -1,9 +1,7 @@
 package main.gameplay;
 
-import main.angels.Angel;
 import main.data.InputData;
 import main.data.LocationType;
-import main.data.MovementType;
 import main.heroes.Hero;
 
 import java.util.List;
@@ -26,24 +24,6 @@ public final class Game {
     }
 
     /**
-     * Function that applies current round moves.
-     *
-     * @param characters game heroes
-     * @param roundMoves current round moves
-     */
-    private void applyCurrentRoundMoves(final List<Hero> characters,
-                                        final MovementType[] roundMoves) {
-        for (int i = 0; i < roundMoves.length; i++) {
-            if (!characters.get(i).isIncapacitated()
-                    && !characters.get(i).isDead()) {
-                characters.get(i).applyMove(roundMoves[i]);
-            } else if (characters.get(i).isIncapacitated()) {
-                characters.get(i).getAbilityAffectedBy().incapacityUsed();
-            }
-        }
-    }
-
-    /**
      * Function to apply damage from overtime abilities and reducing
      * their duration.
      *
@@ -61,60 +41,27 @@ public final class Game {
         }
     }
 
-    private void checkLeveUp(final List<Hero> characters) {
-        for (Hero hero : characters) {
-            hero.checkForLevelUp();
-        }
-    }
-
-    private void resetAngelBonuses(final List<Hero> characters) {
-//        for (Hero hero : characters) {
-//            hero.sendMessages();
-//            hero.resetAngelBonus();
-//            hero.checkForLevelUp();
-//        }
-    }
-
-    /**
-     * Function to search for potential fights in the current round.
-     *
-     * @param characters heroes of the game
-     * @param map        map of the game
-     */
-    private void searchForFights(final List<Hero> characters,
-                                 final LocationType[][] map) {
-        boolean[][] checkedFights = new boolean[map.length][map.length];
-        for (Hero character1 : characters) {
-            for (Hero character2 : characters) {
-                if ((character1 != character2)
-                        && (character1.getColon() == character2.getColon())
-                        && (character1.getRow() == character2.getRow())
-                        && (!checkedFights[character1.getRow()][character1.getColon()])
-                        && ((!character1.isDead())
-                        && (!character2.isDead()))) {
-                    manageFight(character1, character2,
-                            map[character1.getRow()][character1.getColon()]);
-                    checkedFights[character1.getRow()][character1.getColon()] = true;
-                }
-            }
-        }
-    }
-
     /**
      * Manages the fight between two characters.
      *
-     * @param character1 first hero
-     * @param character2 second hero
-     * @param location   the place where the fight takes place
+     * @param hero1    first hero
+     * @param hero2    second hero
+     * @param location the place where the fight takes place
      */
-    private void manageFight(final Hero character1,
-                             final Hero character2,
-                             final LocationType location) {
-        character2.getAttackedBy(character1, location);
-        character1.getAttackedBy(character2, location);
+    void manageFight(final Hero hero1,
+                     final Hero hero2,
+                     final LocationType location) {
+        hero2.getAttackedBy(hero1, location);
+        hero1.getAttackedBy(hero2, location);
 
-        character2.getAffectedBy(character1, location);
-        character1.getAffectedBy(character2, location);
+        hero2.getAffectedBy(hero1, location);
+        hero1.getAffectedBy(hero2, location);
+    }
+
+    private void checkLevelUp(final List<Hero> characters) {
+        for (Hero hero : characters) {
+            hero.checkForLevelUp();
+        }
     }
 
     /**
@@ -128,28 +75,6 @@ public final class Game {
         }
     }
 
-    private void checkForInteraction(final Angel angel,
-                                     final List<Hero> heroes) {
-        for (Hero hero : heroes) {
-            if (angel.getRow() == hero.getRow()
-                    && angel.getCol() == hero.getColon()) {
-                hero.getHelpedBy(angel);
-            }
-        }
-    }
-
-    private void angelSpawning(final InputData data,
-                               final int currentRound) {
-        List<Angel> currentRoundAngels = data.getAngels().get(currentRound + 1);
-        if (currentRoundAngels.isEmpty()) {
-            return;
-        }
-        for (Angel angel : currentRoundAngels) {
-            angel.spawn();
-            checkForInteraction(angel, data.getCharacters());
-        }
-    }
-
     /**
      * Main function that manages the unfolding of the game.
      *
@@ -158,23 +83,20 @@ public final class Game {
     public void startGame(final InputData data) {
         int maxRounds = data.getNrRounds();
         int currentRound = 0;
-//        angelSpawning(data, -1);
+        Map.getInstance().setHeroes(data.getCharacters());
         while (currentRound < maxRounds) {
-//            System.out.println("RUNDA " + currentRound);
             GreatSorcerer.getInstance().newRound(currentRound + 1);
             // applying overtime damage
             applyOverTimeDamage(data.getCharacters());
             // moving the heroes
-            applyCurrentRoundMoves(data.getCharacters(),
-                    data.getCurrentRoundMoves(currentRound));
+            Map.getInstance().applyCurrentRoundMoves(data.getCurrentRoundMoves((currentRound)));
 
             // looking for fights
-            searchForFights(data.getCharacters(), data.getMap());
-            resetAngelBonuses(data.getCharacters());
-            checkLeveUp(data.getCharacters());
+            Map.getInstance().lookForFights();
+            checkLevelUp(data.getCharacters());
 
             // angel interaction
-            angelSpawning(data, currentRound);
+            Map.getInstance().spawnAngels(data.getAngels(), currentRound);
 
             // doing round ending routines
             roundEnding(data.getCharacters());
