@@ -67,11 +67,14 @@ public final class Game {
     /**
      * Function that does round ending routine for every hero.
      *
-     * @param characters heroes of the game
+     * @param heroes heroes of the game
      */
-    private void roundEnding(final List<Hero> characters) {
-        for (Hero character : characters) {
-            character.doRoundEndingRoutine();
+    private void roundEnding(final List<Hero> heroes) {
+//        GreatSorcerer.getInstance().writeResult("\n~~~ Results at the end of the round ~~~\n");
+//        GreatSorcerer.getInstance().writeResult("\n");
+        for (Hero hero : heroes) {
+//            GreatSorcerer.getInstance().writeResult(hero.toString());
+            hero.doRoundEndingRoutine();
         }
     }
 
@@ -83,7 +86,6 @@ public final class Game {
     public void startGame(final InputData data) {
         int maxRounds = data.getNrRounds();
         int currentRound = 0;
-        Map.getInstance().setHeroes(data.getCharacters());
         while (currentRound < maxRounds) {
             GreatSorcerer.getInstance().newRound(currentRound + 1);
             // applying overtime damage

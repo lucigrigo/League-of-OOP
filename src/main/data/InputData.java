@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Class that represents input data for the game.
  */
-public class InputData {
+public final class InputData {
     private List<Hero> characters;
     private int nrRounds;
     private MovementType[][] instructions;
@@ -30,21 +30,21 @@ public class InputData {
     }
 
     // returning number of rounds
-    public final int getNrRounds() {
+    public int getNrRounds() {
         return nrRounds;
     }
 
     // returning heroes of the game
-    public final List<Hero> getCharacters() {
+    public List<Hero> getCharacters() {
         return characters;
     }
 
     // returning movements of the round
-    public final MovementType[] getCurrentRoundMoves(final int roundNumber) {
+    public MovementType[] getCurrentRoundMoves(final int roundNumber) {
         return this.instructions[roundNumber];
     }
 
-    public final HashMap<Integer, List<Angel>> getAngels() {
+    public HashMap<Integer, List<Angel>> getAngels() {
         return angels;
     }
 }

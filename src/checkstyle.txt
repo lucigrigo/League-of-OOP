@@ -1,6 +1,5 @@
 Starting audit...
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:239:44: '0.0001f' is a magic number. [MagicNumber]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:268:23: '0.0001f' is a magic number. [MagicNumber]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/gameplay/Map.java:86:60: 'heroes' hides a field. [HiddenField]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:244:44: '0.0001f' is a magic number. [MagicNumber]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:283:23: '0.0001f' is a magic number. [MagicNumber]
 Audit done.
-Checkstyle ends with 3 errors.
+Checkstyle ends with 2 errors.

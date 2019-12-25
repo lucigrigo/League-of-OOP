@@ -4,7 +4,7 @@ import main.angels.Angel;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
-import main.gameplay.OverTimeAbility;
+import main.data.OverTimeAbility;
 import main.strategies.KnightAttackStrategy;
 import main.strategies.KnightDefenceStrategy;
 

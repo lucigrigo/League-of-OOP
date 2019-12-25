@@ -78,12 +78,11 @@ final class Map {
         }
         for (Angel angel : currentRoundAngels) {
             angel.spawn();
-            checkForAngelInteraction(angel, heroes);
+            checkForAngelInteraction(angel);
         }
     }
 
-    private void checkForAngelInteraction(final Angel angel,
-                                          final List<Hero> heroes) {
+    private void checkForAngelInteraction(final Angel angel) {
         for (Hero hero : heroes) {
             if (angel.getRow() == hero.getRow()
                     && angel.getCol() == hero.getColon()) {

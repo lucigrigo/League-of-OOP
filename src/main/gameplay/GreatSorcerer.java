@@ -28,6 +28,7 @@ public final class GreatSorcerer implements Observer {
     void newRound(final int roundNumber) {
         if (roundNumber != 1) {
             this.gameInfo.add("\n");
+//            this.gameInfo.add("-------------- END OF ROUND --------------\n");
         }
         this.gameInfo.add("~~ Round " + roundNumber + " ~~\n");
     }

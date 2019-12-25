@@ -4,7 +4,7 @@ import main.angels.Angel;
 import main.data.Constants;
 import main.data.LocationType;
 import main.data.Visitable;
-import main.gameplay.OverTimeAbility;
+import main.data.OverTimeAbility;
 import main.strategies.RogueAttackStrategy;
 import main.strategies.RogueDefenceStrategy;
 
@@ -233,10 +233,18 @@ public final class Rogue extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
             // TODO fightRRD solve aproximation issue
+//            System.out.println("damage BEFORE modifiers " + damage);
+//            System.out.println("angel bonus is " + getAngelBonus());
+//            System.out.println("strategy bonus is " + getStrategyBonus());
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE
                     + getAngelBonus()
                     + getStrategyBonus();
+//            System.out.println("resulting bonus is "
+//                    + percent);
             damage = Math.round((percent - 0.0001f) * damage);
+//            damage = percent * damage;
+//            System.out.println("damage AFTER modifiers " + damage);
+//            System.out.println("---");
         }
         damage = Math.round(damage);
         if (startNow) { // starting the ability now
@@ -261,11 +269,20 @@ public final class Rogue extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
+//            System.out.println("damage BEFORE modifiers " + damage);
+//            System.out.println("angel bonus is " + getAngelBonus());
+//            System.out.println("strategy bonus is " + getStrategyBonus());
+//            System.out.println("resulting bonus is "
+//                    + (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus()));
             // TODO solve fightRKD aproximation issue
             damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
                     + getAngelBonus()
                     + getStrategyBonus()
                     - 0.0001f);
+//            System.out.println("damage AFTER modifiers " + damage);
+//            System.out.println("---");
         }
         damage = Math.round(damage);
         if (startNow) { // starting the ability now

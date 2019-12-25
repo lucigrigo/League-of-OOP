@@ -5,7 +5,7 @@ import main.data.LocationType;
 import main.data.MovementType;
 import main.data.Visitable;
 import main.gameplay.GreatSorcerer;
-import main.gameplay.OverTimeAbility;
+import main.data.OverTimeAbility;
 import main.strategies.Strategy;
 
 import java.util.Observable;
@@ -60,6 +60,9 @@ public abstract class Hero extends Observable implements Visitable {
 
     public final void addAngelBonus(final float bonus) {
         this.angelBonus = Math.max(-1f, angelBonus + bonus);
+//        if (fullName.equals("Rogue") && index == 0) {
+//            System.out.println(fullName + " " + index + " has angel bonus = " + getAngelBonus());
+//        }
     }
 
     public final void addStrategyBonus(final float bonus) {

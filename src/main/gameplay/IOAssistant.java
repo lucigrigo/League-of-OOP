@@ -58,7 +58,6 @@ public class IOAssistant {
 
             // reading the map
             map = new LocationType[mapHeight][mapWidth];
-//            Map.getInstance().setDimensions(mapHeight, mapWidth);
             for (int i = 0; i < mapHeight; i++) {
                 String line = scanner.next();
                 for (int j = 0; j < mapWidth; j++) {
@@ -114,6 +113,7 @@ public class IOAssistant {
                         System.exit(1);
                 }
             }
+            Map.getInstance().setHeroes(characters);
 
             // reading rounds number
             nrRounds = scanner.nextInt();
@@ -193,6 +193,7 @@ public class IOAssistant {
 
             for (String info : GreatSorcerer.getInstance().getInfo()) {
                 fileWriter.write(info);
+//                System.out.print(info);
             }
 
             // flushing informations

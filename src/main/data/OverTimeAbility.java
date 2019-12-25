@@ -1,7 +1,6 @@
-package main.gameplay;
+package main.data;
 
 import main.heroes.Hero;
-import main.data.LocationType;
 
 /**
  * Class that represents a type of overtime ability.
@@ -63,7 +62,7 @@ public final class OverTimeAbility {
     }
 
     // reducing damage duration
-    void damageDealt() {
+    public void damageDealt() {
         this.duration -= 1;
         if (this.duration == 0
                 && this.incapacityDuration == 0) {
@@ -72,7 +71,7 @@ public final class OverTimeAbility {
     }
 
     // reducing incapacitation duration
-    void incapacityUsed() {
+    public void incapacityUsed() {
         this.incapacityDuration -= 1;
         if (this.duration == 0
                 && this.incapacityDuration == 0) {
