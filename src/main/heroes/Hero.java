@@ -60,9 +60,9 @@ public abstract class Hero extends Observable implements Visitable {
 
     public final void addAngelBonus(final float bonus) {
         this.angelBonus = Math.max(-1f, angelBonus + bonus);
-//        if (fullName.equals("Rogue") && index == 0) {
-//            System.out.println(fullName + " " + index + " has angel bonus = " + getAngelBonus());
-//        }
+        if (fullName.equals("Rogue")) {
+            System.out.println(fullName + " " + index + " got angel bonus = " + bonus);
+        }
     }
 
     public final void addStrategyBonus(final float bonus) {

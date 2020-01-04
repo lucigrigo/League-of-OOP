@@ -270,6 +270,7 @@ public final class Rogue extends Hero implements Visitable {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
 //            System.out.println("damage BEFORE modifiers " + damage);
+//            System.out.println("race modifier is " + Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT);
 //            System.out.println("angel bonus is " + getAngelBonus());
 //            System.out.println("strategy bonus is " + getStrategyBonus());
 //            System.out.println("resulting bonus is "
