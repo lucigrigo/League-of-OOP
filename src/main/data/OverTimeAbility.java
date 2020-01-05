@@ -61,8 +61,8 @@ public final class OverTimeAbility {
         this.duration -= 1;
 
         // checking if the ability ended
-        if (this.duration == 0
-                && this.incapacityDuration == 0) {
+        if (duration == 0
+                && incapacityDuration == 0) {
             victim.setAbilityAffectedBy(null);
         }
     }
@@ -74,8 +74,8 @@ public final class OverTimeAbility {
         this.incapacityDuration -= 1;
 
         // checking if the ability ended
-        if (this.duration == 0
-                && this.incapacityDuration == 0) {
+        if (duration == 0
+                && incapacityDuration == 0) {
             victim.setAbilityAffectedBy(null);
         }
     }

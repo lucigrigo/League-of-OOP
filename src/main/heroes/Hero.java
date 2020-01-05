@@ -59,6 +59,8 @@ public abstract class Hero extends Observable implements Visitable {
         this.strategyBonus = 0f;
         this.angelB = new ArrayList<>();
         this.revivedThisRound = false;
+
+        // adding the sole observer of the game
         addObserver(GreatSorcerer.getInstance());
     }
 

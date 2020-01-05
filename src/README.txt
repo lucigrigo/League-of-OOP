@@ -124,3 +124,84 @@ Observatii:
 --------------------------------------------------------------------------------
                                   Etapa 2
 --------------------------------------------------------------------------------
+
+  Datorita structurii incepute la prima etapa, nu au fost necesare multe modifi-
+  cari pentru a indeplini cerintele din a doua etapa. Astfel, am adaugat trei
+  mari pachete: angels, factories si strategies care sa contina clasele
+  corespondente, iar clasele singulare, cum ar fi GreatSorcerer, Map,
+  AngelFactory sau interfetele Visitor/Visitable le-am impartit in pachetele
+  deja existente.
+
+  Pachetele temei in forma finala sunt sunt:
+    - angels: contine clasa abstracta Angel si fiecare din clasele copil care o
+    extind, cate una pentru fiecare tip de inger din program
+    - data: contine enum-uri, clasa pentru constante, template-ul pentru o abi-
+    litate overtime si interfete folosite la interactiunea cu ingerii (Visitor
+    si Visitable)
+    - factories: contine cele doua factory-uri ale programului: HeroFactory si
+    AngelFactory
+    - gameplay: contine clase care au legatura cu desfasurarea jocului, cum ar
+    fi: clasa principala Game, clasa care simbolizeaza Marele Magician
+    (GreatSorcerer), clasa care citeste inputul si scrie rezultatul final al
+    jocului (IOAssistant) sau clasa care simbolizeaza harta jocului (Map)
+    - heroes: contine clasa abstracta Hero si cele 4 extinderi ale sale:
+    Wizard, Rogue, Pyromancer si Knight
+    - strategies: contine clasa abstracta Strategy si cele 8 clase care o
+    extind: 4 pentru numarul de tipuri de eroi si 2 pentru fiecare tip de erou
+
+  Factory:
+    Am creat cate un factory pentru crearea eroilor si a ingerilor. Am decis sa
+    nu le fac Singleton pentru ca deja in cod erau mai multe clase care se folo-
+    seau de acest concept, plus ca nu era tocmai necesar, in abordarea mea.
+
+  Visitor/Visitable:
+    Am folosit acest concept in interactiunea dintre ingeri si eroi. Am creat
+    de asemenea si cate o interfata pentru fiecare din cele doua roluri.
+
+  Observer:
+    Acest concept este utilizat cu ajutorul clasei GreatSorcerer, acesta fiind
+    observatorul. Subiectii sunt ingerii si eroii din joc. In ambele cazuri,
+    observatorul este setat in constructor, el fiind mereu acelasi.
+
+  Singleton:
+    Am considerat utilizarea Singleton in cazul claselor GreatSorcerer, Map si
+    Game.
+
+  Strategy:
+    Am considerat crearea a 8 clase corespunzatoare numarului de strategi care
+    pot fi adoptate in joc, de orice tip de erou. De asemenea, am creat o clasa
+    abstracta Strategy, care sa serveasca rol de template.
+
+  Double Dispatch:
+    In completarea folosirii acestui concept la prima etapa, am mai folosit
+    Double Dispatch si in cadrul interactiunii dintre ingeri si eroi. Abor-
+    darea este foarte similara cu cea existenta deja, singura diferenta fiind
+    cel care aplica actiunea. Nu mai este inamicul eroului din perspectiva
+    caruia privim interactiunea, ci este un inger care il influenteaza din
+    orice punct de vedere.
+
+  Interactiunea cu ingerii:
+    Am adaugat metode suplimentare in clasa Hero care sa se ocupe de interactiu-
+    nea dintre un erou si un inger, cum ar fi: increaseHp -LifeGiver-,
+    increaseXp -XPAngel- sau revive -Spawner.
+
+  Observatii:
+    - am utilizat clasele deprecate Observable si Observer din java.lang pentru
+    ca nu am considerat necesare crearea altor interfete/clase pe care sa le
+    implementez, avand in vedere ca acestea exista deja si sunt usor de folosit.
+    De asemenea, folosirea unor clase deprecate nu am considerat ca poate fi o
+    depunctate, avand in vedere ca au fost utilizate si la laborator.
+    - am redenumit clasa GameCharacter -> Hero
+    - am mutat anumite clase de dinainte in alte pachete, pentru o organizare
+    mai logica
+
+  In urma feedback-ului de la prima etapa:
+    - am eliminat commentariile C-like ('//') care descriau unele functii
+    inainte, pastrand pe cele de acest fel doar pentru corpul functiilor.
+    Am utilizat pentru functii doar comentarii de genul /* []...] */ sau
+    /** [doc] */.
+    - am eliminat apelurile de getteri si setteri din clasele unde erau redun-
+    dante
+    - am eliminat functiile care nu aveau utilizare
+    - am eliminat parametrii din functii care nu erau folositi
+    - am adaugat spatii in cod, pentru a delimita zonele care au roluri diferite
