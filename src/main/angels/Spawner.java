@@ -8,6 +8,9 @@ import main.heroes.Pyromancer;
 import main.heroes.Rogue;
 import main.heroes.Wizard;
 
+/**
+ * Class to implement Spawner logic.
+ */
 public final class Spawner extends Angel implements Visitor {
 
     public Spawner(final int spawnRow,
@@ -15,6 +18,11 @@ public final class Spawner extends Angel implements Visitor {
         super(spawnRow, spawnCol, "Spawner");
     }
 
+    /**
+     * Spawner reviving a wizard.
+     *
+     * @param wizard respawned wizard
+     */
     @Override
     public void helpHero(final Wizard wizard) {
         if (!wizard.isDead()) {
@@ -24,6 +32,11 @@ public final class Spawner extends Angel implements Visitor {
         wizard.revive(Constants.SPAWNER_WIZARD_HP);
     }
 
+    /**
+     * Spawner reviving a rogue.
+     *
+     * @param rogue respawned rogue
+     */
     @Override
     public void helpHero(final Rogue rogue) {
         if (!rogue.isDead()) {
@@ -33,6 +46,11 @@ public final class Spawner extends Angel implements Visitor {
         rogue.revive(Constants.SPAWNER_ROGUE_HP);
     }
 
+    /**
+     * Spawner reviving a pyromancer.
+     *
+     * @param pyromancer respawned pyromancer
+     */
     @Override
     public void helpHero(final Pyromancer pyromancer) {
         if (!pyromancer.isDead()) {
@@ -42,6 +60,11 @@ public final class Spawner extends Angel implements Visitor {
         pyromancer.revive(Constants.SPAWNER_PYROMANCER_HP);
     }
 
+    /**
+     * Spawner reviving a knight.
+     *
+     * @param knight respawned knight
+     */
     @Override
     public void helpHero(final Knight knight) {
         if (!knight.isDead()) {
@@ -51,6 +74,11 @@ public final class Spawner extends Angel implements Visitor {
         knight.revive(Constants.SPAWNER_KNIGHT_HP);
     }
 
+    /**
+     * Computing Spawner observation for the observer.
+     *
+     * @param hero influenced hero
+     */
     @Override
     public void computeObservation(final Hero hero) {
         String message = "Spawner helped " + hero.getFullName() + " "

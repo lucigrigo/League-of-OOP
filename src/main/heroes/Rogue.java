@@ -25,7 +25,9 @@ public final class Rogue extends Hero implements Visitable {
         this.appliedBackStabThisRound = false;
     }
 
-    // returning maximum health as a ROGUE
+    /*
+     Returning maximum health as a ROGUE.
+     */
     @Override
     public int getMaxHealth() {
         return Constants.ROGUE_INITIAL_HEALTH
@@ -33,7 +35,9 @@ public final class Rogue extends Hero implements Visitable {
                 * this.getLevel();
     }
 
-    // increasing the count of the backstabs applied if it is the case
+    /*
+     Increasing the count of the backstabs applied if it is the case.
+     */
     @Override
     public void doRoundEndingRoutine() {
         super.doRoundEndingRoutine();
@@ -43,18 +47,24 @@ public final class Rogue extends Hero implements Visitable {
         }
     }
 
-    // applied backstab this round
+    /*
+     Applied backstab this round.
+     */
     private void hasAppliedBackStab() {
         this.appliedBackStabThisRound = true;
     }
 
-    // computing initial damage as a ROGUE
+    /*
+     Computing initial damage as a ROGUE.
+     */
     @Override
     public float computeInitialDamage(final LocationType location) {
         float damage = Math.round(Constants.ROGUE_BACKSTAB_BASE_DAMAGE
                 + Constants.ROGUE_BACKSTAB_LEVEL_SCALING_BASE_DAMAGE
                 * this.getLevel());
-        if (location == LocationType.WOODS) { // adding location bonus
+
+        // adding location bonus
+        if (location == LocationType.WOODS) {
             if (this.backStabCount
                     % Constants.ROGUE_BACKSTAB_CRITICAL_HIT_OCCURENCE == 0) {
                 // adding critical hit
@@ -66,36 +76,43 @@ public final class Rogue extends Hero implements Visitable {
         return Math.round(damage);
     }
 
-    // computing initial overtime damage as a ROGUE
+    /*
+     Computing initial overtime damage as a ROGUE.
+     */
     @Override
     public float computeInitialOvertimeDamage(final LocationType location) {
         float damage = Math.round(Constants.ROGUE_PARALYSIS_BASE_DAMAGE
                 + Constants.ROGUE_PARALYSIS_LEVEL_SCALING_BASE_DAMAGE
                 * this.getLevel());
-        if (location == LocationType.WOODS) { // adding location bonus
+
+        // adding location bonus
+        if (location == LocationType.WOODS) {
             damage *= Constants.ROGUE_WOODS_BONUS;
         }
         return Math.round(damage);
     }
 
-    // getting attacked as a ROGUE
+    /*
+     Getting attacked as a ROGUE.
+     */
     @Override
     public void getAttackedBy(final Hero enemy,
                               final LocationType location) {
-        enemy.attack(this, location, true, false);
+        enemy.attack(this, location, true);
     }
 
-    // attacking a WIZARD as a ROGUE
+    /*
+     Attacking a WIZARD as a ROGUE.
+     */
     @Override
-    public float attack(final Wizard enemy,
+    public float attack(final Wizard wizard,
                         final LocationType location,
                         final boolean addRaceModifier,
                         final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -104,31 +121,35 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (!isForDeflectPurpose) { // if interrogated by a WIZARD
-            damage += Math.round(this.affectOvertime(enemy, location,
+
+        // if interrogated by a WIZARD
+        if (!isForDeflectPurpose) {
+            damage += Math.round(this.affectOvertime(wizard, location,
                     false, true));
-            if (enemy.takeDamage(Math.round(damage), false, false)) {
-                computeObservation(enemy);
-                this.fightWon(enemy.getLevel());
+
+            // making enemy take computed damage
+            if (wizard.takeDamage(Math.round(damage), false, false)) {
+                computeObservation(wizard);
+                this.fightWon(wizard.getLevel());
             }
             this.hasAppliedBackStab();
         }
-        damage += Math.round(this.affectOvertime(enemy, location,
+        damage += Math.round(this.affectOvertime(wizard, location,
                 false, false));
         return damage;
     }
 
-    // attacking a ROGUE as a ROGUE
+    /*
+    Attacking a ROGUE as a ROGUE.
+     */
     @Override
     public void attack(final Rogue enemy,
                        final LocationType location,
-                       final boolean addRaceModifier,
-                       final boolean isForDeflectPurpose) {
+                       final boolean addRaceModifier) {
         float damage = computeInitialDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -137,28 +158,30 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (!isForDeflectPurpose) { // if interrogated by a WIZARD
-            damage += Math.round(this.affectOvertime(enemy, location,
-                    false, true));
-            if (enemy.takeDamage(Math.round(damage), false, false)) {
-                computeObservation(enemy);
-                this.fightWon(enemy.getLevel());
-            }
-            this.hasAppliedBackStab();
+
+        // adding overtime damage
+        damage += Math.round(this.affectOvertime(enemy, location,
+                false, true));
+
+        // making enemy take computed damage
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
+            computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
         }
+        this.hasAppliedBackStab();
     }
 
-    // attacking a PYROMANCER as a ROGUE
+    /*
+     Attacking a PYROMANCER as a ROGUE.
+     */
     @Override
     public void attack(final Pyromancer enemy,
                        final LocationType location,
-                       final boolean addRaceModifier,
-                       final boolean isForDeflectPurpose) {
+                       final boolean addRaceModifier) {
         float damage = computeInitialDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -167,31 +190,30 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (!isForDeflectPurpose) { // if interrogated by a WIZARD
-            damage += Math.round(this.affectOvertime(enemy, location,
-                    false, true));
-            if (enemy.takeDamage(Math.round(damage), false, false)) {
-                computeObservation(enemy);
-                this.fightWon(enemy.getLevel());
-            }
-            this.hasAppliedBackStab();
-            return;
-        }
+
+        // adding overtime damage
         damage += Math.round(this.affectOvertime(enemy, location,
-                false, false));
+                false, true));
+
+        // making enemy take computed damage
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
+            computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
+        }
+        this.hasAppliedBackStab();
     }
 
-    // attacking a KNIGHT as a ROGUE
+    /*
+     Attacking a KNIGHT as a ROGUE.
+     */
     @Override
     public void attack(final Knight enemy,
                        final LocationType location,
-                       final boolean addRaceModifier,
-                       final boolean isForDeflectPurpose) {
+                       final boolean addRaceModifier) {
         float damage = computeInitialDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -200,38 +222,41 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (!isForDeflectPurpose) { // if interrogated by a WIZARD
-            damage += Math.round(this.affectOvertime(enemy, location,
-                    false, true));
-            if (enemy.takeDamage(Math.round(damage), false, false)) {
-                computeObservation(enemy);
-                this.fightWon(enemy.getLevel());
-            }
-            this.hasAppliedBackStab();
-            return;
-        }
+
+        // adding overtime damage
         damage += Math.round(this.affectOvertime(enemy, location,
-                false, false));
+                false, true));
+
+        // making enemy take computed damage
+        if (enemy.takeDamage(Math.round(damage), false, false)) {
+            computeObservation(enemy);
+            this.fightWon(enemy.getLevel());
+        }
+        this.hasAppliedBackStab();
     }
 
-    // getting affected as a ROGUE
+    /**
+     * @param enemy    enemy that is fighting current hero
+     * @param location location type
+     */
     @Override
     public void getAffectedBy(final Hero enemy,
                               final LocationType location) {
         enemy.affectOvertime(this, location, true, true);
     }
 
-    // affecting overtime a WIZARD as a ROGUE
+    /*
+     Affecting overtime a WIZARD as a ROGUE.
+     */
     @Override
     public float affectOvertime(final Wizard enemy,
                                 final LocationType location,
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -239,28 +264,35 @@ public final class Rogue extends Hero implements Visitable {
             percent += getStrategyBonus();
             damage *= percent;
         }
-        if (startNow) { // starting the ability now
+
+        // starting the ability now
+        if (startNow) {
             int duration;
-            if (location == LocationType.WOODS) { // increasing duration
+            if (location == LocationType.WOODS) {
+                // increasing duration
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_WOODS;
             } else {
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_NORMAL;
             }
-            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Paralysis",
-                    location, Math.round(damage), duration, true));
+            enemy.setAbilityAffectedBy(new OverTimeAbility(enemy,
+                    Math.round(damage), duration, true));
             return 0f;
         }
         return damage;
     }
 
-    // affecting overtime a ROGUE as a ROGUE
+    /*
+     Affecting overtime a ROGUE as a ROGUE.
+     */
     @Override
     public float affectOvertime(final Rogue enemy,
                                 final LocationType location,
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
-        if (addRaceModifier) { // adding race modifier
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -269,28 +301,35 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (startNow) { // starting the ability now
+
+        // starting the ability now
+        if (startNow) {
             int duration;
-            if (location == LocationType.WOODS) { // increasing duration
+            if (location == LocationType.WOODS) {
+                // increasing duration
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_WOODS;
             } else {
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_NORMAL;
             }
-            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Paralysis",
-                    location, Math.round(damage), duration, true));
+            enemy.setAbilityAffectedBy(new OverTimeAbility(enemy,
+                    Math.round(damage), duration, true));
             return 0f;
         }
         return damage;
     }
 
-    // affecting overtime a KNIGHT as a ROGUE
+    /*
+     Affecting overtime a KNIGHT as a ROGUE.
+     */
     @Override
     public float affectOvertime(final Knight enemy,
                                 final LocationType location,
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
-        if (addRaceModifier) { // adding race modifier
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -299,31 +338,35 @@ public final class Rogue extends Hero implements Visitable {
             damage *= percent;
         }
         damage = Math.round(damage);
-        if (startNow) { // starting the ability now
+
+        // starting the ability now
+        if (startNow) {
             int duration;
-            if (location == LocationType.WOODS) { // increasing duration
+            if (location == LocationType.WOODS) {
+                // increasing duration
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_WOODS;
             } else {
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_NORMAL;
             }
-            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Paralysis",
-                    location, Math.round(damage), duration, true));
+            enemy.setAbilityAffectedBy(new OverTimeAbility(enemy,
+                    Math.round(damage), duration, true));
             return 0f;
         }
         return damage;
     }
 
-    // affecting overtime a PYROMANCER as a ROGUE
+    /*
+     Affecting overtime a PYROMANCER as a ROGUE.
+     */
     @Override
     public float affectOvertime(final Pyromancer enemy,
                                 final LocationType location,
                                 final boolean startNow,
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
-        if (addRaceModifier) { // adding race modifier
-//            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
-//                    + getAngelBonus()
-//                    + getStrategyBonus());
+
+        // adding race modifier
+        if (addRaceModifier) {
             float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER;
             for (Float bonus : getAngelBonuses()) {
                 percent += bonus;
@@ -331,25 +374,34 @@ public final class Rogue extends Hero implements Visitable {
             percent += getStrategyBonus();
             damage *= percent;
         }
-        if (startNow) { // starting the ability now
+
+        // starting the ability now
+        if (startNow) {
             int duration;
-            if (location == LocationType.WOODS) { // increasing duration
+            if (location == LocationType.WOODS) {
+                // increasing duration
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_WOODS;
             } else {
                 duration = Constants.ROGUE_PARALYSIS_ROUNDS_NUMBER_NORMAL;
             }
-            enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy, "Paralysis",
-                    location, Math.round(damage), duration, true));
+            enemy.setAbilityAffectedBy(new OverTimeAbility(enemy,
+                    Math.round(damage), duration, true));
             return 0f;
         }
         return damage;
     }
 
+    /*
+    Getting helped by an angel.
+     */
     @Override
     public void getHelpedBy(final Angel angel) {
         angel.helpHero(this);
     }
 
+    /*
+    Looking for strategy from ROGUE perspective.
+     */
     @Override
     public void lookForStrategy() {
         if (getHealth() < Constants.ROGUE_ATTACK_STRATEGY_HIGH_MARGIN * getMaxHealth()

@@ -3,6 +3,9 @@ package main.strategies;
 import main.data.Constants;
 import main.heroes.Hero;
 
+/**
+ * Implements Defence Strategy for a Pyromancer.
+ */
 public class PyromancerDefenceStrategy extends Strategy {
 
     public PyromancerDefenceStrategy(final Hero owner) {

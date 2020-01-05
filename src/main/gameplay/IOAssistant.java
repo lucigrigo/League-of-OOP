@@ -80,6 +80,7 @@ public class IOAssistant {
                     }
                 }
             }
+            // setting the map
             Map.getInstance().setMap(map);
 
             // reading heroes count
@@ -113,6 +114,7 @@ public class IOAssistant {
                         System.exit(1);
                 }
             }
+            // setting the heroes for the map
             Map.getInstance().setHeroes(characters);
 
             // reading rounds number
@@ -169,7 +171,7 @@ public class IOAssistant {
             return null;
         }
         // returning data
-        return new InputData(map, characters,
+        return new InputData(characters,
                 nrRounds, instructions, angels);
     }
 
@@ -193,7 +195,6 @@ public class IOAssistant {
 
             for (String info : GreatSorcerer.getInstance().getInfo()) {
                 fileWriter.write(info);
-//                System.out.print(info);
             }
 
             // flushing informations

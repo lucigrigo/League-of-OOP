@@ -8,6 +8,9 @@ import main.heroes.Pyromancer;
 import main.heroes.Rogue;
 import main.heroes.Wizard;
 
+/**
+ * Class that implements Damage Angel logic.
+ */
 public final class DamageAngel extends Angel implements Visitor {
 
     public DamageAngel(final int spawnRow,
@@ -15,6 +18,11 @@ public final class DamageAngel extends Angel implements Visitor {
         super(spawnRow, spawnCol, "DamageAngel");
     }
 
+    /**
+     * Damage Angel interaction with a wizard.
+     *
+     * @param wizard influenced wizard
+     */
     @Override
     public void helpHero(final Wizard wizard) {
         if (wizard.isDead()) {
@@ -24,6 +32,11 @@ public final class DamageAngel extends Angel implements Visitor {
         wizard.addAngelBonus(Constants.DAMAGEANGEL_WIZARD_BONUS);
     }
 
+    /**
+     * Damage Angel interaction with a rogue.
+     *
+     * @param rogue influenced rogue
+     */
     @Override
     public void helpHero(final Rogue rogue) {
         if (rogue.isDead()) {
@@ -33,6 +46,11 @@ public final class DamageAngel extends Angel implements Visitor {
         rogue.addAngelBonus(Constants.DAMAGEANGEL_ROGUE_BONUS);
     }
 
+    /**
+     * Damage Angel interaction with a pyromancer.
+     *
+     * @param pyromancer influenced pyromancer
+     */
     @Override
     public void helpHero(final Pyromancer pyromancer) {
         if (pyromancer.isDead()) {
@@ -42,6 +60,11 @@ public final class DamageAngel extends Angel implements Visitor {
         pyromancer.addAngelBonus(Constants.DAMAGEANGEL_PYROMANCER_BONUS);
     }
 
+    /**
+     * Damage Angel interaction with a knight.
+     *
+     * @param knight influenced knight
+     */
     @Override
     public void helpHero(final Knight knight) {
         if (knight.isDead()) {
@@ -51,6 +74,11 @@ public final class DamageAngel extends Angel implements Visitor {
         knight.addAngelBonus(Constants.DAMAGEANGEL_KNIGHT_BONUS);
     }
 
+    /**
+     * Computing Damage Angel observation for the observer.
+     *
+     * @param hero influenced hero
+     */
     @Override
     public void computeObservation(final Hero hero) {
         String message = "DamageAngel helped " + hero.getFullName() + " "

@@ -1,6 +1,10 @@
 package main.heroes;
 
-import main.data.*;
+import main.data.Constants;
+import main.data.LocationType;
+import main.data.MovementType;
+import main.data.OverTimeAbility;
+import main.data.Visitable;
 import main.gameplay.GreatSorcerer;
 import main.strategies.Strategy;
 
@@ -24,12 +28,14 @@ public abstract class Hero extends Observable implements Visitable {
     private float initialRoundHealth;
     private int index;
     private Strategy strategy;
-    private float angelBonus;
     private float strategyBonus;
     private boolean revivedThisRound;
     private int initialRoundExperience;
+    private List<Float> angelB;
 
-    // Constructor
+    /*
+     Constructor
+     */
     Hero(final int initCol,
          final int initLin,
          final int currentHealth,
@@ -50,170 +56,221 @@ public abstract class Hero extends Observable implements Visitable {
         this.hasMadeAKillThisRound = false;
         this.index = index;
         this.strategy = null;
-        this.angelBonus = 0f;
         this.strategyBonus = 0f;
+        this.angelB = new ArrayList<>();
         this.revivedThisRound = false;
         addObserver(GreatSorcerer.getInstance());
     }
 
-    private List<Float> angelB = new ArrayList<>();
-
+    /**
+     * Adds a new angel bonus to the list for a single hero.
+     *
+     * @param bonus new angel bonus
+     */
     public final void addAngelBonus(final float bonus) {
-        this.angelBonus = Math.max(-1f, angelBonus + bonus);
-//        if (fullName.equals("Rogue")) {
-//            System.out.println(fullName + " " + index + " got angel bonus = " + bonus);
-//        }
         angelB.add(bonus);
     }
 
-    public List<Float> getAngelBonuses() {
+    /**
+     * @return list of angel bonuses for current hero
+     */
+    public final List<Float> getAngelBonuses() {
         return angelB;
     }
 
-
+    /**
+     * Adds/Substracts a new strategy bonus to the one already existing.
+     *
+     * @param bonus new bonus
+     */
     public final void addStrategyBonus(final float bonus) {
         this.strategyBonus = Math.max(-1f, strategyBonus + bonus);
     }
 
-    public final Strategy getStrategy() {
-        return strategy;
-    }
-
+    /**
+     * Sets a new strategy for a hero.
+     *
+     * @param strategy new adopted strategy
+     */
     public final void setStrategy(final Strategy strategy) {
         this.strategy = strategy;
     }
 
-    final float getAngelBonus() {
-        return angelBonus;
-    }
-
+    /**
+     * @return strategy bonus
+     */
     final float getStrategyBonus() {
         return strategyBonus;
     }
 
-    // if the hero has made a kill this round
-    private void setHasMadeAKillThisRound() {
-        this.hasMadeAKillThisRound = true;
-    }
-
-    // returning current colon
+    /**
+     * @return current colon
+     */
     public final int getColon() {
         return colon;
     }
 
-    // returning current row
+    /**
+     * @return current row
+     */
     public final int getRow() {
         return line;
     }
 
-    // returning current health
+    /**
+     * @return current health
+     */
     public final float getHealth() {
         return currentHealth;
     }
 
-    // returning current experience
+    /**
+     * @return current experience
+     */
     private int getExperience() {
         return currentExperience;
     }
 
-    // returning name
-    private String getName() {
-        return name;
-    }
-
+    /**
+     * @return index in current game
+     */
     public final int getIndex() {
         return index;
     }
 
+    /**
+     * @return full name
+     */
     public final String getFullName() {
         return fullName;
     }
 
-    // returning current level
+    /**
+     * @return current level
+     */
     final int getLevel() {
         return level;
     }
 
-    // hero has died
+    /*
+     Hero has died.
+     */
     public final void hasDied(final boolean isAngelInteraction) {
         this.currentHealth = 0;
         if (isAngelInteraction) {
-            this.initialRoundExperience = currentExperience;
-            String message = "Player " + getFullName() + " "
-                    + getIndex() + " was killed by an angel\n";
+            initialRoundExperience = currentExperience;
+
+            // computing observation
+            String message = "Player " + fullName + " "
+                    + index + " was killed by an angel\n";
             setChanged();
             notifyObservers(message);
         }
     }
 
+    /**
+     * Gets current hero to the next level.
+     */
     public final void getToNextLevel() {
         int nextLevelXp = Constants.EXPERIENCE_BASE
-                + (level)
+                + level
                 * Constants.EXPERIENCE_SCALING;
         nextLevelXp -= currentExperience;
         increaseXP(nextLevelXp);
     }
 
+    /**
+     * Increasing health after getting healed by an angel.
+     *
+     * @param hpAmount amount of healing
+     */
     public final void increaseHP(final float hpAmount) {
-        this.currentHealth = Math.min(getMaxHealth(),
+        currentHealth = Math.min(getMaxHealth(),
                 currentHealth + hpAmount);
     }
 
+    /**
+     * Increasing xp after interacting with an angel.
+     *
+     * @param xpAmount amount of experience gained
+     */
     public final void increaseXP(final int xpAmount) {
-        this.currentExperience = this.currentExperience + xpAmount;
+        currentExperience = currentExperience + xpAmount;
         checkForLevelUp();
     }
 
+    /**
+     * Reviving current hero.
+     *
+     * @param reviveHp new hp
+     */
     public final void revive(final int reviveHp) {
-        this.currentExperience = initialRoundExperience;
-        this.currentHealth = reviveHp;
-        this.revivedThisRound = true;
-        String message = "Player " + getFullName()
-                + " " + getIndex() + " was brought to life by an angel\n";
+        // restoring parameters
+        currentExperience = initialRoundExperience;
+        currentHealth = reviveHp;
+        revivedThisRound = true;
+
+        // computing observation
+        String message = "Player " + fullName
+                + " " + index + " was brought to life by an angel\n";
         setChanged();
         notifyObservers(message);
     }
 
-    // checking if the hero is dead
+    /*
+    Checking if the hero is dead.
+     */
     public final boolean isDead() {
-        return this.currentHealth <= 0;
+        return currentHealth <= 0;
     }
 
-    // returning health at the start of the current round
+    /*
+     Returning health at the start of the current round.
+     */
     final float getInitialRoundHealth() {
         return initialRoundHealth;
     }
 
-    // checking if the hero can move;
+    /*
+     Checking if the hero can move.
+     */
     public final boolean isIncapacitated() {
-        return this.abilityAffectedBy != null
-                && this.abilityAffectedBy.isAbilityToIncapacitate()
-                && this.abilityAffectedBy.getIncapacityDuration() > 0;
+        return abilityAffectedBy != null
+                && abilityAffectedBy.isAbilityToIncapacitate()
+                && abilityAffectedBy.getIncapacityDuration() > 0;
     }
 
-    // moving the hero in a certain direction
+    /*
+     Moving the hero in a certain direction.
+     Also checks the possibility of adopting a new strategy and applies it if so.
+     */
     public final void applyMove(final MovementType move) {
+        // deleting current strategy, if it exists
         strategy = null;
-        if (!this.isDead()) {
-            lookForStrategy();
-        }
+
+        // looking for a new strategy
+        lookForStrategy();
+
+        // applying current strategy, it is exists
         if (strategy != null) {
             strategy.applyStrategy();
         }
-        if (!this.isDead()
-                && !this.isIncapacitated()) {
+
+        // moving the hero
+        if (!isDead()
+                && !isIncapacitated()) {
             switch (move) {
                 case DOWN:
-                    this.line = this.line + 1;
+                    line = line + 1;
                     break;
                 case LEFT:
-                    this.colon = this.colon - 1;
+                    colon = colon - 1;
                     break;
                 case RIGHT:
-                    this.colon = this.colon + 1;
+                    colon = colon + 1;
                     break;
                 case UP:
-                    this.line = this.line - 1;
+                    line = line - 1;
                     break;
                 case NONE:
                     // do nothing
@@ -226,53 +283,74 @@ public abstract class Hero extends Observable implements Visitable {
         }
     }
 
-    // returning the overtime ability that affects the hero
+    /**
+     * @return the overtime ability that affects the hero.
+     */
     public final OverTimeAbility getAbilityAffectedBy() {
         return abilityAffectedBy;
     }
 
-    // setting the overtime ability to affect the hero
+    /*
+     Setting the overtime ability to affect the hero.
+     */
     public final void setAbilityAffectedBy(final OverTimeAbility abilityAffectedBy) {
         this.abilityAffectedBy = abilityAffectedBy;
     }
 
-    // the hero taking damage
+    /*
+     The hero takes damage.
+     */
+
+    /**
+     * The hero takes damage.
+     *
+     * @param damage             amount of damage taken.
+     * @param isOverTimeAbility  checking if it is from an overtime ability or not
+     * @param isAngelInteraction checking if it is angel related or not
+     * @return true or false it current hero dies or not
+     */
     public final boolean takeDamage(final int damage,
                                     final boolean isOverTimeAbility,
                                     final boolean isAngelInteraction) {
         this.currentHealth -= damage;
-        if (this.currentHealth <= 0
+        if (currentHealth <= 0
                 && !isOverTimeAbility) {
-            this.hasDied(isAngelInteraction);
+            hasDied(isAngelInteraction);
             return true;
-        } else if (this.currentHealth <= 0) {
-            this.hasDied(isAngelInteraction);
+        } else if (currentHealth <= 0) {
+            hasDied(isAngelInteraction);
             return true;
         }
         return false;
     }
 
-    // the hero won a fight
+    /*
+     The hero won a fight.
+     */
     final void fightWon(final int loserLevel) {
-        this.currentExperience = this.currentExperience
+        this.currentExperience = currentExperience
                 + Math.max(0, Constants.WIN_MAGIC_200
-                - (this.getLevel() - loserLevel)
+                - (level - loserLevel)
                 * Constants.WIN_MAGIC_40);
-        this.setHasMadeAKillThisRound();
+        hasMadeAKillThisRound = true;
     }
 
-    // checking for level up potential
+    /*
+     Checking for level up.
+     */
     public final void checkForLevelUp() {
-        if ((this.currentExperience
+        if ((currentExperience
                 >= Constants.EXPERIENCE_BASE
-                + this.getLevel()
+                + level
                 * Constants.EXPERIENCE_SCALING)
-                && !this.isDead()) {
+                && !isDead()) {
             int lastLevel = level + 1;
-            this.level = (this.currentExperience
+            level = (currentExperience
                     - Constants.EXPERIENCE_BASE)
                     / Constants.EXPERIENCE_SCALING + 1;
-            this.currentHealth = this.getMaxHealth();
+            currentHealth = getMaxHealth();
+
+            // computing level-up observation
             for (int i = lastLevel; i <= level; ++i) {
                 String message = fullName + " " + index + " reached level " + i + "\n";
                 setChanged();
@@ -286,100 +364,149 @@ public abstract class Hero extends Observable implements Visitable {
      * and refreshes round-starting health (for execute calculus done correctly).
      */
     public void doRoundEndingRoutine() {
+        // storing current experience
         if (!revivedThisRound) {
-            this.initialRoundExperience = currentExperience;
+            initialRoundExperience = currentExperience;
         }
+
+        // checking for level up
         if (hasMadeAKillThisRound
                 && !revivedThisRound) {
-            this.checkForLevelUp();
-            this.hasMadeAKillThisRound = false;
+            checkForLevelUp();
+            hasMadeAKillThisRound = false;
         }
-        this.initialRoundHealth = currentHealth;
+
+        initialRoundHealth = currentHealth;
         revivedThisRound = false;
     }
 
-    // writing the hero to output
+    /*
+     Writing the hero and info about it to output.
+     */
     @Override
     public final String toString() {
-        if (!this.isDead()) {
-            return this.getName() + " " + this.getLevel() + " " + this.getExperience()
-                    + " " + Math.round(this.getHealth()) + " " + this.getRow() + " "
-                    + this.getColon() + "\n";
+        if (!isDead()) {
+            return name + " " + level + " " + currentExperience
+                    + " " + Math.round(currentHealth) + " " + line + " "
+                    + colon + "\n";
         }
-        return this.name + " dead\n";
+        return name + " dead\n";
     }
 
+    /**
+     * Computing death observation.
+     *
+     * @param enemy enemy that killed current hero
+     */
     public final void computeObservation(final Hero enemy) {
         String message = "Player " + enemy.getFullName() + " " + enemy.getIndex()
-                + " was killed by " + getFullName() + " " + getIndex() + "\n";
+                + " was killed by " + fullName + " " + index + "\n";
         setChanged();
         notifyObservers(message);
     }
 
-    // returning maximum health of the hero
+    /*
+     Returning maximum health of the hero.
+     */
     public abstract int getMaxHealth();
 
-    // computing initial damage of the fight
+    /**
+     * Computing initial damage of the fight.
+     *
+     * @param location location type
+     * @return initial damage
+     */
     public abstract float computeInitialDamage(LocationType location);
 
-    // computing initial overtime damage of the fight
+    /**
+     * Computing initial damage for the overtime ability of the fight.
+     *
+     * @param location location type
+     * @return initial damage for the overtime ability
+     */
     public abstract float computeInitialOvertimeDamage(LocationType location);
 
-    // getting attacked
+    /**
+     * Getting attacked by a hero.
+     *
+     * @param enemy    enemy that attacks current hero
+     * @param location location type
+     */
     public abstract void getAttackedBy(Hero enemy,
                                        LocationType location);
 
-    // attacking a WIZARD
-    public abstract float attack(Wizard enemy,
+    /*
+     * Attacking a WIZARD.
+     */
+    public abstract float attack(Wizard wizard,
                                  LocationType location,
                                  boolean addRaceModifier,
                                  boolean isForDeflectPurpose);
 
-    // attacking a ROGUE
+    /*
+     Attacking a ROGUE.
+     */
     public abstract void attack(Rogue enemy,
                                 LocationType location,
-                                boolean addRaceModifier,
-                                boolean isForDeflectPurpose);
+                                boolean addRaceModifier);
 
-    // attacking a PYROMANCER
+    /*
+     Attacking a PYROMANCER.
+     */
     public abstract void attack(Pyromancer enemy,
                                 LocationType location,
-                                boolean addRaceModifier,
-                                boolean isForDeflectPurpose);
+                                boolean addRaceModifier);
 
-    // attacking a KNIGHT
+    /*
+     Attacking a KNIGHT.
+     */
     public abstract void attack(Knight enemy,
                                 LocationType location,
-                                boolean addRaceModifier,
-                                boolean isForDeflectPurpose);
+                                boolean addRaceModifier);
 
-    // getting affected overtime
+    /**
+     * Getting affected overtime.
+     *
+     * @param enemy    enemy that is fighting current hero
+     * @param location location type
+     */
     public abstract void getAffectedBy(Hero enemy,
                                        LocationType location);
 
-    // affecting overtime a WIZARD
+    /*
+     Affecting overtime a WIZARD.
+     */
     public abstract float affectOvertime(Wizard enemy,
                                          LocationType location,
                                          boolean startNow,
                                          boolean addRaceModifier);
 
-    // affecting overtime a ROGUE
+    /*
+     Affecting overtime a ROGUE.
+     */
     public abstract float affectOvertime(Rogue enemy,
                                          LocationType location,
                                          boolean startNow,
                                          boolean addRaceModifier);
 
-    // affecting overtime a KNIGHT
+    /*
+     Affecting overtime a KNIGHT.
+     */
     public abstract float affectOvertime(Knight enemy,
                                          LocationType location,
                                          boolean startNow,
                                          boolean addRaceModifier);
 
-    // affecting overtime a PYROMANCER
+    /*
+     Affecting overtime a PYROMANCER.
+     */
     public abstract float affectOvertime(Pyromancer enemy,
                                          LocationType location,
                                          boolean startNow,
                                          boolean addRaceModifier);
 
+    /*
+    Checking for a new strategy to adopt, if possible.
+     */
     public abstract void lookForStrategy();
 }

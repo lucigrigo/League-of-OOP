@@ -3,6 +3,9 @@ package main.strategies;
 import main.data.Constants;
 import main.heroes.Hero;
 
+/**
+ * Implements Defence Strategy for a Rogue.
+ */
 public class RogueDefenceStrategy extends Strategy {
 
     public RogueDefenceStrategy(final Hero owner) {

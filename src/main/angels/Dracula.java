@@ -8,6 +8,9 @@ import main.heroes.Pyromancer;
 import main.heroes.Rogue;
 import main.heroes.Wizard;
 
+/**
+ * Class that implements Dracula logic.
+ */
 public final class Dracula extends Angel implements Visitor {
 
     public Dracula(final int spawnRow,
@@ -15,6 +18,11 @@ public final class Dracula extends Angel implements Visitor {
         super(spawnRow, spawnCol, "Dracula");
     }
 
+    /**
+     * Dracula interaction with a wizard.
+     *
+     * @param wizard influenced wizard
+     */
     @Override
     public void helpHero(final Wizard wizard) {
         if (wizard.isDead()) {
@@ -25,6 +33,11 @@ public final class Dracula extends Angel implements Visitor {
         wizard.takeDamage(Constants.DRACULA_WIZARD_BONUS_HP, false, true);
     }
 
+    /**
+     * Dracula interaction with a rogue.
+     *
+     * @param rogue influenced rogue
+     */
     @Override
     public void helpHero(final Rogue rogue) {
         if (rogue.isDead()) {
@@ -35,6 +48,11 @@ public final class Dracula extends Angel implements Visitor {
         rogue.takeDamage(Constants.DRACULA_ROGUE_BONUS_HP, false, true);
     }
 
+    /**
+     * Dracula interaction with a pyromancer.
+     *
+     * @param pyromancer influenced pyromancer
+     */
     @Override
     public void helpHero(final Pyromancer pyromancer) {
         if (pyromancer.isDead()) {
@@ -45,6 +63,11 @@ public final class Dracula extends Angel implements Visitor {
         pyromancer.takeDamage(Constants.DRACULA_PYROMANCER_BONUS_HP, false, true);
     }
 
+    /**
+     * Dracula interaction with a knight.
+     *
+     * @param knight influenced knight
+     */
     @Override
     public void helpHero(final Knight knight) {
         if (knight.isDead()) {
@@ -55,6 +78,11 @@ public final class Dracula extends Angel implements Visitor {
         knight.takeDamage(Constants.DRACULA_KNIGHT_BONUS_HP, false, true);
     }
 
+    /**
+     * Computing Dracula observation for the observer.
+     *
+     * @param hero influenced hero
+     */
     @Override
     public void computeObservation(final Hero hero) {
         String message = "Dracula hit " + hero.getFullName() + " "

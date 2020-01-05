@@ -1,11 +1,15 @@
+-------------------------------------------------------------------------------
+
                 --- Programare Orientata pe Obiecte ---
-                           Proiect - Etapa 1
                             "League of OOP"
 
---- Grigore Lucian-Florin 324CD              ---
---- Facultatea de Automatica si Calculatoare ---
---- Universitatea Politehnica, Bucuresti     ---
+            --- Grigore Lucian-Florin 324CD              ---
+            --- Facultatea de Automatica si Calculatoare ---
+            --- Universitatea Politehnica, Bucuresti     ---
 
+-------------------------------------------------------------------------------
+                                Etapa 1
+-------------------------------------------------------------------------------
 
 Structura temei:
   Am considerat impartirea entitatilor importante in clase, cum ar fi:
@@ -115,3 +119,8 @@ Observatii:
   care sa elimine aceasta duplicare, dar si acelea trebuiau sa tine cont de ti-
   pul adversarului si ajungeam intr-un final sa creez inca un rand de functii
   care ar fi avut acelasi bloc de cod.
+
+
+--------------------------------------------------------------------------------
+                                  Etapa 2
+--------------------------------------------------------------------------------

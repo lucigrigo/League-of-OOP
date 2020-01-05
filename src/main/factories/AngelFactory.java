@@ -13,12 +13,23 @@ import main.angels.TheDoomer;
 import main.angels.XPAngel;
 import main.data.AngelType;
 
+/**
+ * Factory for creating an Angel.
+ */
 public class AngelFactory {
 
     public AngelFactory() {
 
     }
 
+    /**
+     * Main creation method of the factory.
+     *
+     * @param angelType type of the angel that ought to be created
+     * @param spawnRow  spawn row
+     * @param spawnCol  spawn colon
+     * @return created angel at the specified row and colon
+     */
     public final Angel createAngel(final AngelType angelType,
                                    final int spawnRow,
                                    final int spawnCol) {

@@ -1,6 +1,6 @@
 /*
     Programare Orientata pe Obiecte
-    League of OOP - Stage 1
+    League of OOP - Stage 1 & Stage 2
     Grigore Lucian-Florin 324CD
     Facultatea de Automatica si Calculatoare
     Universitatea Politehnica, Bucuresti

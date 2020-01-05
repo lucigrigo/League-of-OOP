@@ -8,6 +8,10 @@ import main.heroes.Hero;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class that implements the MAP of the game.
+ * It manages location-related events, such as fights and angel spawns.
+ */
 final class Map {
 
     private static Map instance = null;
@@ -25,10 +29,20 @@ final class Map {
         return instance;
     }
 
+    /**
+     * Sets game heroes.
+     *
+     * @param gameHeroes heroes of the game
+     */
     void setHeroes(final List<Hero> gameHeroes) {
         this.heroes = gameHeroes;
     }
 
+    /**
+     * Sets game map.
+     *
+     * @param map map of the game
+     */
     void setMap(final LocationType[][] map) {
         this.map = map;
     }
@@ -70,6 +84,12 @@ final class Map {
         }
     }
 
+    /**
+     * Function that spawns the angels that ought to be spawned in the current round.
+     *
+     * @param angels             all angels in the game
+     * @param currentRoundNumber number of the current round
+     */
     void spawnAngels(final HashMap<Integer, List<Angel>> angels,
                      final int currentRoundNumber) {
         List<Angel> currentRoundAngels = angels.get(currentRoundNumber + 1);
@@ -82,6 +102,11 @@ final class Map {
         }
     }
 
+    /**
+     * Function that manages the possible interaction between an angel last spawned and heroes.
+     *
+     * @param angel spawned angel
+     */
     private void checkForAngelInteraction(final Angel angel) {
         for (Hero hero : heroes) {
             if (angel.getRow() == hero.getRow()

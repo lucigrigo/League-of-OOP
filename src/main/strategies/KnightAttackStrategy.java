@@ -3,6 +3,9 @@ package main.strategies;
 import main.data.Constants;
 import main.heroes.Hero;
 
+/**
+ * Implements Attack Strategy for a Knight.
+ */
 public class KnightAttackStrategy extends Strategy {
 
     public KnightAttackStrategy(final Hero owner) {

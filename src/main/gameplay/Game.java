@@ -58,6 +58,11 @@ public final class Game {
         hero1.getAffectedBy(hero2, location);
     }
 
+    /**
+     * Checks for level-up possibility for each hero.
+     *
+     * @param characters heroes of the game
+     */
     private void checkLevelUp(final List<Hero> characters) {
         for (Hero hero : characters) {
             hero.checkForLevelUp();
@@ -70,10 +75,7 @@ public final class Game {
      * @param heroes heroes of the game
      */
     private void roundEnding(final List<Hero> heroes) {
-//        GreatSorcerer.getInstance().writeResult("\n~~~ Results at the end of the round ~~~\n");
-//        GreatSorcerer.getInstance().writeResult("\n");
         for (Hero hero : heroes) {
-//            GreatSorcerer.getInstance().writeResult(hero.toString());
             hero.doRoundEndingRoutine();
         }
     }

@@ -3,6 +3,9 @@ package main.strategies;
 import main.data.Constants;
 import main.heroes.Hero;
 
+/**
+ * Implements Defence Strategy for a Wizard.
+ */
 public class WizardDefenceStrategy extends Strategy {
 
     public WizardDefenceStrategy(final Hero owner) {
