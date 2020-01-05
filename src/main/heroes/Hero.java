@@ -1,13 +1,11 @@
 package main.heroes;
 
-import main.data.Constants;
-import main.data.LocationType;
-import main.data.MovementType;
-import main.data.Visitable;
+import main.data.*;
 import main.gameplay.GreatSorcerer;
-import main.data.OverTimeAbility;
 import main.strategies.Strategy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -58,12 +56,20 @@ public abstract class Hero extends Observable implements Visitable {
         addObserver(GreatSorcerer.getInstance());
     }
 
+    private List<Float> angelB = new ArrayList<>();
+
     public final void addAngelBonus(final float bonus) {
         this.angelBonus = Math.max(-1f, angelBonus + bonus);
-        if (fullName.equals("Rogue")) {
-            System.out.println(fullName + " " + index + " got angel bonus = " + bonus);
-        }
+//        if (fullName.equals("Rogue")) {
+//            System.out.println(fullName + " " + index + " got angel bonus = " + bonus);
+//        }
+        angelB.add(bonus);
     }
+
+    public List<Float> getAngelBonuses() {
+        return angelB;
+    }
+
 
     public final void addStrategyBonus(final float bonus) {
         this.strategyBonus = Math.max(-1f, strategyBonus + bonus);

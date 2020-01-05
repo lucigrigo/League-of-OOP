@@ -1,6 +1,5 @@
 Starting audit...
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:244:44: '0.0001f' is a magic number. [MagicNumber]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:273: Line is longer than 100 characters (found 102). [LineLength]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:284:23: '0.0001f' is a magic number. [MagicNumber]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Hero.java:3: Using the '.*' form of import should be avoided - main.data.*. [AvoidStarImport]
+[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Hero.java:69:5: Class 'Hero' looks like designed for extension (can be subclassed), but the method 'getAngelBonuses' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Hero' final or making the method 'getAngelBonuses' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 Audit done.
-Checkstyle ends with 3 errors.
+Checkstyle ends with 2 errors.

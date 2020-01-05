@@ -67,9 +67,16 @@ public final class Wizard extends Hero implements Visitable {
                         final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float multiplier = Constants.WIZARD_DRAIN_BONUS_VERSUS_WIZARD;
+            for (Float bonus : getAngelBonuses()) {
+                multiplier += bonus;
+            }
+            multiplier += getStrategyBonus();
+            percent *= multiplier;
+//            damage *= percent;
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -89,9 +96,15 @@ public final class Wizard extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float multiplier = Constants.WIZARD_DRAIN_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                multiplier += bonus;
+            }
+            multiplier += getStrategyBonus();
+            percent *= multiplier;
         }
         float damage = percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -112,9 +125,15 @@ public final class Wizard extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float multiplier = Constants.WIZARD_DRAIN_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                multiplier += bonus;
+            }
+            multiplier += getStrategyBonus();
+            percent *= multiplier;
         }
         float damage = Math.round(percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
@@ -135,11 +154,16 @@ public final class Wizard extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float percent = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            percent *= (Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float multiplier = Constants.WIZARD_DRAIN_BONUS_VERSUS_KNIGHT;
+            for (Float bonus : getAngelBonuses()) {
+                multiplier += bonus;
+            }
+            multiplier += getStrategyBonus();
+            percent *= multiplier;
         }
-
         float damage = Math.round(percent
                 * Math.min(Constants.WIZARD_DRAIN_HEALTH_PERCENTAGE
                 * enemy.getMaxHealth(), enemy.getHealth()));
@@ -175,9 +199,15 @@ public final class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            percent = Constants.WIZARD_DEFLECT_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            enemyDamage *= percent;
         }
         return Math.round(enemyDamage);
     }
@@ -192,9 +222,15 @@ public final class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            percent = Constants.WIZARD_DEFLECT_BONUS_VERSUS_KNIGHT;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            enemyDamage *= percent;
         }
         return Math.round(enemyDamage);
     }
@@ -209,9 +245,15 @@ public final class Wizard extends Hero implements Visitable {
         float percent = computeInitialOvertimeDamage(location);
         enemyDamage *= percent;
         if (addRaceModifier) { // adding race modifier
-            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            enemyDamage *= (Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            percent = Constants.WIZARD_DEFLECT_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            enemyDamage *= percent;
         }
         return Math.round(enemyDamage);
     }

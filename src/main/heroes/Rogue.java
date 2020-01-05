@@ -93,9 +93,15 @@ public final class Rogue extends Hero implements Visitable {
                         final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_WIZARD;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -120,11 +126,16 @@ public final class Rogue extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
-        // TODO solve fightRRD aproximation issue
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
             damage += Math.round(this.affectOvertime(enemy, location,
@@ -145,9 +156,15 @@ public final class Rogue extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -172,9 +189,15 @@ public final class Rogue extends Hero implements Visitable {
                        final boolean isForDeflectPurpose) {
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_BACKSTAB_BONUS_VERSUS_KNIGHT;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if interrogated by a WIZARD
@@ -206,9 +229,15 @@ public final class Rogue extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_WIZARD;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting the ability now
             int duration;
@@ -232,19 +261,12 @@ public final class Rogue extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            // TODO fightRRD solve aproximation issue
-//            System.out.println("damage BEFORE modifiers " + damage);
-//            System.out.println("angel bonus is " + getAngelBonus());
-//            System.out.println("strategy bonus is " + getStrategyBonus());
-            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus();
-//            System.out.println("resulting bonus is "
-//                    + percent);
-            damage = Math.round((percent - 0.0001f) * damage);
-//            damage = percent * damage;
-//            System.out.println("damage AFTER modifiers " + damage);
-//            System.out.println("---");
+            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (startNow) { // starting the ability now
@@ -269,21 +291,12 @@ public final class Rogue extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-//            System.out.println("damage BEFORE modifiers " + damage);
-//            System.out.println("race modifier is " + Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT);
-//            System.out.println("angel bonus is " + getAngelBonus());
-//            System.out.println("strategy bonus is " + getStrategyBonus());
-//            System.out.println("resulting bonus is "
-//                    + (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
-//                    + getAngelBonus()
-//                    + getStrategyBonus()));
-            // TODO solve fightRKD aproximation issue
-            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT
-                    + getAngelBonus()
-                    + getStrategyBonus()
-                    - 0.0001f);
-//            System.out.println("damage AFTER modifiers " + damage);
-//            System.out.println("---");
+            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_KNIGHT;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (startNow) { // starting the ability now
@@ -308,9 +321,15 @@ public final class Rogue extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.ROGUE_PARALYSIS_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting the ability now
             int duration;

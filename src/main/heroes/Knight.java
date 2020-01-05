@@ -86,9 +86,15 @@ public final class Knight extends Hero implements Visitable {
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_EXECUTE_BONUS_VERSUS_WIZARD;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -120,9 +126,15 @@ public final class Knight extends Hero implements Visitable {
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_EXECUTE_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -153,9 +165,15 @@ public final class Knight extends Hero implements Visitable {
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_EXECUTE_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -186,8 +204,7 @@ public final class Knight extends Hero implements Visitable {
         }
         float damage = computeInitialDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_EXECUTE_BONUS_VERSUS_KNIGHT
-                    + getStrategyBonus());
+            damage *= Constants.KNIGHT_EXECUTE_BONUS_VERSUS_KNIGHT;
         }
         damage = Math.round(damage);
         if (!isForDeflectPurpose) { // if not interrogated by a wizard
@@ -218,9 +235,15 @@ public final class Knight extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_SLAM_BONUS_VERSUS_WIZARD;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -239,9 +262,15 @@ public final class Knight extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_ROGUE
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_ROGUE
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_SLAM_BONUS_VERSUS_ROGUE;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -260,9 +289,15 @@ public final class Knight extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_SLAM_BONUS_VERSUS_KNIGHT;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
@@ -281,9 +316,15 @@ public final class Knight extends Hero implements Visitable {
                                 final boolean addRaceModifier) {
         float damage = computeInitialOvertimeDamage(location);
         if (addRaceModifier) { // adding race modifier
-            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER
-                    + getAngelBonus()
-                    + getStrategyBonus());
+//            damage *= (Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER
+//                    + getAngelBonus()
+//                    + getStrategyBonus());
+            float percent = Constants.KNIGHT_SLAM_BONUS_VERSUS_PYROMANCER;
+            for (Float bonus : getAngelBonuses()) {
+                percent += bonus;
+            }
+            percent += getStrategyBonus();
+            damage *= percent;
         }
         if (startNow) { // starting overtime ability now
             enemy.setAbilityAffectedBy(new OverTimeAbility(this, enemy,
