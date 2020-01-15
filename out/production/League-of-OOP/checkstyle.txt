@@ -1,6 +1,2 @@
 Starting audit...
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:244:44: '0.0001f' is a magic number. [MagicNumber]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:273: Line is longer than 100 characters (found 102). [LineLength]
-[ERROR] /Users/grigorelucian/Documents/Repos/League-of-OOP/src/main/heroes/Rogue.java:284:23: '0.0001f' is a magic number. [MagicNumber]
 Audit done.
-Checkstyle ends with 3 errors.

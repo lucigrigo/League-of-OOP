@@ -315,6 +315,8 @@ public abstract class Hero extends Observable implements Visitable {
                                     final boolean isOverTimeAbility,
                                     final boolean isAngelInteraction) {
         this.currentHealth -= damage;
+//        System.out.println(fullName + " " + index + " takes damage " + damage + ". Is overtime damage? " + isOverTimeAbility
+//                + " .IsAngelInteraction? " + isAngelInteraction);
         if (currentHealth <= 0
                 && !isOverTimeAbility) {
             hasDied(isAngelInteraction);
