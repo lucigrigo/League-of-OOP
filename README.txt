@@ -3,7 +3,7 @@
                 --- Programare Orientata pe Obiecte ---
                             "League of OOP"
 
-            --- Grigore Lucian-Florin 324 CD             ---
+            --- Grigore Lucian-Florin 324CD              ---
             --- Facultatea de Automatica si Calculatoare ---
             --- Universitatea Politehnica, Bucuresti     ---
 
